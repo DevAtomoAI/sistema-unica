@@ -12,12 +12,12 @@ if (isset($_POST['pagina_fechada'])) {
     header(header: 'Location: login/login.php');
 }
 
-$selectTable = $_SESSION['filtrosPesquisa'];
-
-if (!$_SESSION['filtrosPesquisa'] || $_SESSION['filtrosPesquisa'] == null) {
-    $selectTable = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar=''ORDER BY id_cotacoes_veiculos ";
+error_reporting(0);
+if ($_SESSION['filtrosPesquisa']) {
+    $selectTable = $_SESSION['filtrosPesquisa'];
+} else {
+    $selectTable = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar='' ORDER BY id_cotacoes_veiculos ";
 }
-
 $execConnection = $connectionDB->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
 
@@ -28,7 +28,6 @@ $numLinhasRejeitar = $execConnectionRejeitar->num_rows;
 $selectTableWhereOrcar = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar='Orçar' ORDER BY id_cotacoes_veiculos ASC";
 $execConnectionOrcar = $connectionDB->query($selectTableWhereOrcar);
 $numLinhasOrcar = $execConnectionOrcar->num_rows;
-
 ?>
 
 <!DOCTYPE html>
@@ -59,13 +58,20 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
             </li>
 
             <li>
-                <a id="opcaoRespondido" href="#respondido" data-target="cotacoesRespondidas">
-                    <img src="assets/check.svg"> Respondido
+                <a id="opcaoRespondido" href="#paraResponder" data-target="cotacoesParaResponder">
+                    <img src="assets/answer.svg"> Responder
                 </a>
             </li>
+
             <li>
                 <a id='opcaoRejeitado' href="#rejeitado" data-target="cotacoesRejeitadas">
                     <img src="assets/triangle-exclamation.svg"> Rejeitado
+                </a>
+            </li>
+
+            <li>
+                <a id="opcaoParaResponder" href="#respondido" data-target="cotacoesRespondidas">
+                    <img src="assets/check.svg"> Respondido
                 </a>
             </li>
             <li>
@@ -109,11 +115,6 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
             </div>
         </div>
     </header>
-
-    <!-- 
-    <div id="opcoesUser" class="hidden styleOpcoesUser">
-        <p>Trocar de usuário</p>
-    </div> -->
 
     <!-- Corpo da página -->
     <div id="cotacoesEmAndamento" class="styleCotacoesOpcoes">
@@ -209,41 +210,48 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
             </div>
     </div>
 
+    <div id="cotacoesParaResponder" class='hidden styleCotacoesOpcoes'>
+        <h1 class='actualPageTitle'><img src="assets/dark-clock.svg">Cotações para Responder</h3>
+            <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasOrcar . " serviço(s)</p>" ?>
+            <br>
+            <form action="verifications_index/botao_orcar_rejeitar.php" method="POST">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class='titulosTabela'>Nº</th>
+                            <th class='titulosTabela'>Placa</th>
+                            <th class='titulosTabela'>Marca</th>
+                            <th class='titulosTabela'>Modelo</th>
+                            <th class='titulosTabela'>Ano</th>
+                            <th class='titulosTabela'>Orgão solicitante</th>
+                            <th class='titulosTabela'>Tipo Solicitação</th>
+                            <th class='titulosTabela'>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while ($user_data = mysqli_fetch_assoc($execConnectionOrcar)) {
+                            echo "<tr>";
+                            echo "<td class='resultadosTabela'>" . $user_data['numero_veiculo'] . "</td>";
+                            echo "<td class='resultadosTabela' >" . $user_data['placa_veiculo'] . "</td>";
+                            echo "<td class='resultadosTabela' >" . $user_data['marca_veiculo'] . "</td>";
+                            echo "<td class='resultadosTabela'>" . $user_data['modelo_veiculo'] . "</td>";
+                            echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
+                            echo "<td class='resultadosTabela' >" . $user_data['orgao_solicitante_veiculo'] . "</td>";
+                            echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
+                            echo "<td class='resultadosTabela' >Orçar</td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </form>
+
+    </div>
+
+
     <div id='cotacoesRespondidas' class="hidden styleCotacoesOpcoes">
         <h1><img src="assets/check-dark.svg" alt="">Cotações Respondidas</h1>
-        <br>
-        <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasOrcar . " serviço(s)</p>" ?>
-        <br>
-        <table>
-            <thead>
-                <tr>
-                    <th class='titulosTabela'>Nº</th>
-                    <th class='titulosTabela'>Placa</th>
-                    <th class='titulosTabela'>Marca</th>
-                    <th class='titulosTabela'>Modelo</th>
-                    <th class='titulosTabela'>Ano</th>
-                    <th class='titulosTabela'>Orgão solicitante</th>
-                    <th class='titulosTabela'>Tipo Solicitação</th>
-                    <th class='titulosTabela'>Opções</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                while ($user_data = mysqli_fetch_assoc($execConnectionOrcar)) {
-                    echo "<tr>";
-                    echo "<td class='resultadosTabela'>" . $user_data['numero_veiculo'] . "</td>";
-                    echo "<td class='resultadosTabela' >" . $user_data['placa_veiculo'] . "</td>";
-                    echo "<td class='resultadosTabela' >" . $user_data['marca_veiculo'] . "</td>";
-                    echo "<td class='resultadosTabela'>" . $user_data['modelo_veiculo'] . "</td>";
-                    echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
-                    echo "<td class='resultadosTabela' >" . $user_data['orgao_solicitante_veiculo'] . "</td>";
-                    echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
-                    echo "<td class='resultadosTabela'>Orçar</td>";
-                    echo "</tr>";
-                }
-                ?>
-            </tbody>
-        </table>
     </div>
 
     <div id='cotacoesRejeitadas' class="hidden styleCotacoesOpcoes">

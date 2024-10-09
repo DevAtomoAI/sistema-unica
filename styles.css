@@ -370,15 +370,14 @@ a img {
 .styleCotacoesOpcoes{
     width: 90%;
     margin-top: 8em;
-    /* margin-left: 20em; */
-    /* margin-right: 70px; */
     position: absolute; /* ou use 'fixed' para manter fixo durante o scroll */
     top: 0;
     left: 0;
-    padding: 10px;
     margin-left: 2em;
-    
+    margin-bottom: 20px; /* Adiciona um espaço entre as divs */
+    padding: 10px; /* Adiciona padding interno se necessário */
 }
+
 .search-container {
     display: flex; /* Alinha as divs lado a lado */
     gap: 20px; /* Espaçamento entre as divs */
