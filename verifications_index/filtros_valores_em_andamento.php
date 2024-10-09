@@ -1,16 +1,7 @@
 <?php
 session_start();
-include_once("database/config.php");
+include_once("../database/config.php");
 
-$searchKeyWordInput = $_POST["searchKeyWordInput"];
-$searchOpenInput = $_POST["searchOpenInput"];
-$searchCloseInput = $_POST["searchCloseInput"];
-$searchInstitutionInput = $_POST["searchInstitutionInput"];
-$orderByInput = $_POST["orderByInput"];
-
-//primeira: pela palavra chave
-
-// Inicializar a variável para a consulta
 $selectTable = "";
 
 // Verifique se uma das entradas foi enviada
@@ -25,7 +16,7 @@ if (isset($_POST["searchKeyWordInput"]) || isset($_POST["searchInstitutionInput"
     switch (true) {
         case !empty($searchKeyWordInput):
             $selectTable = "SELECT * FROM cotacoes_veiculos WHERE 
-                opcao_orcar_rejeitar='' AND 
+                opcao_orcar_rejeitar=' ' AND 
                 (numero_veiculo LIKE '%$searchKeyWordInput%' OR 
                 placa_veiculo LIKE '%$searchKeyWordInput%' OR 
                 marca_veiculo LIKE '%$searchKeyWordInput%' OR 
@@ -54,10 +45,9 @@ if (isset($_POST["searchKeyWordInput"]) || isset($_POST["searchInstitutionInput"
             }
             break;
     }
+    $_SESSION['filtrosPesquisa'] = $selectTable;
+    header('Location: ../index.php');
 }
-
-$_SESSION['filtrosPesquisa'] = $selectTable;
-header('Location: ../index.php');
 
 
 ?>

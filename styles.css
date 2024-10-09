@@ -48,6 +48,10 @@ body {
     margin-right: 55px;
 }
 
+.styleOpcoesUser{
+    background-color: black;
+}
+
 .left-icons, .right-icons {
     display: flex;
     align-items: center;

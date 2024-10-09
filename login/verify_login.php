@@ -13,21 +13,21 @@ if (isset($_POST['submitLogin'])) {
     $passwordInDB = $valuesTable['senha']; 
 
     if(password_verify($passwordUser, $passwordInDB)){
+        
+        if($rememberUser){
+            $timeCookie = strtotime("+1 day");
+            setcookie('cookieLoginUser', $emailUser, $timeCookie, '/', '', false, true);
+        }
+
         $selectTable = "SELECT * FROM usuarios_oficina WHERE email='$emailUser'";
         $execConnection = $connectionDB->query($selectTable);
         $valuesTable = $execConnection->fetch_assoc();
 
         $nameUser = $valuesTable['nome'];
         $_SESSION['nameLoggedUser'] = $nameUser;
+        $_SESSION['emailLoggedUser'] = $emailUser;
     
-        if($rememberUser){
-            $timeCookie = strtotime("+1 day");
-            setcookie('cookieLoginUser', $emailUser, $timeCookie, '/', '', false, true);
-            
-                
-            $_SESSION['emailSession'] = $emailUser;
-    
-        }
+
         header('Location: ../index.php'); // Redireciona para a página principal 
 
     } 
@@ -37,6 +37,8 @@ if (isset($_POST['submitLogin'])) {
         window.location.href = 'login.php'; // Redireciona para a página de login
       </script>";
     }
+
+    
 
 
 }

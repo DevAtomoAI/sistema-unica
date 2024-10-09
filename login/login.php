@@ -50,7 +50,7 @@ $usuarioCookie = (isset($_COOKIE['cookieLoginUser'])) ? $_COOKIE['cookieLoginUse
                         <label id='label-remember-me'>
                             <input type="checkbox" id="remember" name="remember"> Lembre-se
                         </label>
-                        <a href="../forgot_password/forgot_password.php">Esqueceu a senha?</a>
+                        <!-- <a href="../forgot_password/forgot_password.php">Esqueceu a senha?</a> -->
                     </div>
                     <button type="submit" name="submitLogin" id="submitLogin">Sign In</button>
                 </form>

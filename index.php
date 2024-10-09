@@ -4,21 +4,20 @@ include_once('database/config.php');
 
 $nameUser = $_SESSION['nameLoggedUser'];
 
-if ($_SESSION['emailSession'] == null && isset($_COOKIE['cookieLoginUser']) == false) {
-    header('Location: login/login.php');
+if ($_SESSION['emailLoggedUser'] == null) {
+    header(header: 'Location: login/login.php');
 }
-
-if (isset($_POST['pagina_fechada']) && isset($_COOKIE['cookieLoginUser']) == false) {
-    $_SESSION['emailSession'] = null;
-    header('Location: login/login.php');
+if (isset($_POST['pagina_fechada'])) {
+    $_SESSION['emailLoggedUser'] = null;
+    header(header: 'Location: login/login.php');
 }
 
 $selectTable = $_SESSION['filtrosPesquisa'];
 
-if(!$_SESSION['filtrosPesquisa']){
+if (!$_SESSION['filtrosPesquisa'] || $_SESSION['filtrosPesquisa'] == null) {
     $selectTable = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar=''ORDER BY id_cotacoes_veiculos ";
 }
-// $selectTable = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar=''ORDER BY id_cotacoes_veiculos ";
+
 $execConnection = $connectionDB->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
 
@@ -39,8 +38,9 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Main page</title>
+    <title>Página principal</title>
 </head>
+
 <body>
 
     <div class="overlay" id="overlay"></div>
@@ -53,38 +53,38 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
         <ul class="nav-options">
             <h1 class="side-bar-title">COTAÇÕES</h1>
             <li>
-                <a id='opcaoEmAndamento' href="#emAndamento">
+                <a id='opcaoEmAndamento' href="#emAndamento" data-target="cotacoesEmAndamento">
                     <img src="assets/clock.svg"> Em andamento
                 </a>
             </li>
 
             <li>
-                <a id="opcaoRespondido" href="#respondido">
+                <a id="opcaoRespondido" href="#respondido" data-target="cotacoesRespondidas">
                     <img src="assets/check.svg"> Respondido
                 </a>
             </li>
             <li>
-                <a id='opcaoRejeitado' href="#rejeitado">
+                <a id='opcaoRejeitado' href="#rejeitado" data-target="cotacoesRejeitadas">
                     <img src="assets/triangle-exclamation.svg"> Rejeitado
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="#aprovado">
+                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
                     <img src="assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="#reprovado">
+                <a id='opcaoReprovado' href="#reprovado" data-target='cotacoesReprovadas'>
                     <img src="assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoFaturado' href="#faturado">
+                <a id='opcaoFaturado' href="#faturado" data-target="cotacoesFaturadas">
                     <img src="assets/paper.svg"> Faturado
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado">
+                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
                     <img src="assets/cancel.svg"> Cancelado
                 </a>
             </li>
@@ -103,15 +103,20 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
             <div class="notification-icon">
                 <img src="assets/Doorbell.svg">
             </div>
-            <div class="user-icon">
-                <a id='nameLoggedUser'><?= $nameUser ?></a>
+            <div id='userId' class="user-icon">
+                <a id="nameLoggedUser"><?= $nameUser ?></a>
                 <img src="assets/user.svg">
             </div>
         </div>
     </header>
 
+    <!-- 
+    <div id="opcoesUser" class="hidden styleOpcoesUser">
+        <p>Trocar de usuário</p>
+    </div> -->
+
     <!-- Corpo da página -->
-    <div id="cotacoesEmAndamento" class='styleCotacoesOpcoes'>
+    <div id="cotacoesEmAndamento" class="styleCotacoesOpcoes">
         <h1 class='actualPageTitle'><img src="assets/dark-clock.svg">Cotações em Andamento</h3>
 
             <div class="searchItens">
@@ -136,20 +141,20 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
                             <label class='filtrosPesquisa' id="searchInstitution" for="searchInstitutionInput">Órgão</label>
                             <select name="searchInstitutionInput" id="searchInstitutionInput">
                                 <option value="">Todos</option>
-                                 <?php
-                                    $selectTableOrgaosSolicitantes = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar=' ' ORDER BY id_cotacoes_veiculos ASC";
-                                    $execConnectionOrgaoSolicitante = $connectionDB->query($selectTableOrgaosSolicitantes);
+                                <?php
+                                $selectTableOrgaosSolicitantes = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar=' ' ORDER BY id_cotacoes_veiculos ASC";
+                                $execConnectionOrgaoSolicitante = $connectionDB->query($selectTableOrgaosSolicitantes);
 
-                                    while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
-                                        echo "<option value='".$orgaoSolicitantes['id_cotacoes_veiculos'] ."'>".$orgaoSolicitantes['orgao_solicitante_veiculo']."</option>";
-                                    }
-                                ?> 
-                                
+                                while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
+                                    echo "<option value='" . $orgaoSolicitantes['id_cotacoes_veiculos'] . "'>" . $orgaoSolicitantes['orgao_solicitante_veiculo'] . "</option>";
+                                }
+                                ?>
+
                             </select>
                         </div>
 
                         <div class="groupsSearchItens">
-                            <form action="verifications_index/filtros_valores_em_andamento.php" method="POST"> 
+                            <form action="verifications_index/filtros_valores_em_andamento.php" method="POST">
                                 <label class='filtrosPesquisa' id="orderBy" for="orderByInput">Ordenar</label>
                                 <select name="orderByInput" id="orderByInput">
                                     <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
@@ -167,7 +172,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
             </div>
 
             <div class="resultSearch">
-                <?php echo "<p id='resultsFound'>Foram encontrado(s) ". $numLinhasTotal ." serviço(s)</p>"?>
+                <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
                 <br>
                 <form action="verifications_index/botao_orcar_rejeitar.php" method="POST">
                     <table>
@@ -207,7 +212,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
     <div id='cotacoesRespondidas' class="hidden styleCotacoesOpcoes">
         <h1><img src="assets/check-dark.svg" alt="">Cotações Respondidas</h1>
         <br>
-        <?php echo "<p id='resultsFound'>Foram encontrado(s) ". $numLinhasOrcar ." serviço(s)</p>"?>
+        <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasOrcar . " serviço(s)</p>" ?>
         <br>
         <table>
             <thead>
@@ -244,7 +249,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
     <div id='cotacoesRejeitadas' class="hidden styleCotacoesOpcoes">
         <h1><img src="assets/triangle-exclamation-dark.svg" alt="">Rejeitado</h1>
         <br>
-        <?php echo "<p id='resultsFound'>Foram encontrado(s) ". $numLinhasRejeitar ." serviço(s)</p>"?>
+        <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasRejeitar . " serviço(s)</p>" ?>
         <br>
         <table>
             <thead>
