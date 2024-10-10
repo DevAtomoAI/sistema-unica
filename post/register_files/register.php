@@ -44,18 +44,18 @@
         <header class="top-bar">
             <div class="left-icons">
                 <div class="menu-icon" id="menuBtn" >
-                   <a> <img src="./imgs/menu.svg" alt="" srcset=""> </a>  
+                   <a> <img src="../imgs/menu.svg" alt="" srcset=""> </a>  
                 </div>
                 <div class="logo">
-                    <img src="./imgs/minilogo.svg" alt="" srcset="">
+                    <img src="../imgs/minilogo.svg" alt="" srcset="">
                 </div>
             </div>
             <div class="right-icons">
                 <div class="notification-icon">
-                    <img src="./imgs/Doorbell.svg" alt="" srcset="">
+                    <img src="../imgs/Doorbell.svg" alt="" srcset="">
                 </div>
                 <div class="user-icon">
-                    <img src="./imgs/user.svg" alt="" srcset="">
+                    <img src="../imgs/user.svg" alt="" srcset="">
                 </div>
             </div>
         </header>
@@ -66,11 +66,11 @@
         <div class="login-container" >
 
             <div class="login-image">
-                <img src="./imgs/carro.svg" alt="" srcset="">
+                <img src="../imgs/carro.svg" alt="" srcset="">
             </div>
             <div class="login-form">
                 <div class="logo-login">
-              <img src="./imgs/logo.svg" alt="" srcset="" class="foto">
+              <img src="../imgs/logo.svg" alt="" srcset="" class="foto">
                 </div>
                 <br><br><br> <br> <br><br>
                 <h1>Register Now</h1>

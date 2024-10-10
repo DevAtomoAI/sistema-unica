@@ -31,7 +31,7 @@ if(isset($_SESSION['nome'])) {
         <li><a href="../andamento_files/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
         <li><a href="../aprovado_files/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
         <li><a href="#faturado"><img src="../imgs/paper.svg"> Faturado</a></li>
-        <li><a href="#cancelado"><img src="../imgs/cancel.svg"> Cancelado</a></li>
+        <li><a href="../rejeitado_files/rejeitado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
     </ul>
 </div>
 
@@ -54,10 +54,8 @@ if(isset($_SESSION['nome'])) {
  
      <!-- Conteudo Principal -->
     <form action="adiciona_cotacao_bd.php" method="POST">
-
-    
-    <div class="main-content" id="main-content">
-        <h1 class="text-incco">Incluir Cotações</h1>
+        <div class="main-content" id="main-content">
+            <h1 class="text-incco">Incluir Cotações</h1>
             <div class="form-container">
                 <!-- Formulário com os campos -->
                 <div class="form-group">
@@ -74,28 +72,28 @@ if(isset($_SESSION['nome'])) {
 
                     <label for="tipo-solicitacao">Tipo de Solicitação</label>
                     <select name="tipo-solicitacao" id="tipo-solicitacao">
-                        <option value="">Selecione o tipo de Solicitação</option>
-                        <option>Aquisição de Peças</option>
-                        <option>Aquisição de Pneus</option>
-                        <option value="">Aquisição de Óleos Lubrificantes e Filtros </option>
-                        <option value=""> Aquisição de Peças</option>
-                        <option value=""> Aquisição de Peças + Serviços </option>
-                        <option value=""> Aquisição de Pneus </option>
-                        <option value=""> Serviço de Borracharia </option>
-                        <option value=""> Serviço de Diagnóstico </option>
-                        <option value=""> Serviço de Elétrica </option>
-                        <option value=""> Serviço de Funilaria e Pintura </option>
-                        <option value=""> Serviço de Guincho </option>
-                        <option value=""> Serviço de Para-brisas </option>
-                        <option value=""> Serviço de Portas</option>
-                        <option value=""> Serviço de Radiador </option>
-                        <option value=""> Serviço de Reforma de Pneus </option>
-                        <option value=""> Serviço de Solda em Geral </option>
-                        <option value=""> Serviço de Tapeçaria </option>
-                        <option value=""> Serviço de Tornearia </option>
-                        <option value=""> Serviço Geral </option>
-                        <option value=""> Inspeção Veícular </option>
-                        <option value=""> Vistoria Veícular </option>
+                        <option value="Selecione o tipo de Solicitação"> Selecione o tipo de Solicitação</option>
+                        <option value="Aquisição de Peças"> Aquisição de Peças</option>
+                        <option value="Aquisição de Pneus"> Aquisição de Pneus</option>
+                        <option value="Aquisição de Óleos Lubrificantes e Filtros"> Aquisição de Óleos Lubrificantes e Filtros </option>
+                        <option value="Aquisição de Peças"> Aquisição de Peças</option>
+                        <option value="Aquisição de Peças + Serviços"> Aquisição de Peças + Serviços </option>
+                        <option value="Aquisição de Pneus"> Aquisição de Pneus </option>
+                        <option value="Serviço de Borracharia"> Serviço de Borracharia </option>
+                        <option value="Serviço de Diagnóstico"> Serviço de Diagnóstico </option>
+                        <option value="Serviço de Elétrica"> Serviço de Elétrica </option>
+                        <option value="Serviço de Funilaria e Pintura"> Serviço de Funilaria e Pintura </option>
+                        <option value="Serviço de Guincho"> Serviço de Guincho </option>
+                        <option value="Serviço de Para-brisas"> Serviço de Para-brisas </option>
+                        <option value="Serviço de Portas"> Serviço de Portas</option>
+                        <option value="Serviço de Radiador"> Serviço de Radiador </option>
+                        <option value="Serviço de Reforma de Pneus"> Serviço de Reforma de Pneus </option>
+                        <option value="Serviço de Solda em Geral"> Serviço de Solda em Geral </option>
+                        <option value="Serviço de Tapeçaria"> Serviço de Tapeçaria </option>
+                        <option value="Serviço de Tornearia"> Serviço de Tornearia </option>
+                        <option value="Serviço Geral"> Serviço Geral </option>
+                        <option value="Inspeção Veícular"> Inspeção Veícular </option>
+                        <option value="Vistoria Veícular"> Vistoria Veícular </option>
                     </select>
                 </div>
 

@@ -8,7 +8,7 @@ if (isset($_SESSION['nome'])) {
     $nomeUsuario = "Convidado"; // Se não estiver logado, exibe "Convidado"
 }
 
-$selectTableAprovadas = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='Aprovada' ORDER BY id ASC";
+$selectTableAprovadas = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='Rejeitada' ORDER BY id ASC";
 $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
 $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
 
@@ -17,7 +17,7 @@ if(!empty($_SESSION['filtrosPesquisaAprovada'])) {
 }
 
 else{
-    $selectTable = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='Aprovada' ORDER BY id ";
+    $selectTable = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='Rejeitada' ORDER BY id ";
 }
 
 $execConnection = $conexao->query($selectTable);
@@ -31,8 +31,8 @@ $numLinhasTotal = $execConnection->num_rows;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aprovado</title>
-    <link rel="stylesheet" href="aprovado.css">
+    <title>Rejeitado</title>
+    <link rel="stylesheet" href="rejeitado.css">
     <link rel="shortcut icon" href="icone.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -67,7 +67,7 @@ $numLinhasTotal = $execConnection->num_rows;
                 </a>
             </li>
             <li>
-                <a href="aprovado.php">
+                <a href="../aprovado/aprovado.php">
                     <img src="../imgs/check.svg"> Aprovado
                 </a>
             </li>
@@ -77,7 +77,7 @@ $numLinhasTotal = $execConnection->num_rows;
                 </a>
             </li>
             <li>
-                <a href="../rejeitado_files/rejeitado.php">
+                <a href="rejeitado">
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
@@ -113,16 +113,16 @@ $numLinhasTotal = $execConnection->num_rows;
     <!-- CONTEUDO PRINCIPAL -->
 
     <div class="main-content" id="main-content">
-        <h1 class="text-cotand">Cotações aprovadas</h1>
+        <h1 class="text-cotand">Cotações rejeitadas</h1>
 
         <!-- Barra de busca -->
         <div class="search-bar">
-            <form action="configs_aprovado.php" method="POST">
+            <form action="configs_rejeitado.php" method="POST">
                 <input name='palavra-chave' type="text" placeholder="Busca">
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='Aprovada' ORDER BY id ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='Rejeitada' ORDER BY id ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
@@ -185,7 +185,7 @@ $numLinhasTotal = $execConnection->num_rows;
 
 
 
-    <script src="aprovado.js"></script>
+    <script src="rejeitado.js"></script>
 </body>
 
 </html>

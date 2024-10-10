@@ -17,10 +17,12 @@ if (isset($_POST["incluir-btn"])) {
     $propostas = $_POST['propostas'];
     $placa = $_POST['placa'];
 
-    $insertValuesTable  = mysqli_query($conexao, "INSERT INTO cotacoes_em_andamento (veiculo, km_atual, plano_manutencao, modelo_contratacao, data_abertura, data_final,
-    centro_custo, tipo_solicitacao, fornecedor, responsavel, propostas, placa)  
-    VALUES ('$veiculo', '$kmAtual' ,'$planoManutencao', '$modeloContratacao', '$dataAbertura', '$dataFinal', '$centroCusto', '$tipoSolicitacao', '$fornecedor', '$responsavel',
-    '$propostas', '$placa')");
+    echo $dataAbertura;
+
+    $insertValuesTable  = mysqli_query($conexao, "INSERT INTO cotacoes_em_andamento 
+    (veiculo, km_atual, plano_manutencao, modelo_contratacao, data_abertura, data_final, centro_custo, tipo_solicitacao, fornecedor, responsavel, propostas, placa)  
+    VALUES 
+    ('$veiculo', '$kmAtual' ,'$planoManutencao', '$modeloContratacao', '$dataAbertura', '$dataFinal', '$centroCusto', '$tipoSolicitacao', '$fornecedor', '$responsavel', '$propostas', '$placa')");
 
     header('Location: incluir.php');
 }

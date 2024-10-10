@@ -56,7 +56,7 @@ if(isset($_SESSION['nome'])) {
             </a>
         </li>
         <li>
-            <a href="#cancelado">
+            <a href="../rejeitado_files/rejeitado.php">
                 <img src="../imgs/cancel.svg"> Cancelado
             </a>
         </li>

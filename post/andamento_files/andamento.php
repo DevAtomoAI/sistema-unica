@@ -53,7 +53,7 @@ $numLinhasTotal = $execConnection->num_rows;
             <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
             <li><a href="../aprovado_files/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
             <li><a href="#faturado"><img src="../imgs/paper.svg"> Faturado</a></li>
-            <li><a href="#cancelado"><img src="../imgs/cancel.svg"> Cancelado</a></li>
+            <li><a href="../rejeitado_files/rejeitado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
         </ul>
     </div>
 
@@ -124,7 +124,7 @@ $numLinhasTotal = $execConnection->num_rows;
                         <th>Opções</th>
                     </tr>
                 </thead>
-                <!-- <form action="configs_andamento.php" method="POST"> -->
+                <form action="configs_andamento.php" method="POST">
                     <tbody id="cotacoes-body">
                         <!-- Conteúdo da tabela será inserido dinamicamente -->
                         <?php
@@ -141,7 +141,7 @@ $numLinhasTotal = $execConnection->num_rows;
                         }
                         ?>
                     </tbody>
-                <!-- </form> -->
+                </form>
             </table>
         </div>
 
