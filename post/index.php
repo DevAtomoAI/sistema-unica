@@ -44,7 +44,7 @@
 
     <div class="login-container">
         <div class="login-image">
-            <img src="./imgs/carro.svg" alt="" srcset="">
+            <img src="imgs/carro.svg" alt="" srcset="">
         </div>
         <div class="login-form">
             <div class="logo-login">
@@ -53,7 +53,7 @@
             <br><br><br> <br> <br><br>
             <h1>Welcome Back</h1>
             <p class="txt">Enter your email and password to access your account</p>
-            <form action="testlogin.php" method="POST">
+            <form action="database/testlogin.php" method="POST">
                 <label for="email" class="txt2">Email</label>
                 <input type="email" id="email" name="email" placeholder="Insira seu email" required autocomplete="username">
 
@@ -71,7 +71,7 @@
                 <input class="btn1" type="submit" name="submit" value="Enviar"></input>
             </form>
             <br>
-            <p class="txt">Don't have an account? <a href="register.php">Sign Up</a></p>
+            <p class="txt">Don't have an account? <a href="database/register.php">Sign Up</a></p>
         </div>
     </div>
     <script src="script.js"></script>
