@@ -5,11 +5,11 @@ include_once('database/config.php');
 $nameUser = $_SESSION['nameLoggedUser'];
 
 if ($_SESSION['emailLoggedUser'] == null) {
-    header(header: 'Location: login/login.php');
+    header('Location: login/login.php');
 }
 if (isset($_POST['pagina_fechada'])) {
     $_SESSION['emailLoggedUser'] = null;
-    header(header: 'Location: login/login.php');
+    header('Location: login/login.php');
 }
 
 error_reporting(0);
@@ -167,7 +167,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' type="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>

@@ -45,7 +45,7 @@ body {
 
 
 .right-icons{
-    margin-right: 55px;
+    margin-right: 100px;
 }
 
 .styleOpcoesUser{
@@ -77,6 +77,22 @@ a {
     /* margin-right: 100px; */
     margin-left: 30px;
     color: #5bc0de;
+}
+#btn{
+    background-color: #003150;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+#btn:hover{
+    background-color: #004a73;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .filtrosPesquisa{
@@ -387,34 +403,56 @@ a img {
 .groupsSearchItens {
     display: flex; /* Flex para organizar label e input verticalmente */
     flex-direction: column; /* Organiza label acima do input */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+
 }
 
 #searchKeyWord, #searchOpen, #searchClose, #searchInstitution, #orderBy{
     margin-bottom: 5px; /* Espaçamento entre o label e o input */
+    
 }
 
 #searchKeyWordInput, #searchOpenInput, #searchCloseInput, #searchInstitutionInput, #orderByInput {
     padding: 5px; /* Espaçamento interno no input */
     width: 200px; /* Largura do input */
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .searchItens{
     margin-top: 20px;
     margin-right: 20px;
-    border-bottom: 1px solid gray; padding-bottom: 20px;
-    width: 107%;
+    padding-bottom: 20px;
+    
 }
 
 .titulosTabela, .resultadosTabela{
     text-align: center;
 }
+.titulosTabela{
+    background-color: #141434;
+    color: white;
+}
+
 
 #resultsFound{
-    color: black;
     font-size: 12px;
     margin-top: 20px;
-    border-bottom: 1px solid gray; padding-bottom: 20px;
     width: 107%;
+}
+
+.resultSearch{
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 103%;
 }
 
 #searchValuesOnGoing{
@@ -431,7 +469,7 @@ a img {
 }
 
 #searchValuesOnGoing img{
-    margin-right: 8px; /* Espaçamento entre a imagem e o texto */
+    margin-right: 50px; /* Espaçamento entre a imagem e o texto */
     width: 20px; /* Ajuste o tamanho da imagem */
     height: auto; /* Mantém a proporção da imagem */
 }
