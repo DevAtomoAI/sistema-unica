@@ -2,33 +2,61 @@
 session_start();
 include_once('database/config.php');
 
+// Função para verificar se o usuário está logado
+function checkUserLoggedIn() {
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: login/login.php');
+        exit;
+    }
+}
+
+// Função para encerrar a sessão (logout)
+function logoutIfRequested() {
+    if (isset($_POST['pagina_fechada'])) {
+        session_unset();
+        session_destroy();
+        header('Location: login/login.php');
+        exit;
+    }
+}
+
+// Função para executar uma query e retornar os resultados
+function executeQuery($connectionDB, $query) {
+    $stmt = $connectionDB->prepare($query);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+// Verifica se o usuário está logado
+checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
 
-if ($_SESSION['emailLoggedUser'] == null) {
-    header('Location: login/login.php');
-}
-if (isset($_POST['pagina_fechada'])) {
-    $_SESSION['emailLoggedUser'] = null;
-    header('Location: login/login.php');
-}
+// Verifica se o logout foi solicitado
+logoutIfRequested();
 
-error_reporting(0);
-if ($_SESSION['filtrosPesquisa']) {
+// Define a query principal de acordo com os filtros
+if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
 } else {
-    $selectTable = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar='' ORDER BY id_cotacoes_veiculos ";
+    $selectTable = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar='' ORDER BY id_cotacoes_veiculos";
 }
-$execConnection = $connectionDB->query($selectTable);
+
+// Executa a query principal
+$execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
 
+// Query para registros com "Rejeitar"
 $selectTableWhereRejeitar = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar='Rejeitar' ORDER BY id_cotacoes_veiculos ASC";
-$execConnectionRejeitar = $connectionDB->query($selectTableWhereRejeitar);
+$execConnectionRejeitar = executeQuery($connectionDB, $selectTableWhereRejeitar);
 $numLinhasRejeitar = $execConnectionRejeitar->num_rows;
 
+// Query para registros com "Orçar"
 $selectTableWhereOrcar = "SELECT * FROM cotacoes_veiculos WHERE opcao_orcar_rejeitar='Orçar' ORDER BY id_cotacoes_veiculos ASC";
-$execConnectionOrcar = $connectionDB->query($selectTableWhereOrcar);
+$execConnectionOrcar = executeQuery($connectionDB, $selectTableWhereOrcar);
 $numLinhasOrcar = $execConnectionOrcar->num_rows;
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
