@@ -121,7 +121,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
         <h1 class='actualPageTitle'><img src="assets/dark-clock.svg">Cotações em Andamento</h3>
 
             <div class="searchItens">
-                <form action="verifications_index/filtros_valores_em_andamento.php" method="POST">
+                <form action="verifications_index/configs_index.php" method="POST">
                     <div class="search-container">
                         <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchKeyWord" for="searchKeyWordInput">Busca</label>
@@ -155,7 +155,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
                         </div>
 
                         <div class="groupsSearchItens">
-                            <form action="verifications_index/filtros_valores_em_andamento.php" method="POST">
+                            <form action="verifications_index/configs_index.php" method="POST">
                                 <label class='filtrosPesquisa' id="orderBy" for="orderByInput">Ordenar</label>
                                 <select name="orderByInput" id="orderByInput">
                                     <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
@@ -175,7 +175,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
             <div class="resultSearch">
                 <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
                 <br>
-                <form action="verifications_index/botao_orcar_rejeitar.php" method="POST">
+                <form action="verifications_index/configs_index.php" method="POST">
                     <table>
                         <thead>
                             <tr>
@@ -214,7 +214,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
         <h1 class='actualPageTitle'><img src="assets/dark-clock.svg">Cotações para Responder</h3>
             <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasOrcar . " serviço(s)</p>" ?>
             <br>
-            <form action="verifications_index/botao_orcar_rejeitar.php" method="POST">
+            <form action="verifications_index/configs_index.php" method="POST">
                 <table>
                     <thead>
                         <tr>
@@ -255,7 +255,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
     </div>
 
     <div id='cotacoesRejeitadas' class="hidden styleCotacoesOpcoes">
-        <h1><img src="assets/triangle-exclamation-dark.svg" alt="">Rejeitado</h1>
+        <h1><img src="assets/triangle-exclamation-dark.svg" alt="">Cotações Rejeitadas</h1>
         <br>
         <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasRejeitar . " serviço(s)</p>" ?>
         <br>
@@ -292,19 +292,19 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
     </div>
 
     <div id='cotacoesAprovadas' class="hidden styleCotacoesOpcoes">
-        <h1><img src="assets/thumbs-up-dark.svg" alt="">Aprovado</h1>
+        <h1><img src="assets/thumbs-up-dark.svg" alt="">Cotações Aprovadas</h1>
     </div>
 
     <div id='cotacoesReprovadas' class="hidden styleCotacoesOpcoes">
-        <h1><img src="assets/thumbs-down-dark.svg" alt="">Reprovado</h1>
+        <h1><img src="assets/thumbs-down-dark.svg" alt="">Cotações Reprovadas</h1>
     </div>
 
     <div id='cotacoesFaturadas' class="hidden styleCotacoesOpcoes">
-        <h1><img src="assets/paper-black.svg" alt="">Faturado</h1>
+        <h1><img src="assets/paper-black.svg" alt="">Cotações Faturadas</h1>
     </div>
 
     <div id='cotacoesCanceladas' class="hidden styleCotacoesOpcoes">
-        <h1><img src="assets/cancel-dark.svg" alt="">Cancelado</h1>
+        <h1><img src="assets/cancel-dark.svg" alt="">Cotações Canceladas</h1>
     </div>
 
     <script src="script.js"></script>
