@@ -22,52 +22,46 @@ overlay.addEventListener('click', () => {
 });
 
 // Carregar cotações da sessionStorage
-const cotacoes = JSON.parse(sessionStorage.getItem('cotacoes')) || [];
-console.log(cotacoes);
-// const tabelaBody = document.getElementById('cotacoes-body');
+// const cotacoes = JSON.parse(sessionStorage.getItem('cotacoes')) || [];
+// Função para abrir o pop-up
+// Abre o pop-up com as informações da cotação
+function abrirPopUp(cotacaoId) {
 
-// cotacoes.forEach((cotacao, index) => {
-//     const row = `
-//                 <tr>
-//                     <td>${index + 1} <button class="info-btn" onclick="abrirPopUp(${index})"><i class="fas fa-info-circle"></i></button></td>
-//                     <td>${cotacao.placa}</td>
-//                     <td>${cotacao.modelo}</td>
-//                     <td>${cotacao.centroCusto}</td>
-//                     <td>${cotacao.propostas}</td>
-//                     <td>${cotacao.dataAbertura}</td>
-//                     <td><button class="btn-action btn-green"><i class="fas fa-check"></i></button>
-//                         <button class="btn-action btn-red"><i class="fas fa-times"></i></button>
-//                     </td>
-//                 </tr>
-//             `;
-//     tabelaBody.innerHTML += row;
-// });
+    // Ajuste para a comparação de ID
+    const cotacao = cotacoes.find(c => c.id == (cotacaoId)); // Ajuste conforme necessário
 
-// Mostrar informações no Pop-up
-function abrirPopUp() {
-    const cotacao = cotacoes[index];
 
-    document.getElementById("veiculo").innerText = cotacao.veiculo;
-    document.getElementById("kmAtual").innerText = cotacao.kmAtual;
-    document.getElementById("planoManutencao").innerText = cotacao.planoManutencao;
-    document.getElementById("modeloContratacao").innerText = cotacao.modeloContratacao;
-    document.getElementById("dataAbertura").innerText = cotacao.dataAbertura;
-    document.getElementById("dataRecebimento").innerText = cotacao.dataRecebimento;
-    document.getElementById("centroCusto").innerText = cotacao.centroCusto;
-    document.getElementById("tipoSolicitacao").innerText = cotacao.tipoSolicitacao;
-    document.getElementById("fornecedor").innerText = cotacao.fornecedor;
-    document.getElementById("responsavel").innerText = cotacao.responsavel;
-    document.getElementById("propostas").innerText = cotacao.propostas;
+    if (cotacao) {
+        // Preencher os detalhes no pop-up
+        document.getElementById("veiculo").innerText = cotacao.veiculo;
+        document.getElementById("kmAtual").innerText = cotacao.kmAtual;
+        document.getElementById("planoManutencao").innerText = cotacao.planoManutencao;
+        document.getElementById("modeloContratacao").innerText = cotacao.modeloContratacao;
+        document.getElementById("dataAbertura").innerText = cotacao.dataAbertura;
+        document.getElementById("dataRecebimento").innerText = cotacao.dataRecebimento;
+        document.getElementById("centroCusto").innerText = cotacao.centroCusto;
+        document.getElementById("tipoSolicitacao").innerText = cotacao.tipoSolicitacao;
+        document.getElementById("fornecedor").innerText = cotacao.fornecedor;
+        document.getElementById("responsavel").innerText = cotacao.responsavel;
+        document.getElementById("propostas").innerText = cotacao.propostas;
 
-    document.getElementById("popup").style.display = "block";
-    document.getElementById("popup-overlay").style.display = "block";
+        // Exibir o pop-up
+        document.getElementById("popup").style.display = "block";
+        document.getElementById("popup-overlay").style.display = "block";
+    } else {
+        alert("Cotação não encontrada.");
+    }
 }
 
-// Fechar o Pop-up
+
+
+
 function fecharPopUp() {
     document.getElementById("popup").style.display = "none";
     document.getElementById("popup-overlay").style.display = "none";
 }
+
+
 
 
 

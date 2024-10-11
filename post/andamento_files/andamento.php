@@ -11,19 +11,38 @@ if (isset($_SESSION['nome'])) {
 $selectTableEmAndamento = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='' ORDER BY id ASC";
 $execConnectionEmAndamento = $conexao->query($selectTableEmAndamento);
 $numLinhasEmAndamento = $execConnectionEmAndamento->num_rows;
- 
-if(!empty($_SESSION['filtrosPesquisa'])) {
-    $selectTable = $_SESSION['filtrosPesquisa'];
-}
 
-else{
+if (!empty($_SESSION['filtrosPesquisa'])) {
+    $selectTable = $_SESSION['filtrosPesquisa'];
+} else {
     $selectTable = "SELECT * FROM cotacoes_em_andamento WHERE opcao_aprovada_rejeitada='' ORDER BY id ";
 }
 
 $execConnection = $conexao->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
-?>
 
+// Criar o array de cotações
+$cotacoes = [];
+while ($user_data = mysqli_fetch_assoc($execConnectionEmAndamento)) {
+    $cotacoes[] = [
+        'id' => $user_data['id'],
+        'veiculo' => $user_data['veiculo'],
+        'kmAtual' => $user_data['km_atual'],
+        'planoManutencao' => $user_data['plano_manutencao'],
+        'modeloContratacao' => $user_data['modelo_contratacao'],
+        'dataAbertura' => $user_data['data_abertura'],
+        'dataRecebimento' => $user_data['data_final'],
+        'centroCusto' => $user_data['centro_custo'],
+        'tipoSolicitacao' => $user_data['tipo_solicitacao'],
+        'fornecedor' => $user_data['fornecedor'],
+        'responsavel' => $user_data['responsavel'],
+        'propostas' => $user_data['propostas'],
+    ];
+}
+
+// Passar as cotações para o JavaScript
+echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +102,7 @@ $numLinhasTotal = $execConnection->num_rows;
         <!-- Barra de busca -->
         <div class="search-bar">
             <form action="configs_andamento.php" method="POST">
-                <input name='palavra-chave'type="text" placeholder="Busca">
+                <input name='palavra-chave' type="text" placeholder="Busca">
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
@@ -93,7 +112,6 @@ $numLinhasTotal = $execConnection->num_rows;
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
                         echo "<option value='" . $orgaoSolicitantes['id'] . "'>" . $orgaoSolicitantes['centro_custo'] . "</option>";
                     }
-
                     ?>
                 </select>
                 <input type="text" placeholder="Placa">
@@ -102,8 +120,6 @@ $numLinhasTotal = $execConnection->num_rows;
                     <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
                     <option name="numero_veiculo_crescente" id="numero_veiculo_crescente" value="numero_veiculo_crescente">Por número (crescente)</option>
                     <option name="placa_veiculo" id="placa_veiculo" value="placa">Por placa </option>
-                    <!-- <option name="marca_veiculo" id="marca_veiculo" value="marca_veiculo">Por marca </option> -->
-                    <!-- <option name="modelo_veiculo" id="modelo_veiculo" value="modelo_veiculo">Por modelo </option> -->
                 </select>
                 <button class="btn-search"><i class="fas fa-search"></i> Pesquisar</button>
                 <button class="btn-print"><i class="fas fa-print"></i> Imprimir</button>
@@ -124,24 +140,26 @@ $numLinhasTotal = $execConnection->num_rows;
                         <th>Opções</th>
                     </tr>
                 </thead>
-                <form action="configs_andamento.php" method="POST">
-                    <tbody id="cotacoes-body">
-                        <!-- Conteúdo da tabela será inserido dinamicamente -->
-                        <?php
-                        while ($user_data = mysqli_fetch_assoc($execConnection)) {
-                            echo "<tr>";
-                            echo "<td class='resultadosTabela'>" . $user_data['id'] . "<button class='info-btn' onclick='abrirPopUp()'><i class='fas fa-info-circle'></i></button></td>";
-                            echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
-                            echo "<td class='resultadosTabela' >".$user_data['modelo_contratacao']."</td>";
-                            echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
-                            echo "<td class='resultadosTabela' >" . $user_data['propostas'] . "</td>";
-                            echo "<td class='resultadosTabela' >" . $user_data['data_abertura'] . "</td>";
-                            echo "<td class='resultadosTabela' > <button name='button-option-aproved' class='btn-action btn-green' value='" . $user_data['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $user_data['id'] . "'><i class='fas fa-times'></i></button></td>";
-                            echo "</tr>";
-                        }
-                        ?>
-                    </tbody>
-                </form>
+                <tbody id="cotacoes-body">
+                    <!-- Conteúdo da tabela será inserido dinamicamente -->
+                    <?php
+                    // Preencher a tabela com dados do banco
+                    foreach ($cotacoes as $cotacao) {
+                        echo "<tr>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['id'] . 
+                            "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
+                        echo "<form method='POST' action='configs_andamento.php'>";
+                        echo "<td class='resultadosTabela'><button name='button-option-aproved' class='btn-action btn-green' value='" . $cotacao['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $cotacao['id'] . "'><i class='fas fa-times'></i></button></td>";
+                        echo "</form>";
+                        echo "</tr>";
+                    }
+                    ?>
+                </tbody>
             </table>
         </div>
 
@@ -155,9 +173,11 @@ $numLinhasTotal = $execConnection->num_rows;
                         <p><strong>Veículo:</strong> <span id="veiculo"></span></p>
                         <p><strong>Km Atual:</strong> <span id="kmAtual"></span></p>
                         <p><strong>Plano de Manutenção:</strong> <span id="planoManutencao"></span></p>
+                    </div>
+                    <div class="popup-column">
                         <p><strong>Modelo de Contratação:</strong> <span id="modeloContratacao"></span></p>
                         <p><strong>Data de Abertura:</strong> <span id="dataAbertura"></span></p>
-                        <p><strong>Data Final de Recebimento:</strong> <span id="dataRecebimento"></span></p>
+                        <p><strong>Data de Recebimento:</strong> <span id="dataRecebimento"></span></p>
                     </div>
                     <div class="popup-column">
                         <p><strong>Centro de Custo:</strong> <span id="centroCusto"></span></p>
@@ -165,21 +185,16 @@ $numLinhasTotal = $execConnection->num_rows;
                         <p><strong>Fornecedor:</strong> <span id="fornecedor"></span></p>
                         <p><strong>Responsável:</strong> <span id="responsavel"></span></p>
                         <p><strong>Propostas:</strong> <span id="propostas"></span></p>
-                        <p><strong>Anexo:</strong> <i class="fas fa-file-alt"></i></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Overlay para escurecer o fundo -->
+        <!-- Overlay para o pop-up -->
         <div id="popup-overlay" class="popup-overlay" style="display: none;" onclick="fecharPopUp()"></div>
-
     </div>
 
-    <script src="andamento.js">
-
-    </script>
-
+    <script src="andamento.js"></script>
 </body>
 
 </html>
