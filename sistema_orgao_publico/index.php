@@ -51,8 +51,8 @@
           <img src="./imgs/logo.svg" alt="" srcset="" class="foto">
             </div>
             <br><br><br> <br> <br><br>
-            <h1>Welcome Back</h1>
-            <p class="txt">Enter your email and password to access your account</p>
+            <h1>Acesso órgão público</h1>
+            <p class="txt">Entre com seu email e senha para acessar sua conta</p>
             <form action="database/testlogin.php" method="POST">
                 <label for="email" class="txt2">Email</label>
                 <input type="email" id="email" name="email" placeholder="Insira seu email" required autocomplete="username">
@@ -63,7 +63,7 @@
                 <div class="remember-forgot">
                     <label>
                         <input type="checkbox" id="remember" name="remember">
-                        Remember me
+                        Lembrar
                     </label>
                     <a href="#">Forgot Password?</a>
                 </div>
@@ -71,7 +71,7 @@
                 <input class="btn1" type="submit" name="submit" value="Enviar"></input>
             </form>
             <br>
-            <p class="txt">Don't have an account? <a href="database/register.php">Sign Up</a></p>
+            <p class="txt">Não tem uma conta? <a href="register_files/register.php">Sign Up</a></p>
         </div>
     </div>
     <script src="script.js"></script>

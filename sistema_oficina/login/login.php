@@ -37,7 +37,7 @@ $usuarioCookie = (isset($_COOKIE['cookieLoginUser'])) ? $_COOKIE['cookieLoginUse
                 <img src="../assets/logo.svg" alt="">
             </div>
             <div class="text-block-form">
-                <h1>Bem-vindo de volta!</h1>
+                <h1>Login oficina</h1>
                 <p class="txt">Entre com seu email e senha para acessar sua conta</p>
                 <form action="verify_login.php" method="POST">
                     <label for="email" class="txt2" >Email</label>

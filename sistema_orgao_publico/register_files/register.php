@@ -73,29 +73,29 @@
               <img src="../imgs/logo.svg" alt="" srcset="" class="foto">
                 </div>
                 <br><br><br> <br> <br><br>
-                <h1>Register Now</h1>
-                <p class="txt">Please enter your informations</p>
+                <h1>Cadastre-se agora!</h1>
+                <p class="txt">Por favor, entre com suas informações</p>
 
                 <form action="register.php" method="POST">
-                    <label for="email" class="txt2">Name</label>
-                    <input type="text" id="email" name="nome" placeholder="Enter your name" required>
+                    <label for="email" class="txt2">Nome</label>
+                    <input type="text" id="email" name="nome" placeholder="Entre com seu nome" required>
 
 
                     <label for="email" class="txt2">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" placeholder="Entre com seu email" required>
     
 
 
-                    <label for="password" class="txt2" >Password</label>
-                    <input type="password" id="senha" name="senha" placeholder="Enter your password" required>
+                    <label for="password" class="txt2" >Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Entre com sua senha" required>
 
-                    <label for="password" class="txt2" >Repeat Password</label>
-                    <input type="password" id="senha" name="senha" placeholder="Enter your password" required>
+                    <label for="password" class="txt2" >Repita senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Reescreva a senha" required>
     
-                    <input class="btn1" type="submit" name="submit" id="submit" >Register</input>
+                    <input class="btn1" type="submit" name="submit" id="submit" ></input>
                 </form>
                 <br>
-                <p class="txt">Already have an account? <a href="index.php">Login</a></p>
+                <p class="txt">Já possui uma conta? <a href="../index.php">Login</a></p>
             </div>
 
     <script src="register.js"></script>
