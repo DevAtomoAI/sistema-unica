@@ -1,5 +1,7 @@
 <?php
 
+include_once('../database/config.php');
+
 $nameNewAccount = $_POST['name'];
 $emailNewAccount = $_POST['email'];
 $passwordNewAccount = password_hash($_POST['password'], PASSWORD_DEFAULT);

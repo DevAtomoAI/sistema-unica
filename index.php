@@ -239,7 +239,7 @@ $numLinhasOrcar = $execConnectionOrcar->num_rows;
     </div>
 
     <div id="cotacoesParaResponder" class='hidden styleCotacoesOpcoes'>
-        <h1 class='actualPageTitle'><img src="assets/dark-clock.svg">Cotações para Responder</h3>
+        <h1 class='actualPageTitle'><img src="assets/answer-dark.svg">Cotações para Responder</h3>
             <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasOrcar . " serviço(s)</p>" ?>
             <br>
             <form action="verifications_index/configs_index.php" method="POST">
