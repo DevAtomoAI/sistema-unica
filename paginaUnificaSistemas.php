@@ -8,8 +8,8 @@
 <body>
     <h1>Escolha qual sistema deseja acessar</h1>
 
-    <a href="sistema_oficina/"> Oficina </a>
+    <a href="sistema_oficina/index.php"> Oficina </a>
     <br>
-    <a href="sistema_orgao_publico/"> Órgão Público </a>
+    <a href="sistema_orgao_publico/index.php"> Órgão Público </a>
 </body>
 </html>
