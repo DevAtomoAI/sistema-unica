@@ -144,19 +144,24 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                     <!-- Conteúdo da tabela será inserido dinamicamente -->
                     <?php
                     // Preencher a tabela com dados do banco
-                    foreach ($cotacoes as $cotacao) {
-                        echo "<tr>";
-                        echo "<td class='resultadosTabela'>" . $cotacao['id'] . 
-                            "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
-                        echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
-                        echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
-                        echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
-                        echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
-                        echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
-                        echo "<form method='POST' action='configs_andamento.php'>";
-                        echo "<td class='resultadosTabela'><button name='button-option-aproved' class='btn-action btn-green' value='" . $cotacao['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $cotacao['id'] . "'><i class='fas fa-times'></i></button></td>";
-                        echo "</form>";
-                        echo "</tr>";
+
+                    while ($user_data = mysqli_fetch_assoc($execConnection)) {
+                        foreach ($cotacoes as $cotacao) {
+                            if ($cotacao['id'] == $user_data['id']) { // Supondo que 'id' seja o campo em comum
+                                echo "<tr>";
+                                echo "<td class='resultadosTabela'>" . $cotacao['id'] . 
+                                    "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
+                                echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
+                                echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
+                                echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
+                                echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
+                                echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
+                                echo "<form method='POST' action='configs_andamento.php'>";
+                                echo "<td class='resultadosTabela'><button name='button-option-aproved' class='btn-action btn-green' value='" . $cotacao['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $cotacao['id'] . "'><i class='fas fa-times'></i></button></td>";
+                                echo "</form>";
+                                echo "</tr>";
+                            }
+                        }
                     }
                     ?>
                 </tbody>

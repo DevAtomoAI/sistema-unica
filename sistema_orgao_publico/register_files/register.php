@@ -1,11 +1,12 @@
 <?php 
+    include_once('../database/config.php');
+
     if(isset($_POST['submit']))
     {
         //print_r('Nome: ' . $_POST['name']);
         //print_r('<br>');
         //print_r('Email:' . $_POST['email']);
 
-        include_once('config.php');
 
         $nome = $_POST['nome'];
         $email =  $_POST['email'];
