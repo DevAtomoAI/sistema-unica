@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../login/login.css">
+    <link rel="stylesheet" href="create_account.css">
     
     <title>Criar conta</title>
 </head>
@@ -39,9 +39,6 @@
                     <label for="name" class="txt2">Nome</label>
                     <input type="text" id="name" name="name" placeholder="Nome" required>
 
-                    <label for="name" class="txt2">Sobrenome</label>
-                    <input type="text" id="secondName" name="secondName" placeholder="Sobrenome" required>
-
                     <label for="email" class="txt2" >Email</label>
                     <input type="email" id="email" name="email" placeholder="Email" required>
 
@@ -51,7 +48,7 @@
                     <button type="submit" name="submitCreatedAccount" id="submitCreatedAccount"> Criar conta </button>
                     <br>
                     <br>
-                    <p class="txt">Já possui uma conta?<a href="../login/login.php"> Sign In </a></p>
+                    <p class="txt">Já possui uma conta?<a href="../index.php"> Sign In </a></p>
                 </form> 
             </div>
         </div>

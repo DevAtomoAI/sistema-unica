@@ -4,7 +4,7 @@
     $dbHost = 'localhost:3306';
     $dbUsername = 'root';
     $dbPassword = '';
-    $dbName = 'sistema_unica';
+    $dbName = 'unica_gestao';
 
     $connectionDB = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
 ?>
