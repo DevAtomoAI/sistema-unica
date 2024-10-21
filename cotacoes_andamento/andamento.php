@@ -28,7 +28,8 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
         'tipoSolicitacao' => $user_data['tipo_solicitacao'],
         'fornecedor' => $user_data['fornecedor'],
         'responsavel' => $user_data['responsavel'],
-        'propostas' => $user_data['quantidade_propostas_oficinas'],
+        'modelo' => $user_data['modelo'],
+        'anoVeiculo' => $user_data['ano_veiculo']
     ];
 }
 
@@ -122,10 +123,11 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                 <thead>
                     <tr>
                         <th>Nº</th>
+                        <th>Veiculo</th>
                         <th>Placa</th>
                         <th>Modelo</th>
                         <th>Centro de Custo</th>
-                        <th>Quantidade propostas</th>
+                        <th>Ano veiculo</th>
                         <th>Data de Abertura</th>
                         <th>Opções</th>
                     </tr>
@@ -139,9 +141,10 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                             echo "<td class='resultadosTabela'>" . $cotacao['id'] .
                                 "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
+                            echo "<td class='resultadosTabela'>" . $cotacao['placa'] . "</td>";
+                            echo "<td class='resultadosTabela'>" . $cotacao['modelo'] . "</td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
+                            echo "<td class='resultadosTabela'>" . $cotacao['anoVeiculo'] . "</td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
                             echo "<td class='resultadosTabela'>
                                   <form method='POST' action='configs_andamento.php'>
