@@ -2,11 +2,7 @@
 session_start();
 include_once("../database/config.php");
 
-if (isset($_SESSION['nome'])) {
-    $nomeUsuario = $_SESSION['nome'];
-} else {
-    $nomeUsuario = "Convidado"; // Se não estiver logado, exibe "Convidado"
-}
+$nomeUsuario = $_SESSION["nameLoggedUser"];
 
 $selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC";
 $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
@@ -71,7 +67,7 @@ $numLinhasTotal = $execConnection->num_rows;
                 </a>
             </li>
             <li>
-                <a href="#faturado">
+                <a href="../cotacoes_faturadas/faturadas.php">
                     <img src="../imgs/paper.svg"> Faturado
                 </a>
             </li>
@@ -99,7 +95,7 @@ $numLinhasTotal = $execConnection->num_rows;
             </div>
 
             <div class="user-name">
-                <p><?php echo $nomeUsuario; ?></p>
+                <p><?= $nomeUsuario ?></p>
             </div>
 
 

@@ -1,13 +1,9 @@
 <?php
 
+include_once("../database/config.php");
 session_start();
-if (isset($_POST['button-option-aproved'])) {
 
-    $idVeiculoEscolhido = $_POST['button-option-aproved'];
-    $_SESSION['idVeiculoEscolhido'] = $idVeiculoEscolhido;
-
-    header('Location: configs_gerenciar.php');
-}
+$usuarioLogado = $_SESSION['nameLoggedUser'];
 
 $valores = [
     'responsavelAtual' => $_SESSION['responsavelAtual'],
@@ -15,14 +11,20 @@ $valores = [
     'veiculo' => $_SESSION['veiculo'],
     'placa' => $_SESSION['placa'],
     'centroCusto' => $_SESSION['centroCusto'],
-    'kmAtual' => $_SESSION['kmAtual'],
-    'modelo' => $_SESSION['modelo'],
+    'kmAtual' => intval($_SESSION['kmAtual']),
+    'modelo' => $_SESSION['modeloContratacao'],
     'tipoSolicitacao' =>  $_SESSION['tipoSolicitacao'],
     'planoManutencao' => $_SESSION['planoManutencao'],
     'modeloContratacao' => $_SESSION['modeloContratacao'],
     'dataAbertura' => $_SESSION['dataAbertura'],
-    'dataFinal' => $$_SESSION['dataFinal'],
+    'dataFinal' => $_SESSION['dataFinal'],
 ];
+
+$stmt = $conexao->prepare("SELECT * FROM usuarios_orgao_publico WHERE nome = ?");
+$stmt->bind_param("s", $usuarioLogado); // "s" para string
+$stmt->execute();
+$result = $stmt->get_result();
+$valuesTable = $result->fetch_assoc();
 
 
 ?>
@@ -86,16 +88,16 @@ $valores = [
         <h3>Proprietário</h3>
 
         <p>CPF / CNPJ</p>
-        <input type="text" name="identificacaoCPF_CNPJ" id="identificacaoCPF_CNPJ" value="" placeholder="CPF / CNPJ">
+        <input type="text" name="identificacaoCPF_CNPJ" id="identificacaoCPF_CNPJ" value="<?= $valuesTable['identificacao_cpf_cnpj'] ?>" placeholder="CPF / CNPJ">
 
         <p>Arrendatário</p>
-        <input type="text" name="arrendatario" id="arrendatario" value="" placeholder="Arrendatário">
+        <input type="text" name="arrendatario" id="arrendatario" value="<?= $valuesTable['arrendatario'] ?>" placeholder="Arrendatário">
 
         <p>Inscrição Estadual</p>
-        <input type="text" name="inscricaoEstadual" id="inscricaoEstadual" value="" placeholder="Inscrição Estadual">
+        <input type="text" name="inscricaoEstadual" id="inscricaoEstadual" value="<?= $valuesTable['inscricao_estadual'] ?>" placeholder="Inscrição Estadual">
 
         <p>Subunidade</p>
-        <input type="text" name="subunidade" id="subunidade" value="" placeholder="Subunidade">
+        <input type="text" name="subunidade" id="subunidade" value="<?= $valuesTable['subunidade'] ?>" placeholder="Subunidade">
 
         <br><br>
 

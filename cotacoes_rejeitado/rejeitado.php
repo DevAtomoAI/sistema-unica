@@ -71,7 +71,7 @@ $numLinhasTotal = $execConnection->num_rows;
                 </a>
             </li>
             <li>
-                <a href="#faturado">
+                <a href="../cotacoes_faturadas/faturadas.php">
                     <img src="../imgs/paper.svg"> Faturado
                 </a>
             </li>

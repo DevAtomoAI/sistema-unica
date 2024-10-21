@@ -29,7 +29,7 @@ if(isset($_SESSION['nome'])) {
         <li><a href="incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
         <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
         <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
-        <li><a href="#faturado"><img src="../imgs/paper.svg"> Faturado</a></li>
+        <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
         <li><a href="../cotacoes_rejeitado/rejeitado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
     </ul>
 </div>

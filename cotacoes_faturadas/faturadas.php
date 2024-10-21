@@ -7,7 +7,7 @@ $nomeUsuario = $_SESSION["nameLoggedUser"];
 if (!empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
 } else {
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC ";
+    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC ";
 }
 
 $execConnection = $conexao->query($selectTable);
@@ -42,8 +42,8 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Em andamento</title>
-    <link rel="stylesheet" href="andamento.css">
+    <title>Faturados</title>
+    <link rel="stylesheet" href="faturado.css">
     <link rel="shortcut icon" href="icone.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -59,9 +59,9 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
         <ul class="nav-options">
             <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li>
             <li><a href="../incluir_cotacao/incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
-            <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
+            <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
-            <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
+            <li><a href=""><img src="../imgs/paper.svg"> Faturado</a></li>
             <li><a href="../cotacoes_rejeitado/rejeitado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
         </ul>
     </div>
@@ -87,7 +87,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 
     <!-- CONTEUDO PRINCIPAL -->
     <div class="main-content" id="main-content">
-        <h1 class="text-cotand">Cotações em Andamento</h1>
+        <h1 class="text-cotand">Cotações faturadas</h1>
 
         <!-- Barra de busca -->
         <div class="search-bar">
@@ -96,7 +96,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
@@ -145,11 +145,8 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                             echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
                             echo "<td class='resultadosTabela'>
                                   <form method='POST' action='configs_andamento.php'>
-                                    <button name='button-option-aproved' class='btn-action btn-green' value='" . $cotacao['id'] . "'>
+                                    <input type name='gerenciarFaturas' class='btn-action btn-green' value='" . $cotacao['id'] . "'>
                                         Gerenciar<i class='fas fa-check'></i>
-                                    </button>
-                                    <button name='button-option-rejected' class='btn-action btn-red' value='" . $cotacao['id'] . "'>
-                                        <i class='fas fa-times'></i>
                                     </button>
                             </td>";
                             echo "</tr>";
