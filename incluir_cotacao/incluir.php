@@ -133,7 +133,7 @@ if(isset($_SESSION['nome'])) {
 
                 <div class="form-group">
                     <label for="modelo">Modelo</label>
-                    <input name="modelo" type="text" id="modelo" placeholder="Informe o modelo">
+                    <input name="modeloCarro" type="text" id="modelo" placeholder="Informe o modelo">
 
                     <!-- <label for="propostas">Propostas</label>
                     <textarea name="propostas" id="propostas" placeholder="Descreva as propostas"></textarea> -->
