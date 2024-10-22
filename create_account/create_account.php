@@ -36,7 +36,11 @@
                 <h1>Criar conta</h1>
                 <p class="txt">Entre com seu nome, sobrenome e senha para criar uma conta nova</p>
                 <form action="insert_account.php" method="POST">
-                    <label for="name" class="txt2">Nome</label>
+
+                    <label for="nameOficina" class="txt2">Nome oficina</label>
+                    <input type="text" id="nameOficina" name="nameOficina" placeholder="Nome oficina" required>
+
+                    <label for="name" class="txt2">Nome representante</label>
                     <input type="text" id="name" name="name" placeholder="Nome" required>
 
                     <label for="email" class="txt2" >Email</label>

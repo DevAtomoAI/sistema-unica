@@ -4,18 +4,22 @@ session_start();
 
 //
 function botaoOrcarRejeitar($connectionDB){
-    if (isset($_POST['botaoOrcar'])) {
-        $idButton = $_POST['botaoOrcar'];
-        $status = 'Orçar';
-    } else if (isset($_POST['botaoRejeitar'])) {
-        $idButton = $_POST['botaoRejeitar'];
-        $status = 'Rejeitar';
-    } else {
+    if (isset($_POST['botaoRejeitado'])) {
+        $idButton = $_POST['botaoRejeitado'];
+        $status = 'Rejeitado';
+    }
+     elseif (isset($_POST['botaoGerenciar'])) {
+        $idVeiculoGerenciar = $_POST['botaoGerenciar'];
+        $_SESSION['idVeiculoGerenciar'] = $idVeiculoGerenciar;
+        header('Location: ../gerenciar_veiculo/configs_gerenciar.php');
+        exit();
+    } 
+    else {
         return;
     }
 
     // Usando prepared statements para evitar sql injection
-    $stmt = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_rejeitada_oficina=? WHERE id_infos_veiculos_inclusos=?");
+    $stmt = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=? ASC");
     $stmt->bind_param("si", $status, $idButton); // 'si' indica string e inteiro
 
     try {
@@ -32,7 +36,7 @@ function applyCotacaoFilters($connectionDB) {
     $searchInstitutionInput = isset($_POST["searchInstitutionInput"]) ? $_POST["searchInstitutionInput"] : null;
     $orderByInput = isset($_POST["orderByInput"]) ? $_POST["orderByInput"] : null;
 
-    $whereClause = "opcao_aprovada_rejeitada_oficina=''";
+    $whereClause = "opcao_aprovada_reprovada_oficina='' ";
     if (!empty($searchKeyWordInput)) {
         $whereClause .= " AND (id_infos_veiculos_inclusos LIKE '%$searchKeyWordInput%' OR placa LIKE '%$searchKeyWordInput%' OR veiculo LIKE '%$searchKeyWordInput%' 
         OR modelo_veiculo LIKE '%$searchKeyWordInput%' OR tipo_solicitacao LIKE '%$searchKeyWordInput%')";
@@ -62,7 +66,11 @@ function applyCotacaoFilters($connectionDB) {
 }
 
 botaoOrcarRejeitar($connectionDB);
-applyCotacaoFilters($connectionDB);
+
+if(isset($_POST['searchValuesOnGoing'])){
+    applyCotacaoFilters($connectionDB);
+}
+
 
 
 

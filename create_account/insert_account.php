@@ -5,8 +5,9 @@ include_once('../database/config.php');
 $nameNewAccount = $_POST['name'];
 $emailNewAccount = $_POST['email'];
 $passwordNewAccount = password_hash($_POST['password'], PASSWORD_DEFAULT);
+$nomeOficina = $_POST['nameOficina'];
 
-function registerUser($connectionDB, $nameNewAccount, $emailNewAccount, $passwordNewAccount) {
+function registerUser($connectionDB, $nameNewAccount, $emailNewAccount, $passwordNewAccount, $nomeOficina) {
     // Validate user input
     if (empty($nameNewAccount) || empty($emailNewAccount) || empty($passwordNewAccount)) {
         echo "<script>alert('Por favor, preencha todos os campos.'); window.location.href = '../index.php';</script>";
@@ -32,8 +33,8 @@ function registerUser($connectionDB, $nameNewAccount, $emailNewAccount, $passwor
         return;
     } else {
         // Insert user data into the database using prepared statements
-        $stmtInsert = $connectionDB->prepare("INSERT INTO usuarios_oficina (nome, email, senha) VALUES ( ?, ?, ?)");
-        $stmtInsert->bind_param("sss", $nameNewAccount, $emailNewAccount, $passwordNewAccount);
+        $stmtInsert = $connectionDB->prepare("INSERT INTO usuarios_oficina (nome_oficina, nome, email, senha) VALUES ( ?, ?, ?, ?)");
+        $stmtInsert->bind_param("ssss", $nomeOficina, $nameNewAccount, $emailNewAccount, $passwordNewAccount);
 
         if ($stmtInsert->execute()) {
             // Successful registration
@@ -50,7 +51,7 @@ function registerUser($connectionDB, $nameNewAccount, $emailNewAccount, $passwor
 
 // Check if form was submitted
 if (isset($_POST['submitCreatedAccount'])) {
-    registerUser($connectionDB, $nameNewAccount, $emailNewAccount, $passwordNewAccount);
+    registerUser($connectionDB, $nameNewAccount, $emailNewAccount, $passwordNewAccount, $nomeOficina);
 }
 
 ?>

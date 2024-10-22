@@ -1,8 +1,7 @@
 <?php
 session_start();
-include_once('../database/config.php');
+include_once('../database/config.php') ;
 
-// Função para verificar se o usuário está logado
 function checkUserLoggedIn() {
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
@@ -12,26 +11,22 @@ function checkUserLoggedIn() {
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
 
-// Função para executar uma query e retornar os resultados
 function executeQuery($connectionDB, $query) {
     $stmt = $connectionDB->prepare($query);
     $stmt->execute();
     return $stmt->get_result();
 }
 
-// Define a query principal de acordo com os filtros
+
 if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
 } else {
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos";
+    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
 }
-// Executa a query principal
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos";
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
-
-$execConnection2 = executeQuery($connectionDB, $selectTable);
+$execCentroCusto = executeQuery($connectionDB, $selectTable);
 ?>
 
 
@@ -148,8 +143,8 @@ $execConnection2 = executeQuery($connectionDB, $selectTable);
                             <select name="searchInstitutionInput" id="searchInstitutionInput">
                                 <option value="">Todos</option>
                                 <?php
-                                while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnection)) {
-                                    echo "<option value='" . $orgaoSolicitantes['id_infos_veiculos_inclusos'] . "'>" . $orgaoSolicitantes['centro_custo'] . "</option>";
+                                while ($centroCusto = mysqli_fetch_assoc($execCentroCusto)) {
+                                    echo "<option value='" . $centroCusto['id_infos_veiculos_inclusos'] . "'>" . $centroCusto['centro_custo'] . "</option>";
                                 }
                                 ?>
 
@@ -177,7 +172,7 @@ $execConnection2 = executeQuery($connectionDB, $selectTable);
             <div class="resultSearch">
                 <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
                 <br>
-                <form action="verifications_index/configs_index.php" method="POST">
+                <form action="configs_andamento.php" method="POST">
                     <table>
                         <thead>
                             <tr>
@@ -193,7 +188,7 @@ $execConnection2 = executeQuery($connectionDB, $selectTable);
                         </thead>
                         <tbody>
                             <?php
-                            while ($user_data = mysqli_fetch_assoc($execConnection2)) {
+                            while ($user_data = mysqli_fetch_assoc($execConnection)) {
                                 echo "<tr>";
                                 echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
@@ -202,7 +197,10 @@ $execConnection2 = executeQuery($connectionDB, $selectTable);
                                 echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
-                                echo "<td class='resultadosTabela' ><button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoOrcar' name='botaoOrcar' class='btn orcar'>Orçar</button></td>";
+                                echo "<td class='resultadosTabela' >
+                                    <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoGerenciar' name='botaoGerenciar' class='botaoGerenciar'>Gerenciar</button>
+                                    <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoRejeitado' name='botaoRejeitado' class='botaoRejeitado'>Rejeitar</button>
+                                </td>";
                                 echo "</tr>";
                             }
                             ?>

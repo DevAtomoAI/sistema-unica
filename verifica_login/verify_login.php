@@ -19,6 +19,7 @@ function verifyLogin($emailUser, $passwordUser, $rememberUser, $connectionDB) {
         // Definir variáveis de sessão
         $_SESSION['nameLoggedUser'] = $valuesTable['nome'];
         $_SESSION['emailLoggedUser'] = $emailUser;
+        $_SESSION['nomeOficina'] = $valuesTable['nome_oficina'];
 
         // Definir cookie se "Lembrar-me" estiver marcado
         if ($rememberUser) {
