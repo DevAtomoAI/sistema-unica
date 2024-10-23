@@ -84,7 +84,7 @@ $valorTotal;
                 <th>Valor Total</th>
                 <th>Adicionar</th>
                 <th>Excluir</th>
-            </tr>
+            </tr>  
         </thead>
         <tbody>
             <tr>
@@ -105,7 +105,7 @@ $valorTotal;
     <br>
 
     <button name="confirmaCotacao" onclick="enviaValoresBD()">Confirmar</button>
-    <button name="voltarGerenciar" href="gerenciar.php">Voltar</button>
+    <a href="gerenciar.php"><button name="voltarGerenciar">Voltar</button></a>
 
 
 

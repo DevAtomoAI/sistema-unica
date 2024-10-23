@@ -40,11 +40,7 @@ function adicionarLinhaPeças() {
     novaLinha.insertCell(6).innerHTML = 'VALOR SOMA VINDO BANCO';
     novaLinha.insertCell(7).innerHTML = '<button onclick="adicionarLinhaPeças()">+</button>';
     novaLinha.insertCell(8).innerHTML = '<button onclick="removerLinhaPecas(this)">Excluir</button>';
-
-
-
 }
-
 
 function adicionarLinhaServicos() {
     contadorServicos++;
@@ -61,8 +57,6 @@ function adicionarLinhaServicos() {
     novaLinha.insertCell(4).innerHTML = 'VALOR SOMA VINDO BANCO';
     novaLinha.insertCell(5).innerHTML = '<button onclick="adicionarLinhaServicos()">+</button>';
     novaLinha.insertCell(6).innerHTML = '<button onclick="removerLinhaServico(this)">Excluir</button>';
-
-
 }
 
 function removerLinhaServico(botao) {
@@ -77,8 +71,6 @@ function removerLinhaServico(botao) {
     }
 
     contadorServicos = contadorServicos - 1;
-
-
 }
 
 function removerLinhaPecas(botao) {
@@ -93,126 +85,74 @@ function removerLinhaPecas(botao) {
     }
 
     contadorPecas = contadorPecas - 1;
-
-
-
 }
 
-function enviaValoresBD(){
-    while(contadorLacoPecas <= contadorPecas){
+function enviaValoresBD() {
+    var pecas = [];
+    var servicos = [];
+    var contadorLaco = 1;
+    var maxContador = Math.max(contadorPecas, contadorServicos);
 
-        codigoPecas = document.getElementById('codigo' + contadorLacoPecas).value;
-        descricaoPecas = document.getElementById('descricao' + contadorLacoPecas).value;
-        valorUNPecas = document.getElementById('valor_un' + contadorLacoPecas).value;
-        quantidadePecas = document.getElementById('quantidade' + contadorLacoPecas).value;
-        marcaPecas = document.getElementById('marca' + contadorLacoPecas).value;
-        valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
+    while (contadorLaco <= maxContador) {
+        // Processamento de Peças
+        if (contadorLaco <= contadorPecas) {
+            var codigoPecas = document.getElementById('codigo' + contadorLaco)?.value || '';
+            var descricaoPecas = document.getElementById('descricao' + contadorLaco)?.value || '';
+            var valorUNPecas = parseFloat(document.getElementById('valor_un' + contadorLaco)?.value) || 0;
+            var quantidadePecas = parseInt(document.getElementById('quantidade' + contadorLaco)?.value) || 0;
+            var marcaPecas = document.getElementById('marca' + contadorLaco)?.value || '';
+            var valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
 
-        contadorLacoPecas++;
+            // Adiciona os dados das peças ao array
+            pecas.push({
+                codigoPecas: codigoPecas,
+                descricaoPecas: descricaoPecas,
+                valorUNPecas: valorUNPecas,
+                quantidadePecas: quantidadePecas,
+                marcaPecas: marcaPecas,
+                valorTotalPecas: valorTotalPecas
+            });
+        }
+
+        // Processamento de Serviços
+        if (contadorLaco <= contadorServicos) {
+            var descricaoServico = document.getElementById('descricao_servico' + contadorLaco)?.value || '';
+            var valorUNServicos = parseFloat(document.getElementById('valor_unitario' + contadorLaco)?.value) || 0;
+            var quantidadeServicos = parseInt(document.getElementById('quantidade_servico' + contadorLaco)?.value) || 0;
+            var valorTotalServicos = (valorUNServicos * quantidadeServicos) * (36.6 / 100);
+
+            // Adiciona os dados dos serviços ao array
+            servicos.push({
+                descricaoServico: descricaoServico,
+                valorUNServicos: valorUNServicos,
+                quantidadeServicos: quantidadeServicos,
+                valorTotalServicos: valorTotalServicos
+            });
+        }
+
+        contadorLaco++; // Incrementa o contador
     }
 
-    while(contadorLacoServicos <= contadorServicos)
+    // Verificar o conteúdo dos arrays antes de enviar
+    console.log('Peças:', pecas);
+    console.log('Serviços:', servicos);
 
+    // Após o laço, faz uma única requisição AJAX enviando todos os dados
     $.ajax({
         url: 'configs_popup.php',
         type: 'POST',
         data: {
-        'codigoPecas': codigoPecas, 'descricaoPecas': descricaoPecas, 'valorUNPecas': valorUNPecas, 'quantidadePecas': quantidadePecas, 'marcaPecas': marcaPecas, 'valorTotalPecas': valorTotalPecas,
-        // 'descricaoServico': descricaoServico, 'valorUNServicos': valorUNServicos, 'quantidadeServicos': quantidadeServicos, 'valorTotalServicos': valorTotalServicos
+            pecas: pecas,
+            servicos: servicos
         },
         beforeSend: function () {
-            console.log('Carregando...');
+            console.log('Enviando todos os dados...');
         },
         success: function (retorno) {
-            // console.log(retorno);
-            // window.location.href = 'configs_popup.php'
+            console.log(retorno);
         },
         error: function (a, b, c) {
-            console.log('Erro: '+a[status]+' '+c);
+            console.log('Erro: ' + a.status + ' ' + c);
         }
     });
 }
-
-// function enviaValoresBD() {
-//     if(contadorPecas < contadorServicos){
-//         contador = contadorServicos
-//     }
-//     else{
-//         contador = contadorPecas
-//     }
-//     // console.log(num, contador)
-//     while (num <= contador) {
-//         if(contador == contadorServicos && contadorServicos > contadorPecas){
-            
-//             var contador2 = num-1
-//             console.log('primeiro caso ',contador2);
-//             console.log(num)
-
-//             codigoPecas = document.getElementById('codigo' + contador2).value;
-//             descricaoPecas = document.getElementById('descricao' + contador2).value;
-//             valorUNPecas = document.getElementById('valor_un' + contador2).value;
-//             quantidadePecas = document.getElementById('quantidade' + contador2).value;
-//             marcaPecas = document.getElementById('marca' + contador2).value;
-//             valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
-
-//             descricaoServico = document.getElementById('descricao_servico' + num).value;
-//             valorUNServicos = document.getElementById('valor_unitario' + num).value;
-//             quantidadeServicos = document.getElementById('quantidade_servico' + num).value;
-//             valorTotalServicos = (valorUNServicos * quantidadeServicos) * (36.6 / 100);
-//         }
-//         if(contador == contadorPecas && contadorPecas > contadorServicos){
-//             var contador2 = num-1
-
-//             console.log('segundo caso ',contador2);
-//             console.log(num)
-//             codigoPecas = document.getElementById('codigo' + num).value;
-//             descricaoPecas = document.getElementById('descricao' + num).value;
-//             valorUNPecas = document.getElementById('valor_un' + num).value;
-//             quantidadePecas = document.getElementById('quantidade' + num).value;
-//             marcaPecas = document.getElementById('marca' + num).value;
-//             valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
-
-//             descricaoServico = document.getElementById('descricao_servico' + contador2).value;
-//             valorUNServicos = document.getElementById('valor_unitario' + contador2).value;
-//             quantidadeServicos = document.getElementById('quantidade_servico' + contador2).value;
-//             valorTotalServicos = (valorUNServicos * quantidadeServicos) * (36.6 / 100);
-//         }
-//         if(contadorPecas == contadorServicos){
-//             console.log('terceiro caso');
-//             console.log(num)
-//             codigoPecas = document.getElementById('codigo' + num).value;
-//             descricaoPecas = document.getElementById('descricao' + num).value;
-//             valorUNPecas = document.getElementById('valor_un' + num).value;
-//             quantidadePecas = document.getElementById('quantidade' + num).value;
-//             marcaPecas = document.getElementById('marca' + num).value;
-//             valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
-            
-//             descricaoServico = document.getElementById('descricao_servico' + num).value;
-//             valorUNServicos = document.getElementById('valor_unitario' + num).value;
-//             quantidadeServicos = document.getElementById('quantidade_servico' + num).value;
-//             valorTotalServicos = (valorUNServicos * quantidadeServicos) * (36.6 / 100);
-//         }
-
-//         $.ajax({
-//             url: 'configs_popup.php',
-//             type: 'POST',
-//             data: {
-//                 'codigoPecas': codigoPecas, 'descricaoPecas': descricaoPecas, 'valorUNPecas': valorUNPecas, 'quantidadePecas': quantidadePecas, 'marcaPecas': marcaPecas, 'valorTotalPecas': valorTotalPecas,
-//                 'descricaoServico': descricaoServico, 'valorUNServicos': valorUNServicos, 'quantidadeServicos': quantidadeServicos, 'valorTotalServicos': valorTotalServicos
-//             },
-//             beforeSend: function () {
-//                 console.log('Carregando...');
-//             },
-//             success: function (retorno) {
-//                 // console.log(retorno);
-//                 // window.location.href = 'configs_popup.php'
-//             },
-//             error: function (a, b, c) {
-//                 // console.log('Erro: '+a[status]+' '+c);
-//             }
-//         });
-//         num += 1;
-
-//     }
-// }
-

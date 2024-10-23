@@ -1,4 +1,4 @@
-const menuBtn = document.getElementById('menuBtn');
+// const menuBtn = document.getElementById('menuBtn');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 
@@ -26,30 +26,30 @@ overlay.addEventListener('click', () => {
 });
 
 //Muda de opção e esconde as outras
-document.querySelectorAll('.nav-options a').forEach(link => {
-    link.addEventListener('click', function(event) {
-        event.preventDefault(); // Evita o comportamento padrão do link
+// document.querySelectorAll('.nav-options a').forEach(link => {
+//     link.addEventListener('click', function(event) {
+//         event.preventDefault(); // Evita o comportamento padrão do link
 
-        // Obtém o ID da div a ser mostrada
-        const targetId = this.getAttribute('data-target');
+//         // Obtém o ID da div a ser mostrada
+//         const targetId = this.getAttribute('data-target');
 
-        // Esconde todas as divs
-        document.querySelectorAll('.styleCotacoesOpcoes').forEach(div => {
-            div.classList.add('hidden');
-        });
+//         // Esconde todas as divs
+//         document.querySelectorAll('.styleCotacoesOpcoes').forEach(div => {
+//             div.classList.add('hidden');
+//         });
 
-        // Mostra a div correspondente
-        const targetDiv = document.getElementById(targetId);
-        if (targetDiv) {
-            targetDiv.classList.remove('hidden');
-        }
-    });
-});
+//         // Mostra a div correspondente
+//         const targetDiv = document.getElementById(targetId);
+//         if (targetDiv) {
+//             targetDiv.classList.remove('hidden');
+//         }
+//     });
+// });
 
-document.getElementById('userId').addEventListener('click', function() {
-    console.log('opa');
-    document.getElementById('opcoesUser').classList.remove('hidden');
-});
+// document.getElementById('userId').addEventListener('click', function() {
+//     console.log('opa');
+//     document.getElementById('opcoesUser').classList.remove('hidden');
+// });
 
 // document.getElementById('opcaoRespondido').addEventListener('click', function() {
 //     document.getElementById('cotacoesEmAndamento').classList.add('hidden');

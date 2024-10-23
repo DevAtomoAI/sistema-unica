@@ -30,6 +30,20 @@ function acessaDadosVeiculosGerenciar($connectionDB,  $idVeiculoGerenciar)
     }
 }
 
-acessaDadosVeiculosGerenciar($connectionDB, $idVeiculoGerenciar);
-header('Location: gerenciar.php');
-exit();
+function atualizaOpcaoOficinaBD($connectionDB, $idVeiculoGerenciar){
+    $stmt = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina='Respondida' WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciar' ");
+    $stmt->execute();
+}
+
+
+if(isset($_POST['confirmaGerenciar'])){
+    atualizaOpcaoOficinaBD($connectionDB, $idVeiculoGerenciar);
+    header('Location: ../cotacoes_andamento/andamento.php');
+    exit;
+}
+else{
+    acessaDadosVeiculosGerenciar($connectionDB, $idVeiculoGerenciar);
+    header('Location: gerenciar.php');
+    exit();
+}
+

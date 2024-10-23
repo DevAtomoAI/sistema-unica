@@ -1,9 +1,9 @@
-
 <?php
 include_once("../database/config.php");
 session_start();
 
 $idVeiculoGerenciar = $_SESSION['idVeiculoGerenciar'];
+
 $veiculo = $_SESSION['veiculo'];
 $modeloVeiculo = $_SESSION['modeloVeiculo'];
 $kmAtual = $_SESSION['kmAtual'];
@@ -13,16 +13,36 @@ $centroCusto = $_SESSION['centroCusto'];
 $planoManutencao = $_SESSION['planoManutencao'];
 $fornecedor = $_SESSION['fornecedor'];
 $modeloContratacao = $_SESSION['modeloContratacao'];
+
+$valorTotalServicos;
+$valorTotalPecas;
+$valorTotalFinal;
+$dataRegistro;
+
+$selectTable = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico='$idVeiculoGerenciar'";
+function executaSelectTable($connectionDB, $query)
+{
+    $stmt = $connectionDB->prepare($query);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+$executaConexao = executaSelectTable($connectionDB, $selectTable);
+
+
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="popup.js"></script>
 </head>
+
 <body>
     <table>
         <thead>
@@ -49,12 +69,8 @@ $modeloContratacao = $_SESSION['modeloContratacao'];
             <td><?= $fornecedor ?></td>
             <td><?= $modeloContratacao ?></td>
         </tbody>
-        
+
     </table>
-    <br>
-    <br>
-    <h3>Descrição</h3>
-    <input type="text" name="descricaoProblema" id="descricaoProblema">
     <br>
     <br>
     <br>
@@ -99,18 +115,32 @@ $modeloContratacao = $_SESSION['modeloContratacao'];
         <thead>
             <tr>N° orçamento </tr>
             <!-- N° orçamento = id nova tabela criada no mysql -->
-            <tr>Fornecedor</tr>
             <tr>Valor mão de obra</tr>
             <tr>Valor total de peças</tr>
             <tr>Valor total</tr>
-            <tr>Status orçamento</tr>
             <tr>Data registro</tr>
             <tr><button onclick="abrirPopUp()">Incluir orçamento</button></tr>
         </thead>
+        <tbody>
+            <?php
+                while ($user_data = mysqli_fetch_assoc($executaConexao)) {
+                    // $_SESSION['idVeiculoGerenciado'] = $user_data["modelo_contratacao"];
+                    echo "<tr><td>". $idVeiculoGerenciar. "</td>";
+                    echo "<td>". $user_data["valor_total_servicos"] . "</td>";
+                    echo "<td>". $user_data["valor_total_pecas"] . "</td>";
+                    echo "<td>". $user_data["valor_total_pecas"] . "</td>";
+                    echo "<td>".  $user_data["valor_total_servico_pecas"] . "</td>";
+                    echo "<td>".  $user_data["data_registro"] . "</td></tr>";
+                }
+            ?>
+        </tbody>
     </table>
     <br>
     <br>
-    <button>Confirmar</button>
-    <button>Voltar</button>
+    <form method="POST" action="configs_gerenciar.php">
+        <button name="confirmaGerenciar">Confirmar</button>
+    </form>
+    <a href="../cotacoes_andamento/andamento.php"><button>Voltar</button></a>
 </body>
+
 </html>
