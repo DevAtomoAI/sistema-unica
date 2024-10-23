@@ -52,34 +52,28 @@ if(isset($_SESSION['nome'])) {
     </header>
  
      <!-- Conteudo Principal -->
-    <form action="adiciona_cotacao_bd.php" method="POST">
+     <form action="adiciona_cotacao_bd.php" method="POST">
         <div class="main-content" id="main-content">
             <h1 class="text-incco">Incluir Cotações</h1>
+            <br>
             <div class="form-container">
                 <!-- Formulário com os campos -->
                 <div class="form-group">
                     <label for="veiculo">Veículo</label>
                     <input name='veiculo' type="text" id="veiculo" placeholder="Informe o veiculo">
 
-                    <label for="modelo">Modelo</label>
-                    <input name='modelo' type="text" id="modelo" placeholder="Informe o modelo">
-                    
-                    <label for="anoVeiculo">Ano veiculo</label>
-                    <input name='anoVeiculo' type="text" id="anoVeiculo" placeholder="Informe o ano">
-
-                    <label for="km-atual">Km Atual</label>
-                    <input name="km-atual" type="text" id="km-atual" placeholder="Informe o Km Atual">
+                    <label for="centro-custo">Centro de Custo</label>
+                    <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo">
+                  
                 </div>
 
                 <div class="form-group">
-                    <label for="centro-custo">Centro de Custo</label>
-                    <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo">
+                <label for="km-atual">Km Atual</label>
+                <input name="km-atual" type="text" id="km-atual" placeholder="Informe o Km Atual">
 
                     <label for="tipo-solicitacao">Tipo de Solicitação</label>
                     <select name="tipo-solicitacao" id="tipo-solicitacao">
                         <option value="Selecione o tipo de Solicitação"> Selecione o tipo de Solicitação</option>
-                        <option value="Aquisição de Peças"> Aquisição de Peças</option>
-                        <option value="Aquisição de Pneus"> Aquisição de Pneus</option>
                         <option value="Aquisição de Óleos Lubrificantes e Filtros"> Aquisição de Óleos Lubrificantes e Filtros </option>
                         <option value="Aquisição de Peças"> Aquisição de Peças</option>
                         <option value="Aquisição de Peças + Serviços"> Aquisição de Peças + Serviços </option>
@@ -109,15 +103,14 @@ if(isset($_SESSION['nome'])) {
                         <option>Garantia</option>
                         <option>Corretiva</option>
                     </select>
-
-                    <label for="modelo-contratacao">Modelo de Contratação</label>
-                    <input name="modelo-contratacao" type="text" id="modelo-contratacao" placeholder="Digite o modelo de Contratação">
+                    <br>
+                    <label for="fornecedor">Fornecedor</label>
+                    <input name="fornecedor" type="text" id="fornecedor" placeholder="Nome do fornecedor">
                 </div>
 
                 <div class="form-group">
-                    <label for="fornecedor">Fornecedor</label>
-                    <input name="fornecedor" type="text" id="fornecedor" placeholder="Nome do fornecedor">
-
+                    <label for="modelo-contratacao">Modelo de Contratação</label>
+                    <input name="modelo-contratacao" type="text" id="modelo-contratacao" placeholder="Digite o modelo de Contratação">
 
                     <label for="responsavel">Responsável</label>
                     <input name="responsavel" type="text" id="responsavel" placeholder="Nome do Responsável">
@@ -127,23 +120,23 @@ if(isset($_SESSION['nome'])) {
                     <label for="data-abertura">Data de Abertura</label>
                     <input name="data-abertura" type="date" id="data-abertura">
 
-                    <label for="data-fim">Data Final de Recebimento</label>
-                    <input name="data-fim" type="date" id="data-fim">
-                </div>
+                    <label for="propostas">Justificativa</label>
+                    <textarea name="propostas" id="propostas" placeholder="Descreva a justificativa"></textarea>
+                    <br>
 
+                    <label for="anoVeiculo">Ano do veiculo</label>
+                    <input name="anoVeiculo" type="number" id="anoVeiculo" placeholder="Informe o ano do veiculo">
+                    </div>
+                    
                 <div class="form-group">
-                    <label for="modelo">Modelo</label>
-                    <input name="modeloCarro" type="text" id="modelo" placeholder="Informe o modelo">
+                <label for="data-fim">Data Final de Recebimento</label>
+                <input name="data-fim" type="date" id="data-fim">
 
-                    <!-- <label for="propostas">Propostas</label>
-                    <textarea name="propostas" id="propostas" placeholder="Descreva as propostas"></textarea> -->
+                <label for="Placa">Placa</label>
+                <input name="placa" type="text" id="placa" placeholder="Informe a placa">
                 </div>
 
-                <div class="form-group">
-                    <label for="Placa">Placa</label>
-                    <input name="placa" type="text" id="placa" placeholder="Informe a placa">
-                </div>
-
+           
                 <button name="incluir-btn" id="incluir-btn">Incluir</button>
             </div>
         </div>

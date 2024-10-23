@@ -18,15 +18,16 @@ function adicionarValoresBD($conexao){
     $dataFinal = $_POST['data-fim'];
     $modeloContratacao = $_POST['modelo-contratacao'];
     $placa = $_POST['placa'];
-    $modeloCarro = $_POST['modeloCarro'];
     $anoVeiculo = $_POST['anoVeiculo'];
+    $propostas = $_POST['propostas'];
+
 
     echo $dataAbertura;
 
     $insertValuesTable  = mysqli_query($conexao, "INSERT INTO infos_veiculos_inclusos 
-    (veiculo, modelo, km_atual, ano_veiculo, plano_manutencao, modelo_contratacao, data_abertura, data_final, centro_custo, tipo_solicitacao, fornecedor, responsavel, quantidade_propostas_oficinas, placa)  
+    (veiculo, km_atual, ano_veiculo, plano_manutencao, modelo_contratacao, data_abertura, data_final, centro_custo, tipo_solicitacao, fornecedor, responsavel, placa, propostas)  
     VALUES 
-    ('$veiculo', '$modeloCarro', '$kmAtual', '$anoVeiculo', '$planoManutencao', '$modeloContratacao', '$dataAbertura', '$dataFinal', '$centroCusto', '$tipoSolicitacao', '$fornecedor', '$responsavel', '', '$placa')");
+    ('$veiculo', '$kmAtual', '$anoVeiculo', '$planoManutencao', '$modeloContratacao', '$dataAbertura', '$dataFinal', '$centroCusto', '$tipoSolicitacao', '$fornecedor', '$responsavel', '$placa', '$propostas')");
 
     header('Location: incluir.php');
 

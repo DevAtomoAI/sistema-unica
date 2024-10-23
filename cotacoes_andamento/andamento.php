@@ -28,7 +28,8 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
         'tipoSolicitacao' => $user_data['tipo_solicitacao'],
         'fornecedor' => $user_data['fornecedor'],
         'responsavel' => $user_data['responsavel'],
-        'modelo' => $user_data['modelo'],
+        'placa' => $user_data['placa'],
+        'propostas' => $user_data['propostas'],
         'anoVeiculo' => $user_data['ano_veiculo']
     ];
 }
@@ -122,12 +123,11 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <table>
                 <thead>
                     <tr>
-                        <th>Nº</th>
+                    <th>Nº</th>
                         <th>Veiculo</th>
-                        <th>Placa</th>
                         <th>Modelo</th>
                         <th>Centro de Custo</th>
-                        <th>Ano veiculo</th>
+                        <th>Justificativa</th>
                         <th>Data de Abertura</th>
                         <th>Opções</th>
                     </tr>
@@ -138,13 +138,12 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         foreach ($cotacoes as $cotacao) {
 
                             echo "<tr>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['id'] .
+                            echo "<td class='resultadosTabela'>" . $cotacao['id'] . 
                                 "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['placa'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['modelo'] . "</td>";
+                            echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['anoVeiculo'] . "</td>";
+                            echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
                             echo "<td class='resultadosTabela'>
                                   <form method='POST' action='configs_andamento.php'>
@@ -172,6 +171,8 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         <p><strong>Veículo:</strong> <span id="veiculo"></span></p>
                         <p><strong>Km Atual:</strong> <span id="kmAtual"></span></p>
                         <p><strong>Plano de Manutenção:</strong> <span id="planoManutencao"></span></p>
+                        <p><strong>Placa:</strong> <span id="placa"></span></p>
+
                     </div>
                     <div class="popup-column">
                         <p><strong>Modelo de Contratação:</strong> <span id="modeloContratacao"></span></p>

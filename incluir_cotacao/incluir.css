@@ -87,7 +87,7 @@ h2 {
 
 
 label {
-    color: #7a7a7a;
+    color: black;
     font-size: 14px;
     margin-bottom: 5px;
 }
@@ -108,21 +108,23 @@ input {
 }
 
 button {
-    width: 100%;
+    width: 25%;
     padding: 10px;
-    background-color: #141434;
-    color: white;
+    background-color: #59CBE8;
+    color: #0d1b4c;
     border: none;
-    border-radius: 10px;
+    border-radius: 30px;
     font-size: 20px;
     cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+    height: 20%;
 }
 
 
 button:hover {
-    background-color: #59CBE8;
-    transform: scale(1.0); 
+    background-color: #1b4f72;
+    transform: scale(1.1); 
+    color: #eef5f9;
 }
 
 a {
@@ -405,7 +407,7 @@ h1{
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
-    color: #004b7a;
+    color: black;
 }
 
 .form-group select, .form-group input, .form-group textarea, .btn-confirmar {
@@ -413,8 +415,9 @@ h1{
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
-    background-color: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #59CBE8;
+    color: black;
 }
 
 textarea {
