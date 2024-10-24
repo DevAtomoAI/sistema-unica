@@ -12,13 +12,33 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
     $pecas = isset($_POST['pecas']) ? $_POST['pecas'] : [];
     $servicos = isset($_POST['servicos']) ? $_POST['servicos'] : [];
 
+    //select infos_veiculos_inclusos onde id_infos_veiculos_inclusos == id_veiculo_incluso_orgao_publico
+
+    // $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciado'";
+    // function executeQuery($connectionDB, $query)
+    // {
+    //     $stmt = $connectionDB->prepare($query);
+    //     $stmt->execute();
+    //     return $stmt->get_result();
+    // }
+
+    // $execConnection = executeQuery($connectionDB, $selectTable);
+    // $idOrgaoPublico = $execConnection['id_orgao_publico'];
+
+    $stmt = $connectionDB->prepare("SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos=?");
+    $stmt->bind_param("i", $idVeiculoGerenciado); // "s" para string
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $valuesTable = $result->fetch_assoc();
+    $idOrgaoPublico = $valuesTable['id_orgao_publico'];
+
     // Preparar a inserção
     $stmtInsert = $connectionDB->prepare("
         INSERT INTO infos_veiculos_aprovados_oficina 
-        (id_veiculo_incluso_orgao_publico, nome_oficina_aprovado, codigo_pecas, descricao_pecas, 
+        (id_veiculo_incluso_orgao_publico, id_orgao_publico, nome_oficina_aprovado, codigo_pecas, descricao_pecas, 
         valor_un_pecas, quantidade_pecas, marca_pecas, valor_total_pecas, 
         descricao_servicos, valor_un_servicos, quantidade_servicos, valor_total_servicos, valor_total_servico_pecas, data_registro) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
     if ($stmtInsert === false) {
@@ -61,8 +81,9 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
 
         // Vincular os parâmetros
         $stmtInsert->bind_param(
-            "isisiisisiiiss",
+            "iisisiisisiiiss",
             $idVeiculoGerenciado,
+            $idOrgaoPublico,
             $nomeOficina,
             $codigoPecas,
             $descricaoPecas,

@@ -31,7 +31,7 @@ function acessaDadosVeiculosGerenciar($connectionDB,  $idVeiculoGerenciar)
 }
 
 function atualizaOpcaoOficinaBD($connectionDB, $idVeiculoGerenciar){
-    $stmt = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina='Respondida' WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciar' ");
+    $stmt = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina='Aprovada' WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciar' ");
     $stmt->execute();
 }
 
