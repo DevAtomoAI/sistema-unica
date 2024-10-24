@@ -6,7 +6,7 @@ session_start();
 function botaoOrcarRejeitar($connectionDB){
     if (isset($_POST['botaoRejeitado'])) {
         $idButton = $_POST['botaoRejeitado'];
-        $status = 'Rejeitado';
+        $status = 'Rejeitada';
         header('Location: andamento.php');
     }
      elseif (isset($_POST['botaoGerenciar'])) {

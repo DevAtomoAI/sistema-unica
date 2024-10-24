@@ -20,6 +20,7 @@ $valorTotalFinal;
 $dataRegistro;
 
 $selectTable = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico='$idVeiculoGerenciar'";
+
 function executaSelectTable($connectionDB, $query)
 {
     $stmt = $connectionDB->prepare($query);
@@ -28,8 +29,16 @@ function executaSelectTable($connectionDB, $query)
 }
 
 $executaConexao = executaSelectTable($connectionDB, $selectTable);
+$executaConexao2 = executaSelectTable($connectionDB, $selectTable);
 
+$user_data = mysqli_fetch_assoc($executaConexao);
+$idOrgaoPublico = $user_data['id_orgao_publico'];
 
+$selectTableNomeOrgaoPublico= "SELECT * FROM usuarios_orgao_publico WHERE id_usuarios_orgao_publico='$idOrgaoPublico'";
+$executaConexaoNomeOrgaoPublico = executaSelectTable($connectionDB, $selectTableNomeOrgaoPublico);
+$nomeOrgaoPublico = mysqli_fetch_assoc($executaConexaoNomeOrgaoPublico);
+$resultNomeOrgaoPublico = $nomeOrgaoPublico['nome_orgao_publico'];
+$_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
 
 ?>
 
@@ -76,7 +85,7 @@ $executaConexao = executaSelectTable($connectionDB, $selectTable);
     <br>
     <br>
     <h3>Informações para emissão de nota fiscal</h3>
-    <p>NOME ORGAO PUBLICO</p>
+    <p><?= $resultNomeOrgaoPublico ?></p>
     <table>
         <thead>
             <tr>Dados para emissão de notas fiscais de peças. Destaque destes impostos</tr>
@@ -123,7 +132,7 @@ $executaConexao = executaSelectTable($connectionDB, $selectTable);
         </thead>
         <tbody>
             <?php
-                while ($user_data = mysqli_fetch_assoc($executaConexao)) {
+                while ($user_data2 = mysqli_fetch_assoc($executaConexao2)) {
                     // $_SESSION['idVeiculoGerenciado'] = $user_data["modelo_contratacao"];
                     echo "<tr><td>". $idVeiculoGerenciar. "</td>";
                     echo "<td>". $user_data["valor_total_servicos"] . "</td>";

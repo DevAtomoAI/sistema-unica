@@ -6,24 +6,12 @@ session_start();
 $idVeiculoGerenciado = $_SESSION['idVeiculoGerenciar'];
 $nomeOficina = $_SESSION['nomeOficina'];
 $count = 0;
+
 function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
 {
     // Receber arrays de peças e serviços do POST
     $pecas = isset($_POST['pecas']) ? $_POST['pecas'] : [];
     $servicos = isset($_POST['servicos']) ? $_POST['servicos'] : [];
-
-    //select infos_veiculos_inclusos onde id_infos_veiculos_inclusos == id_veiculo_incluso_orgao_publico
-
-    // $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciado'";
-    // function executeQuery($connectionDB, $query)
-    // {
-    //     $stmt = $connectionDB->prepare($query);
-    //     $stmt->execute();
-    //     return $stmt->get_result();
-    // }
-
-    // $execConnection = executeQuery($connectionDB, $selectTable);
-    // $idOrgaoPublico = $execConnection['id_orgao_publico'];
 
     $stmt = $connectionDB->prepare("SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos=?");
     $stmt->bind_param("i", $idVeiculoGerenciado); // "s" para string
@@ -72,7 +60,8 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
 
         // Calcular o valor total final
         $valorTotalFinal = $valorTotalServicos + $valorTotalPecas;
-
+        $_SESSION['valorTotalServicos'] = $valorTotalServicos; 
+        $_SESSION['valorTotalPecas'] = $valorTotalPecas;
         // Obter a data atual
         $dataRegistro = date('Y-m-d'); // Altere para o formato padrão 'YYYY-MM-DD'
 
@@ -110,6 +99,9 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
     // Fechar o statement
     $stmtInsert->close();
 }
+
+
+
 
 if (isset($_POST['pecas']) || isset($_POST['servicos'])) {
     insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado);

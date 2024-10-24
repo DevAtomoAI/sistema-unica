@@ -23,6 +23,12 @@ function abrirPopUp() {
     window.open("popup.php", "popupWindow", "width=600,height=400,scrollbars=yes");
 }
 
+function fechaPopUp(){
+    window.close("popup.php");
+    // window.open("gerenciar.php");
+
+}
+
 function adicionarLinhaPeças() {
     contadorPecas++;
 
@@ -31,15 +37,14 @@ function adicionarLinhaPeças() {
     const novaLinha = tabelaPeças.insertRow();
 
     // Cria as células com os inputs
-    novaLinha.insertCell(0).innerHTML = '<input type="text" id="codigo' + contadorPecas + '">';
-    novaLinha.insertCell(1).innerHTML = '<input type="text" id="descricao' + contadorPecas + '">';
-    novaLinha.insertCell(2).innerHTML = '<input type="text" id="valor_un' + contadorPecas + '">';
-    novaLinha.insertCell(3).innerHTML = '<input type="text" id="quantidade' + contadorPecas + '">';
-    novaLinha.insertCell(4).innerHTML = '<input type="text" id="marca' + contadorPecas + '">';
+    novaLinha.insertCell(0).innerHTML = '<input type="text" id="codigo' + contadorPecas + '" required>';
+    novaLinha.insertCell(1).innerHTML = '<input type="text" id="descricao' + contadorPecas + '" required>';
+    novaLinha.insertCell(2).innerHTML = '<input type="text" id="valor_un' + contadorPecas + '" required>';
+    novaLinha.insertCell(3).innerHTML = '<input type="text" id="quantidade' + contadorPecas + '" required>';
+    novaLinha.insertCell(4).innerHTML = '<input type="text" id="marca' + contadorPecas + '" required>';
     novaLinha.insertCell(5).innerHTML = '36.6'; // Desconto fixo
-    novaLinha.insertCell(6).innerHTML = 'VALOR SOMA VINDO BANCO';
-    novaLinha.insertCell(7).innerHTML = '<button onclick="adicionarLinhaPeças()">+</button>';
-    novaLinha.insertCell(8).innerHTML = '<button onclick="removerLinhaPecas(this)">Excluir</button>';
+    novaLinha.insertCell(6).innerHTML = '<button onclick="adicionarLinhaPeças()">+</button>';
+    novaLinha.insertCell(7).innerHTML = '<button onclick="removerLinhaPecas(this)">Excluir</button>';
 }
 
 function adicionarLinhaServicos() {
@@ -50,13 +55,12 @@ function adicionarLinhaServicos() {
     const novaLinha = tabelaServicos.insertRow();
 
     // Cria as células com os inputs
-    novaLinha.insertCell(0).innerHTML = '<input type="text" id="descricao_servico' + contadorServicos + '">';
-    novaLinha.insertCell(1).innerHTML = '<input type="text" id="valor_unitario' + contadorServicos + '">';
-    novaLinha.insertCell(2).innerHTML = '<input type="text" id="quantidade_servico' + contadorServicos + '">';
+    novaLinha.insertCell(0).innerHTML = '<input type="text" id="descricao_servico' + contadorServicos + '" required>';
+    novaLinha.insertCell(1).innerHTML = '<input type="text" id="valor_unitario' + contadorServicos + '" required>';
+    novaLinha.insertCell(2).innerHTML = '<input type="text" id="quantidade_servico' + contadorServicos + '" required>';
     novaLinha.insertCell(3).innerHTML = '36.6'; // Desconto fixo
-    novaLinha.insertCell(4).innerHTML = 'VALOR SOMA VINDO BANCO';
-    novaLinha.insertCell(5).innerHTML = '<button onclick="adicionarLinhaServicos()">+</button>';
-    novaLinha.insertCell(6).innerHTML = '<button onclick="removerLinhaServico(this)">Excluir</button>';
+    novaLinha.insertCell(4).innerHTML = '<button onclick="adicionarLinhaServicos()">+</button>';
+    novaLinha.insertCell(5).innerHTML = '<button onclick="removerLinhaServico(this)">Excluir</button>';
 }
 
 function removerLinhaServico(botao) {
@@ -149,7 +153,10 @@ function enviaValoresBD() {
             console.log('Enviando todos os dados...');
         },
         success: function (retorno) {
-            console.log(retorno);
+            alert('Valores salvos com sucesso');
+            // window.location.reload();
+
+
         },
         error: function (a, b, c) {
             console.log('Erro: ' + a.status + ' ' + c);
