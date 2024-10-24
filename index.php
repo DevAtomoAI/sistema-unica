@@ -9,17 +9,17 @@
 </head>
 
 <body>
-    <div class="overlay" id="overlay"></div>
+    <!-- <div class="overlay" id="overlay"></div> -->
 
     <!-- Barra lateral -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
+    <div class="sidebar" id="sidebar"> 
+        <!-- <div class="sidebar-header">
             <button id="closeBtn">&times;</button>
         </div>
         <div class="sidebar-content">
             <p>Faça Login em nosso sistema para habilitar todas funções UNICA.</p>
             <button class="b1">Fazer Login</button>
-        </div>
+        </div> -->
     </div>
 
 
