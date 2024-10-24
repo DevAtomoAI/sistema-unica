@@ -64,6 +64,9 @@ if(isset($_SESSION['nome'])) {
                     <label for="veiculo">Veículo</label>
                     <input name='veiculo' type="text" id="veiculo" placeholder="Informe o veiculo">
 
+                    <label for="veiculo">Modelo veículo</label>
+                    <input name='modeloVeiculo' type="text" id="modeloVeiculo" placeholder="Informe o modelo do veiculo">
+
                     <label for="centro-custo">Centro de Custo</label>
                     <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo">
                   
