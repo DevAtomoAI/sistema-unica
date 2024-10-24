@@ -21,8 +21,10 @@ function executeQuery($connectionDB, $query) {
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTableRejeitadas = $_SESSION['filtrosPesquisa'];
 } else {
-    $selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitado' ORDER BY id_infos_veiculos_inclusos ASC";
+    $selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
 }
+// $selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
+
 $execConnection = executeQuery($connectionDB, $selectTableRejeitadas);
 $numLinhasTotal = $execConnection->num_rows;
 $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);

@@ -23,6 +23,7 @@ if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa']))
 } else {
     $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
 }
+// $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;

@@ -7,7 +7,7 @@ function applyCotacaoFilters($connectionDB) {
     $searchInstitutionInput = isset($_POST["searchInstitutionInput"]) ? $_POST["searchInstitutionInput"] : null;
     $orderByInput = isset($_POST["orderByInput"]) ? $_POST["orderByInput"] : null;
 
-    $whereClause = "opcao_aprovada_reprovada_oficina='Respondidas' ";
+    $whereClause = "opcao_aprovada_reprovada_oficina='Respondida' ";
     if (!empty($searchKeyWordInput)) {
         $whereClause .= " AND (id_infos_veiculos_inclusos LIKE '%$searchKeyWordInput%' OR placa LIKE '%$searchKeyWordInput%' OR veiculo LIKE '%$searchKeyWordInput%' 
         OR modelo_veiculo LIKE '%$searchKeyWordInput%' OR tipo_solicitacao LIKE '%$searchKeyWordInput%')";
