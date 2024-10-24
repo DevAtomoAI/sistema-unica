@@ -12,13 +12,18 @@ function mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, $condicao) {
 
 if(isset($_POST["aprovaCotacaoOficina"])){
     mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Aprovada');
+    header('Location: ../cotacoes_aprovado/aprovado.php');
+    exit();
+
 }
 
 else{
     mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Cancelada');
+    header('Location: ../cotacoes_cancelado/cancelado.php');
+    exit();
+
 }
 
-header('Location: responder.php');
 
 
 ?>
