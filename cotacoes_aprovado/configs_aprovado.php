@@ -26,7 +26,7 @@ function filters()
                 break;
 
             case !empty($searchInstitutionInput):
-                $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id='$searchInstitutionInput' AND opcao_aprovada_reprovada_oficina='Aprovada'";
+                $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id='$searchInstitutionInput' AND opcao_aprovada_reprovada_oficina='Respondida'";
                 break;
 
             case !empty($orderByInput):

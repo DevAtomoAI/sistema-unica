@@ -18,6 +18,7 @@ function verificaLogin($email, $senha, $rememberUsuario, $conexao) {
         // Definir variáveis de sessão
         $_SESSION['nameLoggedUser'] = $valuesTable['nome'];
         $_SESSION['emailLoggedUser'] = $email;
+        $_SESSION['idOrgaoPublico'] = $valuesTable['id_usuarios_orgao_publico'];
 
         // Definir cookie se "Lembrar-me" estiver marcado
         if ($rememberUsuario) {
@@ -39,9 +40,3 @@ if (isset($_POST['submit'])) {
     verificaLogin($email, $senha, $rememberUsuario, $conexao);
 }
 ?>
-
-
-
-
-
-

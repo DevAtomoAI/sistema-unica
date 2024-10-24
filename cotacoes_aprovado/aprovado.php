@@ -13,7 +13,7 @@ if(!empty($_SESSION['filtrosPesquisaAprovada'])) {
 }
 
 else{
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ";
+    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Respondida' ORDER BY id_infos_veiculos_inclusos ";
 }
 
 $execConnection = $conexao->query($selectTable);
@@ -72,7 +72,7 @@ $numLinhasTotal = $execConnection->num_rows;
                 </a>
             </li>
             <li>
-                <a href="../cotacoes_rejeitado/rejeitado.php">
+                <a href="../cotacoes_cancelado/cancelado.php">
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>

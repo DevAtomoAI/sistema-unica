@@ -47,13 +47,13 @@ function filters()
         }
     }
 
-    $_SESSION['filtrosPesquisaAprovada'] = $selectTable;
+    $_SESSION['filtrosPesquisaCancelado'] = $selectTable;
 
     return $selectTable;
 }
 
 filters();
-header('Location: rejeitado.php');
+header('Location: cancelado.php');
 
 
 

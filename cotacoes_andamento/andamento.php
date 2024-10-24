@@ -3,11 +3,12 @@ session_start();
 include_once("../database/config.php");
 
 $nomeUsuario = $_SESSION["nameLoggedUser"];
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
 if (!empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
 } else {
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC ";
+    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' AND id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
 }
 
 $execConnection = $conexao->query($selectTable);
@@ -22,6 +23,7 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
         'kmAtual' => $user_data['km_atual'],
         'planoManutencao' => $user_data['plano_manutencao'],
         'modeloContratacao' => $user_data['modelo_contratacao'],
+        'modeloVeiculo' => $user_data['modelo_veiculo'],
         'dataAbertura' => $user_data['data_abertura'],
         'dataRecebimento' => $user_data['data_final'],
         'centroCusto' => $user_data['centro_custo'],
@@ -64,7 +66,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
             <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
-            <li><a href="../cotacoes_rejeitado/rejeitado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
+            <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
         </ul>
     </div>
 
@@ -153,6 +155,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                                     <button name='button-option-rejected' class='btn-action btn-red' value='" . $cotacao['id'] . "'>
                                         <i class='fas fa-times'></i>
                                     </button>
+                                    </form>
                             </td>";
                             echo "</tr>";
                         }
@@ -172,6 +175,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         <p><strong>Km Atual:</strong> <span id="kmAtual"></span></p>
                         <p><strong>Plano de Manutenção:</strong> <span id="planoManutencao"></span></p>
                         <p><strong>Placa:</strong> <span id="placa"></span></p>
+                        <p><strong>Ano veículo:</strong> <span id="anoVeiculo"></span></p>
 
                     </div>
                     <div class="popup-column">
@@ -184,7 +188,6 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         <p><strong>Tipo de Solicitação:</strong> <span id="tipoSolicitacao"></span></p>
                         <p><strong>Fornecedor:</strong> <span id="fornecedor"></span></p>
                         <p><strong>Responsável:</strong> <span id="responsavel"></span></p>
-                        <p><strong>Quantidade propostas:</strong> <span id="propostas"></span></p>
                     </div>
                 </div>
             </div>

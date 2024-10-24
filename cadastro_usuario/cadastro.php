@@ -5,12 +5,12 @@ function cadUsuarios($conexao)
 {
 
     $nome = $_POST['nome'];
-    $sobrenome = $_POST['sobrenome'];
+    $nomeOrgaoPublico = $_POST['nomeOrgaoPublico'];
     $email =  $_POST['email'];
     $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
 
-    $result = mysqli_query($conexao, "INSERT INTO usuarios_orgao_publico(nome, sobrenome, email, senha)
-            VALUES ('$nome', '$sobrenome' ,'$email', '$senha')
+    $result = mysqli_query($conexao, "INSERT INTO usuarios_orgao_publico(nome_orgao_publico, nome, email, senha)
+            VALUES ('$nomeOrgaoPublico', '$nome','$email', '$senha')
             ");
 };
 
@@ -61,11 +61,11 @@ if (isset($_POST['submit'])) {
             <p class="txt">Entre com suas informações</p>
 
             <form action="" method="POST">
+                <label for="nomeOrgaoPublico" class="txt2">Órgão Público</label>
+                <input type="text" id="nomeOrgaoPublico" name="nomeOrgaoPublico" placeholder="Nome órgão público" required>
+
                 <label for="nome" class="txt2">Nome</label>
                 <input type="text" id="email" name="nome" placeholder="Seu nome" required>
-
-                <label for="sobrenome" class="txt2">Sobrenome</label>
-                <input type="text" id="senha" name="sobrenome" placeholder="Seu sobrenome" required>
 
                 <label for="email" class="txt2">Email</label>
                 <input type="email" id="email" name="email" placeholder="Seu email" required>

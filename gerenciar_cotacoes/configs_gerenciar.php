@@ -68,7 +68,6 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
                      tipo_solicitacao = '$tipoSolicitacao', 
                      fornecedor = '$fornecedor', 
                      responsavel = '$responsavelAtual', 
-                     quantidade_propostas_oficinas = '', 
                      placa = '$placa'
                      WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhido'");
 

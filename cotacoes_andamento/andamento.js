@@ -1,7 +1,7 @@
 
 
 function abrirPopUp(cotacaoId) {
-
+    console.log('aqui');
     // Ajuste para a comparação de ID
     const cotacao = cotacoes.find(c => c.id == (cotacaoId)); // Ajuste conforme necessário
 
@@ -18,8 +18,9 @@ function abrirPopUp(cotacaoId) {
         document.getElementById("tipoSolicitacao").innerText = cotacao.tipoSolicitacao;
         document.getElementById("fornecedor").innerText = cotacao.fornecedor;
         document.getElementById("responsavel").innerText = cotacao.responsavel;
-        document.getElementById("propostas").innerText = cotacao.propostas;
-        document.getElementById("modelo").innerText = cotacao.modelo;
+        document.getElementById("placa").innerText = cotacao.placa;
+
+        // document.getElementById("modeloVeiculo").innerText = cotacao.modelo;
         document.getElementById("anoVeiculo").innerText = cotacao.anoVeiculo;
 
         // Exibir o pop-up

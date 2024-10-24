@@ -8,16 +8,16 @@ if (isset($_SESSION['nome'])) {
     $nomeUsuario = "Convidado"; // Se não estiver logado, exibe "Convidado"
 }
 
-$selectTableAprovadas = "SELECT * FROM  infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTableAprovadas = "SELECT * FROM  infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
 $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
 $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
 
 if(!empty($_SESSION['filtrosPesquisaAprovada'])) {
-    $selectTable = $_SESSION['filtrosPesquisaAprovada'];
+    $selectTable = $_SESSION['filtrosPesquisaCancelado'];
 }
 
 else{
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ";
+    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ";
 }
 
 $execConnection = $conexao->query($selectTable);
@@ -31,8 +31,8 @@ $numLinhasTotal = $execConnection->num_rows;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rejeitado</title>
-    <link rel="stylesheet" href="rejeitado.css">
+    <title>Cancelado</title>
+    <link rel="stylesheet" href="cancelado.css">
     <link rel="shortcut icon" href="icone.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -112,16 +112,16 @@ $numLinhasTotal = $execConnection->num_rows;
     <!-- CONTEUDO PRINCIPAL -->
 
     <div class="main-content" id="main-content">
-        <h1 class="text-cotand">Cotações rejeitadas</h1>
+        <h1 class="text-cotand">Cotações Canceladas</h1>
 
         <!-- Barra de busca -->
         <div class="search-bar">
-            <form action="configs_rejeitado.php" method="POST">
+            <form action="configs_cancelado.php" method="POST">
                 <input name='palavra-chave' type="text" placeholder="Busca">
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
