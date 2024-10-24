@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
                 <label for="nomeOrgaoPublico" class="txt2">Órgão Público</label>
                 <input type="text" id="nomeOrgaoPublico" name="nomeOrgaoPublico" placeholder="Nome órgão público" required>
 
-                <label for="nome" class="txt2">Nome</label>
+                <label for="nome" class="txt2">Nome representante</label>
                 <input type="text" id="email" name="nome" placeholder="Seu nome" required>
 
                 <label for="email" class="txt2">Email</label>

@@ -4,11 +4,10 @@ include_once("../database/config.php");
 session_start();
 
 $idOrgaoPublicoVeiculo = $_SESSION['idOrgaoPublico'];
-echo $idOrgaoPublicoVeiculo;
-$selectOrgaoPublicoCotado = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico='$idOrgaoPublicoVeiculo' ";
+$selectOrgaoPublicoCotado = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_orgao_publico='$idOrgaoPublicoVeiculo' ";
 $execConnectionOrgaoPublicoCotado = $conexao->query($selectOrgaoPublicoCotado);
 
-$selectInfosVeiculosCotadoOficina = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos = '$idOrgaoPublicoVeiculo' AND opcao_aprovada_reprovada_oficina= 'Aprovada'";
+$selectInfosVeiculosCotadoOficina = "SELECT * FROM infos_veiculos_inclusos WHERE id_orgao_publico = '$idOrgaoPublicoVeiculo' AND opcao_aprovada_reprovada_oficina= 'Respondida'";
 $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculosCotadoOficina);
 
 ?>
@@ -49,7 +48,7 @@ $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculos
 
             ?>
             <!-- Aqui serão os valores vindos do BD -->
-            <form action="">
+            <form action="configs_responder.php" method="POST">
                 <td> <button name="aprovaCotacaoOficina">Aprovar</button> <button name="cancelaCotacaoOficina">Cancelar</button></td>
             </form>
 

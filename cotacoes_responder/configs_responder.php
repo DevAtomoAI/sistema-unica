@@ -2,17 +2,22 @@
 include_once("../database/config.php");
 session_start();
 
-
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+function mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, $condicao) {
+    // $numLinhasTotal = $tableInfosVeiculosInclusos->num_rows;
+    $mudaEstadoCotacaoOficina = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
+    opcao_aprovada_reprovada_oficina = '$condicao'
+    WHERE id_orgao_publico = '$idOrgaoPublicoLogado' AND opcao_aprovada_reprovada_oficina='Respondida'");
+}
 
 if(isset($_POST["aprovaCotacaoOficina"])){
-    //function para aprovar cotacao da oficina
+    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Aprovada');
 }
 
 else{
-    //function para cancelar cotacao oficina
+    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Cancelada');
 }
 
-// selecionaValoresRespondidosOficina($conexao, $idOrgaoPublicoVeiculo);
 header('Location: responder.php');
 
 

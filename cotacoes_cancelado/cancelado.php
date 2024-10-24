@@ -80,6 +80,11 @@ $numLinhasTotal = $execConnection->num_rows;
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
+            <li>
+                <a href="../cotacoes_responder/responder.php"><img src=""> Responder
+            </a>
+        </li>
+
         </ul>
     </div>
 

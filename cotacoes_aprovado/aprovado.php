@@ -3,21 +3,22 @@ session_start();
 include_once("../database/config.php");
 
 $nomeUsuario = $_SESSION["nameLoggedUser"];
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
-$selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC";
+
+
+if(!empty($_SESSION['filtrosPesquisaAprovada'])) {
+    $selectTableAprovadas = $_SESSION['filtrosPesquisaAprovada'];
+}
+else{
+    $selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
+}
+
+// $selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
+
 $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
 $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
 
-if(!empty($_SESSION['filtrosPesquisaAprovada'])) {
-    $selectTable = $_SESSION['filtrosPesquisaAprovada'];
-}
-
-else{
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Respondida' ORDER BY id_infos_veiculos_inclusos ";
-}
-
-$execConnection = $conexao->query($selectTable);
-$numLinhasTotal = $execConnection->num_rows;
 ?>
 
 
@@ -76,6 +77,12 @@ $numLinhasTotal = $execConnection->num_rows;
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
+            <li>
+                <a href="../cotacoes_responder/responder.php">
+                    <img src=""> Responder
+                </a>
+            </li>
+
         </ul>
     </div>
 
@@ -117,7 +124,7 @@ $numLinhasTotal = $execConnection->num_rows;
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
@@ -148,6 +155,7 @@ $numLinhasTotal = $execConnection->num_rows;
                         <th>Modelo</th>
                         <th>Centro de Custo</th>
                         <th>Vencedor</th>
+                        <!-- Nome oficina que venceu o bid -->
                         <th>Data de Abertura</th>
                         <th>Valor Fechamento</th>
                     </tr>
@@ -155,13 +163,13 @@ $numLinhasTotal = $execConnection->num_rows;
                 <tbody>
                     <!-- Tabela dinâmica -->
                     <?php
-                    while ($user_data = mysqli_fetch_assoc($execConnection)) {
+                    while ($user_data = mysqli_fetch_assoc($execConnectionAprovadas)) {
                         echo "<tr>";
                         echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
                         echo "<td class='resultadosTabela' ></td>";
                         echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
-                        echo "<td class='resultadosTabela' >" . $user_data['propostas'] . "</td>";
+                        echo "<td class='resultadosTabela' > NOME VENCEDOR BID</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['data_abertura'] . "</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['data_final'] . "</td>";
                         // echo "<td class='resultadosTabela' > <button name='button-option-aproved' class='btn-action btn-green' value='" . $user_data['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $user_data['id'] . "'><i class='fas fa-times'></i></button></td>";
