@@ -17,13 +17,13 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina=' ' ORDER BY id_infos_veiculos_inclusos ASC";
 
-if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
-    $selectTable = $_SESSION['filtrosPesquisa'];
-} else {
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
-}
-// $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
+if (isset($_SESSION['filtrosPesquisaEmAndamento']) || !empty($_SESSION['filtrosPesquisaEmAndamento'])) {
+    $selectTable = $_SESSION['filtrosPesquisaEmAndamento'];
+} 
+
+$_SESSION['filtrosPesquisaEmAndamento'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
@@ -53,7 +53,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
         <ul class="nav-options">
             <h1 class="side-bar-title">COTAÇÕES</h1>
             <li>
-                <a id="opcaoAndamento">
+                <a id="opcaoAndamento" href="#emAndamento">
                     <img src="../assets/clock.svg"> Em andamento
                 </a>
             </li>
@@ -159,7 +159,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="pesquisaValoresEmAndamento" id="pesquisaValoresEmAndamento"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>

@@ -105,7 +105,7 @@ function enviaValoresBD() {
             var valorUNPecas = parseFloat(document.getElementById('valor_un' + contadorLaco)?.value) || 0;
             var quantidadePecas = parseInt(document.getElementById('quantidade' + contadorLaco)?.value) || 0;
             var marcaPecas = document.getElementById('marca' + contadorLaco)?.value || '';
-            var valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
+            var valorTotalPecas = (valorUNPecas * quantidadePecas) + (36.6 / 100);
 
             // Adiciona os dados das peças ao array
             pecas.push({
@@ -123,7 +123,7 @@ function enviaValoresBD() {
             var descricaoServico = document.getElementById('descricao_servico' + contadorLaco)?.value || '';
             var valorUNServicos = parseFloat(document.getElementById('valor_unitario' + contadorLaco)?.value) || 0;
             var quantidadeServicos = parseInt(document.getElementById('quantidade_servico' + contadorLaco)?.value) || 0;
-            var valorTotalServicos = (valorUNServicos * quantidadeServicos) * (36.6 / 100);
+            var valorTotalServicos = (valorUNServicos * quantidadeServicos) + (36.6 / 100);
 
             // Adiciona os dados dos serviços ao array
             servicos.push({

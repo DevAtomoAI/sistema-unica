@@ -17,13 +17,14 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
+$selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
 
-if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
-    $selectTableRejeitadas = $_SESSION['filtrosPesquisa'];
-} else {
-    $selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
+
+if (isset($_SESSION['filtrosPesquisaRejeitadas']) || !empty($_SESSION['filtrosPesquisaRejeitadas'])) {
+    $selectTableRejeitadas = $_SESSION['filtrosPesquisaRejeitadas'];
 }
-// $selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
+
+$_SESSION['filtrosPesquisaRejeitadas'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTableRejeitadas);
 $numLinhasTotal = $execConnection->num_rows;
@@ -159,7 +160,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="procuraValoresRejeitadas" id="procuraValoresRejeitadas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>

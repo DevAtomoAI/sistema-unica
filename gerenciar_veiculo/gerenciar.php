@@ -35,7 +35,7 @@ $executaConexao2 = executaSelectTable($connectionDB, $selectTable2);
 
 $user_data2 = mysqli_fetch_assoc($executaConexao2);
 $idOrgaoPublico = $user_data2['id_orgao_publico'];
-// echo $idOrgaoPublico;
+
 
 $selectTableNomeOrgaoPublico= "SELECT * FROM usuarios_orgao_publico WHERE id_usuarios_orgao_publico='$idOrgaoPublico'";
 $executaConexaoNomeOrgaoPublico = executaSelectTable($connectionDB, $selectTableNomeOrgaoPublico);
@@ -53,21 +53,22 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="popup.js"></script>
+    <link rel="stylesheet" href="gerenciar.css">
 </head>
 
 <body>
     <table>
         <thead>
-            <tr>N</tr>
-            <tr>Veiculo</tr>
-            <tr>Modelo</tr>
-            <tr>Km atual</tr>
-            <tr>Placa</tr>
-            <tr>Ano veiculo</tr>
-            <tr>Centro custo</tr>
-            <tr>Plano manutenção</tr>
-            <tr>Fornecedor</tr>
-            <tr>Modelo contratação</tr>
+            <td>N</td>
+            <td>Veiculo</td>
+            <td>Modelo</td>
+            <td>Km atual</td>
+            <td>Placa</td>
+            <td>Ano veiculo</td>
+            <td>Centro custo</td>
+            <td>Plano manutenção</td>
+            <td>Fornecedor</td>
+            <td>Modelo contratação</td>
         </thead>
         <tbody>
             <td><?= $idVeiculoGerenciar ?></td>
@@ -83,10 +84,6 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
         </tbody>
 
     </table>
-    <br>
-    <br>
-    <br>
-    <br>
     <h3>Informações para emissão de nota fiscal</h3>
     <p><?= $resultNomeOrgaoPublico ?></p>
     <table>
@@ -119,27 +116,33 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
             <td>1,00 %</td>
         </tbody>
     </table>
-    <p>*O DESTQUE DOS IMPOSTOS É APENAS PARA EMPRESAS NÃO OPTANTE PELO SIMPLES NACIONAL</p>
+    <p>*O DESTAQUE DOS IMPOSTOS É APENAS PARA EMPRESAS NÃO OPTANTE PELO SIMPLES NACIONAL</p>
     <br>
     <br>
     <h3>Informações de Despesa</h3>
     <table>
         <thead>
-            <tr>N° orçamento </tr>
+            <td>N° orçamento </td>
             <!-- N° orçamento = id nova tabela criada no mysql -->
-            <tr>Valor mão de obra</tr>
-            <tr>Valor total de peças</tr>
-            <tr>Valor total</tr>
-            <tr>Data registro</tr>
-            <tr><button onclick="abrirPopUp()">Incluir orçamento</button></tr>
+            <td>Descrição peças</td>
+            <td>Descrição serviços</td>
+            <td>Valor total serviços</td>
+            <td>Valor total peças</td>
+            <td>Valor total final</td>
+            <!-- <td>Valor total</td> -->
+
+            <td>Data registro</td>
+            <br>
         </thead>
+
         <tbody>
             <?php
                 while ($user_data = mysqli_fetch_assoc($executaConexao)) {
                     // $_SESSION['idVeiculoGerenciado'] = $user_data["modelo_contratacao"];
-                    echo "<tr><td>". $idVeiculoGerenciar. "</td>";
+                    echo "<tr><td>". $user_data['id_veiculo_aprovado_oficina']. "</td>";
+                    echo "<td>". $user_data['descricao_pecas']. "</td>";
+                    echo "<td>". $user_data['descricao_servicos']. "</td>";
                     echo "<td>". $user_data["valor_total_servicos"] . "</td>";
-                    echo "<td>". $user_data["valor_total_pecas"] . "</td>";
                     echo "<td>". $user_data["valor_total_pecas"] . "</td>";
                     echo "<td>".  $user_data["valor_total_servico_pecas"] . "</td>";
                     echo "<td>".  $user_data["data_registro"] . "</td></tr>";
@@ -147,6 +150,9 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
             ?>
         </tbody>
     </table>
+    <br><br>
+    <button onclick="abrirPopUp()" class="incluir-btn">Incluir orçamento</button>
+
     <br>
     <br>
     <form method="POST" action="configs_gerenciar.php">

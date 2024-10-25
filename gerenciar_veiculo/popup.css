@@ -1,0 +1,93 @@
+/* Estilos globais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 20px;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+h2, h3 {
+    color: #003150;
+    font-weight: bold;
+}
+
+p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+/* Estilo das tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #003150;
+    color: white;
+    font-weight: bold;
+}
+
+table td input[type="text"] {
+    width: 95%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Estilo dos botões */
+button {
+    background-color: #003150;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005280;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Estilo dos inputs */
+input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    border-color: #003150;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 49, 80, 0.3);
+}
+
+/* Tabelas de peças e serviços */
+#tabelaPecas, #tabelaServicos {
+    margin-top: 20px;
+}
+
+thead tr {
+    background-color: #f8f8f8;
+}
+

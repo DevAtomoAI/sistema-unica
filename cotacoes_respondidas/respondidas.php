@@ -17,12 +17,13 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Respondida' ORDER BY id_infos_veiculos_inclusos ASC";
 
-if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
-    $selectTable = $_SESSION['filtrosPesquisa'];
-} else {
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Respondida' ORDER BY id_infos_veiculos_inclusos ASC";
-}
+if (isset($_SESSION['filtrosPesquisaRespondidas']) || !empty($_SESSION['filtrosPesquisaRespondidas'])) {
+    $selectTable = $_SESSION['filtrosPesquisaRespondidas'];
+} 
+
+$_SESSION['filtrosPesquisaRespondidas'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
@@ -158,7 +159,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="procuraValoresRespondidas" id="procuraValoresRespondidas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>

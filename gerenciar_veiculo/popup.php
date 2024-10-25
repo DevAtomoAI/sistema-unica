@@ -15,8 +15,8 @@ $planoManutencao = $_SESSION['planoManutencao'];
 $fornecedor = $_SESSION['fornecedor'];
 $modeloContratacao = $_SESSION['modeloContratacao'];
 
-$valorTotalServicos = $_SESSION['valorTotalServicos']; 
-$valorTotalPecas = $_SESSION['valorTotalPecas'];
+// $valorTotalServicos = $_SESSION['valorTotalServicos']; 
+// $valorTotalPecas = $_SESSION['valorTotalPecas'];
 
 
 
@@ -32,9 +32,9 @@ $valorTotalPecas = $_SESSION['valorTotalPecas'];
     <title>Orçamento</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-    <script src="popup.js">
+    <script src="popup.js"></script>
+    <link rel="stylesheet" href="popup.css">
 
-    </script>
 </head>
 
 <body>
