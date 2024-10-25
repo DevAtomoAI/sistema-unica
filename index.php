@@ -105,8 +105,8 @@
     <div>
         <h1>Escolha qual sistema deseja acessar</h1>
         <div class="container">
-            <a href="sistema_oficina/login/login.php">Oficina</a>
-            <a href="sistema_orgao_publico/index.php">Órgão Público</a>
+            <a href="sistema-unica-integracao-oficina/index.php">Oficina</a>
+            <a href="sistema-unica-integracao-orgao-publico/index.php">Órgão Público</a>
         </div>
     </div>
 
