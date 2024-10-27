@@ -15,12 +15,6 @@ $planoManutencao = $_SESSION['planoManutencao'];
 $fornecedor = $_SESSION['fornecedor'];
 $modeloContratacao = $_SESSION['modeloContratacao'];
 
-// $valorTotalServicos = $_SESSION['valorTotalServicos']; 
-// $valorTotalPecas = $_SESSION['valorTotalPecas'];
-
-
-
-
 ?>
 
 <!DOCTYPE html>

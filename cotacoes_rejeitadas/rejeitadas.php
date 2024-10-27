@@ -71,12 +71,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
+                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="#reprovado" data-target='cotacoesReprovadas'>
+                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php">
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
@@ -201,7 +201,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
             </div>
     </div>
 
-    <script src="../script.js"></script>
+    <!-- <script src="../script.js"></script> -->
 
 </body>
 

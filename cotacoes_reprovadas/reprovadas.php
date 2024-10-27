@@ -1,8 +1,9 @@
 <?php
 session_start();
-include_once('../database/config.php') ;
+include_once('../database/config.php');
 
-function checkUserLoggedIn() {
+function checkUserLoggedIn()
+{
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -11,22 +12,24 @@ function checkUserLoggedIn() {
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
 
-function executeQuery($connectionDB, $query) {
+function executeQuery($connectionDB, $query)
+{
     $stmt = $connectionDB->prepare($query);
     $stmt->execute();
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina=' ' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Reprovadas' ORDER BY id_infos_veiculos_inclusos ASC";
 
-if (isset($_SESSION['filtrosPesquisaEmAndamento']) || !empty($_SESSION['filtrosPesquisaEmAndamento'])) {
-    $selectTable = $_SESSION['filtrosPesquisaEmAndamento'];
-} 
+if (isset($_SESSION['filtrosPesquisaReprovadas']) || !empty($_SESSION['filtrosPesquisaReprovadas'])) {
+    $selectTable = $_SESSION['filtrosPesquisaReprovadas'];
+}
 
-$_SESSION['filtrosPesquisaEmAndamento'] = null;
+$_SESSION['filtrosPesquisaReprovadas'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
+
 $execCentroCusto = executeQuery($connectionDB, $selectTable);
 ?>
 
@@ -37,8 +40,8 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="andamento.css">
-    <title>Página principal</title>
+    <link rel="stylesheet" href="reprovadas.css">
+    <title>Página reprovadas</title>
 </head>
 
 <body>
@@ -46,21 +49,21 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
     <div class="overlay" id="overlay"></div>
 
     <!-- Barra lateral -->
-    <div class="sidebar" id="sidebar"> 
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <button id="closeBtn"></button>
         </div>
         <ul class="nav-options">
             <h1 class="side-bar-title">COTAÇÕES</h1>
             <li>
-                <a id="opcaoAndamento" href="#emAndamento">
+                <a id="opcaoAndamento" href="../cotacoes_andamento/andamento.php">
                     <img src="../assets/clock.svg"> Em andamento
                 </a>
             </li>
 
             <li>
-                <a id="opcaoRejeitadas"  href="../cotacoes_rejeitadas/rejeitadas.php">
-                    <img src="../assets/triangle-exclamation.svg"> Rejeitado 
+                <a id="opcaoRejeitadas" href="../cotacoes_rejeitadas/rejeitadas.php">
+                    <img src="../assets/triangle-exclamation.svg"> Rejeitado
                 </a>
             </li>
 
@@ -70,12 +73,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php" >
+                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php">
+                <a id='opcaoReprovado' href="#reprovado">
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
@@ -88,7 +91,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
-            </li> 
+            </li>
         </ul>
         <img id='logo-side-bar' src="../assets/logo.svg" alt="">
     </div>
@@ -113,10 +116,10 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
 
     <!-- Corpo da página -->
     <div id="cotacoesEmAndamento" class="styleCotacoesOpcoes">
-        <h1 class='actualPageTitle'><img src="../assets/dark-clock.svg">Cotações em Andamento</h3>
+        <h1 class='actualPageTitle'><img src="../assets/dark-clock.svg">Cotações reprovadas</h3>
 
             <div class="searchItens">
-                <form action="configs_andamento.php" method="POST">
+                <form action="configs_reprovadas.php" method="POST">
                     <div class="search-container">
                         <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchKeyWord" for="searchKeyWordInput">Busca</label>
@@ -159,7 +162,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="pesquisaValoresEmAndamento" id="pesquisaValoresEmAndamento"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn" idtype="submit" name="pesquisaValoresReprovadas" id="pesquisaValoresReprovadas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>
@@ -167,7 +170,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
             <div class="resultSearch">
                 <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
                 <br>
-                <form action="configs_andamento.php" method="POST">
+                <form action="configs_reprovadas.php" method="POST">
                     <table>
                         <thead>
                             <tr>
@@ -192,10 +195,6 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
-                                echo "<td class='resultadosTabela' >
-                                    <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoGerenciar' name='botaoGerenciar' class='botaoGerenciar'>Gerenciar</button>
-                                    <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoRejeitado' name='botaoRejeitado' class='botaoRejeitado'>Rejeitar</button>
-                                </td>";
                                 echo "</tr>";
                             }
                             ?>

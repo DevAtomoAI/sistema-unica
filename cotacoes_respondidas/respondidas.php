@@ -70,7 +70,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
+                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
@@ -167,7 +167,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
             <div class="resultSearch">
                 <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
                 <br>
-                <form action="configs_andamento.php" method="POST">
+                <form action="configs_respondidas.php" method="POST">
                     <table>
                         <thead>
                             <tr>
@@ -200,7 +200,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
             </div>
     </div>
 
-    <script src="../script.js"></script>
+    <!-- <script src="../script.js"></script> -->
 
 </body>
 
