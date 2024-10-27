@@ -1,8 +1,8 @@
 let contadorPecas = 1
 let contadorServicos = 1;
 
-let contadorLacoServicos = 1; 
-let contadorLacoPecas = 1; 
+let contadorLacoServicos = 1;
+let contadorLacoPecas = 1;
 
 // let maiorValor;
 
@@ -23,10 +23,18 @@ function abrirPopUp() {
     window.open("popup.php", "popupWindow", "width=600,height=400,scrollbars=yes");
 }
 
-function fechaPopUp(){
+function fechaPopUp() {
     window.close("popup.php");
-    // window.open("gerenciar.php");
+    window.addEventListener("storage", (event) => {
+        if (event.key === "reloadPage" && event.newValue === "true") {
+            window.location.reload();
+        }
+    });
 
+    localStorage.setItem("reloadPage", "true");
+
+    // Remove o valor para permitir futuros reloads
+    localStorage.removeItem("reloadPage");
 }
 
 function adicionarLinhaPeças() {
@@ -107,7 +115,7 @@ function enviaValoresBD() {
             var marcaPecas = document.getElementById('marca' + contadorLaco)?.value || '';
             var valorTotalPecas = (valorUNPecas * quantidadePecas) + (36.6 / 100);
 
-            console.log(typeof(valorUNPecas))
+            console.log(typeof (valorUNPecas))
             console.log(valorUNPecas)
 
             // Adiciona os dados das peças ao array
