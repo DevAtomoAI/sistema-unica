@@ -66,6 +66,11 @@ $numLinhasTotal = $execConnection->num_rows;
                 </a>
             </li>
             <li>
+                <a href="../cotacoes_responder/responder.php">
+                    <img src=""> Responder
+                </a>
+            </li>
+            <li>
                 <a href="../cotacoes_aprovado/aprovado.php">
                     <img src="../imgs/check.svg"> Aprovado
                 </a>
@@ -80,11 +85,6 @@ $numLinhasTotal = $execConnection->num_rows;
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
-            <li>
-                <a href="../cotacoes_responder/responder.php"><img src=""> Responder
-            </a>
-        </li>
-
         </ul>
     </div>
 
