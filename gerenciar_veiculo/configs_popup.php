@@ -3,6 +3,9 @@
 
 include_once("../database/config.php");
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Variáveis gerais
 $idVeiculoGerenciado = $_SESSION['idVeiculoGerenciar'];
@@ -42,20 +45,21 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
 
         // Obter dados do serviço correspondente se existir
         $descricaoServico = isset($servicos[$i]) ? $servicos[$i]['descricaoServico'] : '';
-        $valorUNServicos = isset($servicos[$i]) ? (float)$servicos[$i]['valorUNServicos'] : 0; // Convertendo para float
-        $quantidadeServicos = isset($servicos[$i]) ? (int)$servicos[$i]['quantidadeServicos'] : 0; // Convertendo para int
+        $valorUNServicos = isset($servicos[$i]) ? floatval($servicos[$i]['valorUNServicos']) : 0; // Convertendo para float
+        $quantidadeServicos = isset($servicos[$i]) ? ($servicos[$i]['quantidadeServicos']) : 0; // Convertendo para int
+        echo "<scritp> console.log('.$valorUNServicos.')</script>";
 
         // Calcular o valor total dos serviços
-        $valorTotalServicos = ($valorUNServicos * $quantidadeServicos) + (36.6/100); // Corrigido para calcular o valor total dos serviços
+        $valorTotalServicos = floatval(($valorUNServicos * $quantidadeServicos) + (36.6/100)); // Corrigido para calcular o valor total dos serviços
 
         // Variáveis temporárias para bind_param
         $codigoPecas = $peca ? $peca['codigoPecas'] : ''; 
         $descricaoPecas = $peca ? $peca['descricaoPecas'] : ''; 
-        $valorUNPecas = $peca ? (float)$peca['valorUNPecas'] : 0; // Convertendo para float
-        $quantidadePecas = $peca ? (int)$peca['quantidadePecas'] : 0; 
+        $valorUNPecas = $peca ? floatval($peca['valorUNPecas']) : 0; // Convertendo para float
+        $quantidadePecas = $peca ? $peca['quantidadePecas'] : 0; 
 
         // Calcular o valor total das peças
-        $valorTotalPecas = ($valorUNPecas * $quantidadePecas) + (36.6/100); // Corrigido para calcular o valor total das peças
+        $valorTotalPecas = floatval(($valorUNPecas * $quantidadePecas) + (36.6/100)); // Corrigido para calcular o valor total das peças
 
         $marcaPecas = $peca ? $peca['marcaPecas'] : ''; // Usar string vazia em vez de null
 
@@ -63,38 +67,31 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
         $valorTotalFinal = $valorTotalServicos + $valorTotalPecas;
         $_SESSION['valorTotalServicos'] = $valorTotalServicos; 
         $_SESSION['valorTotalPecas'] = $valorTotalPecas;
+
         // Obter a data atual
         $dataRegistro = date('Y-m-d'); // Altere para o formato padrão 'YYYY-MM-DD'
 
-        // Debugging
-        echo "Inserindo Item $i: Valor Total Peças = $valorTotalPecas, Valor Total Servicos = $valorTotalServicos, Valor Total Final = $valorTotalFinal, Data Registro = $dataRegistro<br>";
-
         // Vincular os parâmetros
         $stmtInsert->bind_param(
-            "iisisiisisiiiss",
+            "iisdsidsdsdddss",
             $idVeiculoGerenciado,
             $idOrgaoPublico,
             $nomeOficina,
             $codigoPecas,
             $descricaoPecas,
-            $valorUNPecas,
+            $valorUNPecas, // 'd' para float
             $quantidadePecas,
             $marcaPecas,
-            $valorTotalPecas,
+            $valorTotalPecas, // 'd' para float
             $descricaoServico,
-            $valorUNServicos,
+            $valorUNServicos, // 'd' para float
             $quantidadeServicos,
-            $valorTotalServicos,
+            $valorTotalServicos, // 'd' para float
             $valorTotalFinal,
             $dataRegistro
         );
-
         // Executa e verifica se houve erro
-        if (!$stmtInsert->execute()) {
-            echo "Erro ao inserir o item $i: " . $stmtInsert->error;
-        } else {
-            echo "Item $i inserido com sucesso.<br>";
-        }
+        $stmtInsert->execute();
     }
 
     // Fechar o statement
@@ -105,8 +102,6 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
 // Chamar a função se os dados foram recebidos via POST
 if (isset($_POST['pecas']) || isset($_POST['servicos'])) {
     insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado);
-} else {
-    echo "Nenhum dado recebido.";
 }
 ?>
 

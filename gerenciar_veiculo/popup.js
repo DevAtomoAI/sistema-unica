@@ -107,6 +107,9 @@ function enviaValoresBD() {
             var marcaPecas = document.getElementById('marca' + contadorLaco)?.value || '';
             var valorTotalPecas = (valorUNPecas * quantidadePecas) + (36.6 / 100);
 
+            console.log(typeof(valorUNPecas))
+            console.log(valorUNPecas)
+
             // Adiciona os dados das peças ao array
             pecas.push({
                 codigoPecas: codigoPecas,
@@ -137,10 +140,6 @@ function enviaValoresBD() {
         contadorLaco++; // Incrementa o contador
     }
 
-    // Verificar o conteúdo dos arrays antes de enviar
-    console.log('Peças:', pecas);
-    console.log('Serviços:', servicos);
-
     // Após o laço, faz uma única requisição AJAX enviando todos os dados
     $.ajax({
         url: 'configs_popup.php',
@@ -155,8 +154,6 @@ function enviaValoresBD() {
         success: function (retorno) {
             alert('Valores salvos com sucesso');
             // window.location.reload();
-
-
         },
         error: function (a, b, c) {
             console.log('Erro: ' + a.status + ' ' + c);
