@@ -153,8 +153,6 @@ $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
                         <th>Placa</th>
                         <th>Modelo</th>
                         <th>Centro de Custo</th>
-                        <th>Vencedor</th>
-                        <!-- Nome oficina que venceu o bid -->
                         <th>Data de Abertura</th>
                         <th>Valor Fechamento</th>
                     </tr>
@@ -168,7 +166,6 @@ $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
                         echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
                         echo "<td class='resultadosTabela' ></td>";
                         echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
-                        echo "<td class='resultadosTabela' > NOME VENCEDOR BID</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['data_abertura'] . "</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['data_final'] . "</td>";
                         // echo "<td class='resultadosTabela' > <button name='button-option-aproved' class='btn-action btn-green' value='" . $user_data['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $user_data['id'] . "'><i class='fas fa-times'></i></button></td>";
