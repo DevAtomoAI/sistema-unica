@@ -1,10 +1,17 @@
 <?php
 session_start();
-if(isset($_SESSION['nome'])) {
-    $nomeUsuario = $_SESSION['nome'];
-} else {
-    $nomeUsuario = "Convidado"; // Se não estiver logado, exibe "Convidado"
+include_once("../database/config.php");
+function checkUserLoggedIn() {
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: ../index.php');
+        exit;
+    }
 }
+checkUserLoggedIn();
+
+$nomeUsuario = $_SESSION["nameLoggedUser"];
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+
 ?>
 
 

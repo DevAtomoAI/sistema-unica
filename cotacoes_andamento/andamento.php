@@ -2,14 +2,25 @@
 session_start();
 include_once("../database/config.php");
 
+function checkUserLoggedIn() {
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: ../index.php');
+        exit;
+    }
+}
+checkUserLoggedIn();
+
 $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
-if (!empty($_SESSION['filtrosPesquisa'])) {
+
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' AND id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
+
+if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
-} else {
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' AND id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
-}
+} 
+
+$_SESSION['filtrosPesquisa'] = null;
 
 $execConnection = $conexao->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
@@ -17,6 +28,7 @@ $numLinhasTotal = $execConnection->num_rows;
 // Criar o array de cotações
 $cotacoes = [];
 while ($user_data = mysqli_fetch_assoc($execConnection)) {
+    
     $cotacoes[] = [
         'id' => $user_data['id_infos_veiculos_inclusos'],
         'veiculo' => $user_data['veiculo'],
@@ -64,7 +76,6 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li>
             <li><a href="../incluir_cotacao/incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
             <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
-            <li><a href="../cotacoes_responder/responder.php"><img src=""> Responder</a></li>
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
             <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
             <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>

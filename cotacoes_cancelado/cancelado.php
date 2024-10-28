@@ -1,24 +1,27 @@
 <?php
 session_start();
 include_once("../database/config.php");
-
-if (isset($_SESSION['nome'])) {
-    $nomeUsuario = $_SESSION['nome'];
-} else {
-    $nomeUsuario = "Convidado"; // Se não estiver logado, exibe "Convidado"
+function checkUserLoggedIn() {
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: ../index.php');
+        exit;
+    }
 }
+checkUserLoggedIn();
 
-$selectTableAprovadas = "SELECT * FROM  infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
-$execConnectionAprovadas = $conexao->query($selectTableAprovadas);
-$numLinhasAprovadas = $execConnectionAprovadas->num_rows;
+$nomeUsuario = $_SESSION["nameLoggedUser"];
 
-if(!empty($_SESSION['filtrosPesquisaAprovada'])) {
+// $selectTableAprovadas = "SELECT * FROM  infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
+// $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
+// $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
+
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ";
+
+if(isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
     $selectTable = $_SESSION['filtrosPesquisaCancelado'];
 }
 
-else{
-    $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ";
-}
+$_SESSION['filtrosPesquisaCancelado'] = null;
 
 $execConnection = $conexao->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
@@ -63,11 +66,6 @@ $numLinhasTotal = $execConnection->num_rows;
             <li>
                 <a href="../cotacoes_andamento/andamento.php">
                     <img src="../imgs/clock.svg"> Em andamento
-                </a>
-            </li>
-            <li>
-                <a href="../cotacoes_responder/responder.php">
-                    <img src=""> Responder
                 </a>
             </li>
             <li>

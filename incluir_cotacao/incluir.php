@@ -1,10 +1,14 @@
 <?php
 session_start();
-if(isset($_SESSION['nome'])) {
-    $nomeUsuario = $_SESSION['nome'];
-} else {
-    $nomeUsuario = "Convidado"; // Se não estiver logado, exibe "Convidado"
+function checkUserLoggedIn() {
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: ../index.php');
+        exit;
+    }
 }
+checkUserLoggedIn();
+$nameUser = $_SESSION['nameLoggedUser'];
+
 ?>
 
 
@@ -47,7 +51,7 @@ if(isset($_SESSION['nome'])) {
         <div class="right-icons">
             <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
             <div class="user-name"> 
-    <p><?php echo $nomeUsuario; ?></p>
+    <p><?php echo $nameUser; ?></p>
 </div>
             <div class="user-icon"><img src="../imgs/user.svg"></div>
         </div>

@@ -3,6 +3,15 @@
 include_once("../database/config.php");
 session_start();
 
+function checkUserLoggedIn()
+{
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: ../index.php');
+        exit;
+    }
+}
+checkUserLoggedIn();
+
 $usuarioLogado = $_SESSION['nameLoggedUser'];
 
 $valores = [
@@ -18,13 +27,21 @@ $valores = [
     'modeloContratacao' => $_SESSION['modeloContratacao'],
     'dataAbertura' => $_SESSION['dataAbertura'],
     'dataFinal' => $_SESSION['dataFinal'],
+    'cpfCNPJProprietario' => $_SESSION['cpfCNPJProprietario'],
+    'arrendatario' => $_SESSION['arrendatario'],
+    'inscricaoEstadual' => $_SESSION['inscricaoEstadual'],
+    'subunidade' => $_SESSION['subunidade']
 ];
 
-$stmt = $conexao->prepare("SELECT * FROM usuarios_orgao_publico WHERE nome = ?");
-$stmt->bind_param("s", $usuarioLogado); // "s" para string
-$stmt->execute();
-$result = $stmt->get_result();
-$valuesTable = $result->fetch_assoc();
+
+$nomeUsuario = $_SESSION["nameLoggedUser"];
+$idOrgaoPublicoVeiculo = $_SESSION['idOrgaoPublico'];
+
+$selectOrgaoPublicoCotado = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_orgao_publico='$idOrgaoPublicoVeiculo' ";
+$execConnectionOrgaoPublicoCotado = $conexao->query($selectOrgaoPublicoCotado);
+
+$selectInfosVeiculosCotadoOficina = "SELECT * FROM infos_veiculos_inclusos WHERE id_orgao_publico = '$idOrgaoPublicoVeiculo' AND opcao_aprovada_reprovada_oficina= 'Respondida'";
+$execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculosCotadoOficina);
 
 
 ?>
@@ -38,9 +55,10 @@ $valuesTable = $result->fetch_assoc();
     <title>Gerenciar</title>
     <link rel="stylesheet" href="gerenciar.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
         <div class="section">
             <h3 class="section-title">Área Administrativa</h3>
 
@@ -82,7 +100,7 @@ $valuesTable = $result->fetch_assoc();
 
                 <div class="input-group">
                     <label for="tipoSolicitacao">Tipo de solicitação</label>
-                    <select name="tipoSolicitacao" id="tipoSolicitacao" value="<?= $valores['tipoSolicitacao']; ?>"  > ;
+                    <select name="tipoSolicitacao" id="tipoSolicitacao" value="<?= $valores['tipoSolicitacao']; ?>"> ;
                         <option value="Aquisição de Óleos Lubrificantes e Filtros"> Aquisição de Óleos Lubrificantes e Filtros </option>
                         <option value="Aquisição de Peças"> Aquisição de Peças</option>
                         <option value="Aquisição de Peças + Serviços"> Aquisição de Peças + Serviços </option>
@@ -102,9 +120,9 @@ $valuesTable = $result->fetch_assoc();
                         <option value="Serviço Geral"> Serviço Geral </option>
                         <option value="Inspeção Veícular"> Inspeção Veícular </option>
                         <option value="Vistoria Veícular"> Vistoria Veícular </option>
-                
-                </select>
-                    
+
+                    </select>
+
                 </div>
 
                 <div class="input-group">
@@ -130,28 +148,57 @@ $valuesTable = $result->fetch_assoc();
                     <input type="date" name="dataFinal" id="dataFinal" value="<?= $valores['dataFinal']; ?>">
                 </div>
 
-                <h3 class="section-title">Proprietário</h3>
+                <!-- <h3 class="section-title">Proprietário</h3>
 
                 <div class="input-group">
                     <label for="identificacaoCPF_CNPJ">CPF / CNPJ</label>
-                    <input type="text" name="identificacaoCPF_CNPJ" id="identificacaoCPF_CNPJ" value="<?= $valuesTable['identificacao_cpf_cnpj'] ?>" placeholder="CPF / CNPJ">
+                    <input type="text" name="identificacaoCPF_CNPJ" id="identificacaoCPF_CNPJ" value="<?= $valores['cpfCNPJProprietario'] ?>" placeholder="CPF / CNPJ">
                 </div>
 
                 <div class="input-group">
                     <label for="arrendatario">Arrendatário</label>
-                    <input type="text" name="arrendatario" id="arrendatario" value="<?= $valuesTable['arrendatario'] ?>" placeholder="Arrendatário">
+                    <input type="text" name="arrendatario" id="arrendatario" value="<?= $valores['arrendatario'] ?>" placeholder="Arrendatário">
                 </div>
 
                 <div class="input-group">
                     <label for="inscricaoEstadual">Inscrição Estadual</label>
-                    <input type="text" name="inscricaoEstadual" id="inscricaoEstadual" value="<?= $valuesTable['inscricao_estadual'] ?>" placeholder="Inscrição Estadual">
+                    <input type="text" name="inscricaoEstadual" id="inscricaoEstadual" value="<?= $valores['inscricaoEstadual'] ?>" placeholder="Inscrição Estadual">
                 </div>
 
                 <div class="input-group">
                     <label for="subunidade">Subunidade</label>
-                    <input type="text" name="subunidade" id="subunidade" value="<?= $valuesTable['subunidade'] ?>" placeholder="Subunidade">
-                </div>
+                    <input type="text" name="subunidade" id="subunidade" value="<?= $valores['subunidade'] ?>" placeholder="Subunidade"> -->
+                <!-- </div> -->
 
+                <h3>Responder orçamentos</h3>
+
+                <table>
+                    <thead>
+                        <tr>Valor total peças</tr>
+                        <tr>Valor total serviços</tr>
+                        <tr>Valor total orçamento</tr>
+                        <tr> Opção </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php
+
+                        while ($valoresSelectInfosVeiculosCotadoOficina = mysqli_fetch_assoc($execConnectionInfosVeiculosCotadoOficina)) {
+                            while ($orgaoPublicoCotado = mysqli_fetch_assoc($execConnectionOrgaoPublicoCotado)) {
+                                echo "<td>" . $orgaoPublicoCotado["valor_total_pecas"] . "</td>";
+                                echo "<td>" . $orgaoPublicoCotado["valor_total_servicos"] . "</td>";
+                                echo "<td>" . $orgaoPublicoCotado["valor_total_servico_pecas"] . "</td>";
+                            }
+
+                            echo "<form action='configs_responder.php' method='POST'>
+                                                    <td> <button name='aprovaCotacaoOficina'>Aprovar</button> <button name='cancelaCotacaoOficina'>Cancelar</button></td>
+                                                </form>";
+                        }
+
+                        ?>
+
+                    </tbody>
+                </table>
                 <div class="button-group">
                     <button name="atualizaValoresBD" id="atualizaValoresBD" class="button">Concluir</button>
                     <button name="naoAtualizaValoresBD" id="naoAtualizaValoresBD" class="button secondary">Voltar</button>

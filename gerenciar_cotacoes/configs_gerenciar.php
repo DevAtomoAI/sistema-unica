@@ -5,6 +5,8 @@ session_start();
 
 $idVeiculoEscolhido = $_SESSION['idVeiculoEscolhido'];
 $usuarioLogado = $_SESSION['nameLoggedUser'];
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+
 function acessaValoresBD($conexao, $idVeiculoEscolhido)
 {
     $selectTabelaInfos = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhido'";
@@ -25,18 +27,19 @@ function acessaValoresBD($conexao, $idVeiculoEscolhido)
             $_SESSION['modeloContratacao'] = $user_data['modelo_contratacao'];
             $_SESSION['dataAbertura'] = $user_data['data_abertura'];
             $_SESSION['dataFinal'] = $user_data['data_final'];
+            $_SESSION['cpfCNPJProprietario'] = $user_data['identificacao_cpf_cnpj'];
+            $_SESSION['arrendatario'] = $user_data['arrendatario'];
+            $_SESSION['inscricaoEstadual'] = $user_data['inscricao_estadual'];
+            $_SESSION['subunidade'] = $user_data['subunidade'];
+
+
         }
 
         // Redirecionar para 'gerenciar.php' se dados foram encontrados
         header('Location: gerenciar.php');
-    } else {
-        // Caso contrário, redirecionar para uma outra página, como 'erro.php'
-        header('Location: erro.php');
     }
     exit();
 }
-
-
 
 function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
 {
@@ -59,24 +62,27 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
 
     $atualizaInfosVeiculos = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
                     veiculo = '$veiculo', 
-                     km_atual = '$kmAtual', 
-                     plano_manutencao = '$planoManutencao', 
-                     modelo_contratacao = '$modeloContratacao', 
-                     data_abertura = '$dataAbertura', 
-                     data_final = '$dataFinal', 
-                     centro_custo = '$centroCusto', 
-                     tipo_solicitacao = '$tipoSolicitacao', 
-                     fornecedor = '$fornecedor', 
-                     responsavel = '$responsavelAtual', 
-                     placa = '$placa'
-                     WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhido'");
+                    km_atual = '$kmAtual', 
+                    plano_manutencao = '$planoManutencao', 
+                    modelo_contratacao = '$modeloContratacao', 
+                    data_abertura = '$dataAbertura', 
+                    data_final = '$dataFinal', 
+                    centro_custo = '$centroCusto', 
+                    tipo_solicitacao = '$tipoSolicitacao', 
+                    fornecedor = '$fornecedor', 
+                    responsavel = '$responsavelAtual', 
+                    placa = '$placa',
+                    identificacao_cpf_cnpj = '$identificacaoCPF_CNPJ', 
+                    arrendatario = '$arrendatario', 
+                    inscricao_estadual = '$inscricaoEstadual', 
+                    subunidade = '$subunidade'
+                    WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhido'");
+}
 
-    $atualizaInfosUsuario = mysqli_query($conexao, "UPDATE usuarios_orgao_publico SET 
-                            identificacao_cpf_cnpj = '$identificacaoCPF_CNPJ', 
-                            arrendatario = '$arrendatario', 
-                            inscricao_estadual = '$inscricaoEstadual', 
-                            subunidade = '$subunidade'
-                            WHERE nome = '$usuarioLogado'");
+function mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, $condicao) {
+    $mudaEstadoCotacaoOficina = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
+    opcao_aprovada_reprovada_oficina = '$condicao'
+    WHERE id_orgao_publico = '$idOrgaoPublicoLogado' AND opcao_aprovada_reprovada_oficina='Respondida'");
 }
 
 if (isset($_POST['atualizaValoresBD'])) {
@@ -89,5 +95,16 @@ if (isset($_POST['naoAtualizaValoresBD'])) {
     exit();
 }
 
+if(isset($_POST["aprovaCotacaoOficina"])){
+    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Aprovada');
+    header('Location: ../cotacoes_aprovado/aprovado.php');
+    exit();
+}
+
+if(isset($_POST["cancelaCotacaoOficina"])) {
+    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Cancelada');
+    header('Location: ../cotacoes_cancelado/cancelado.php');
+    exit();
+}
 
 acessaValoresBD($conexao, $idVeiculoEscolhido);

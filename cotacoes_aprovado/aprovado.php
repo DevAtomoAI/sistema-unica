@@ -2,19 +2,23 @@
 session_start();
 include_once("../database/config.php");
 
-$nomeUsuario = $_SESSION["nameLoggedUser"];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+$nomeUsuario = $_SESSION["nameLoggedUser"];
 
+function checkUserLoggedIn() {
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: ../index.php');
+        exit;
+    }
+}
+checkUserLoggedIn();
 
-
-if(!empty($_SESSION['filtrosPesquisaAprovada'])) {
+$selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
+if(isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
     $selectTableAprovadas = $_SESSION['filtrosPesquisaAprovada'];
 }
-else{
-    $selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
-}
 
-// $selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
+$_SESSION['filtrosPesquisaAprovada'] = null;
 
 $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
 $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
@@ -60,11 +64,6 @@ $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
             <li>
                 <a href="../cotacoes_andamento/andamento.php">
                     <img src="../imgs/clock.svg"> Em andamento
-                </a>
-            </li>
-            <li>
-                <a href="../cotacoes_responder/responder.php">
-                    <img src=""> Responder
                 </a>
             </li>
             <li>
