@@ -19,17 +19,16 @@ function executeQuery($connectionDB, $query)
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Reprovadas' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Canceladas' ORDER BY id_infos_veiculos_inclusos ASC";
 
-if (isset($_SESSION['filtrosPesquisaReprovadas']) || !empty($_SESSION['filtrosPesquisaReprovadas'])) {
-    $selectTable = $_SESSION['filtrosPesquisaReprovadas'];
+if (isset($_SESSION['filtrosPesquisaCanceladas']) || !empty($_SESSION['filtrosPesquisaCanceladas'])) {
+    $selectTable = $_SESSION['filtrosPesquisaCanceladas'];
 }
 
-$_SESSION['filtrosPesquisaReprovadas'] = null;
+$_SESSION['filtrosPesquisaCanceladas'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
-
 $execCentroCusto = executeQuery($connectionDB, $selectTable);
 ?>
 
@@ -40,8 +39,8 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="reprovadas.css">
-    <title>Página reprovadas</title>
+    <link rel="stylesheet" href="canceladas.css">
+    <title>Página cancelada</title>
 </head>
 
 <body>
@@ -78,7 +77,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="#reprovado">
+                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php">
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
@@ -88,7 +87,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="#cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li>
@@ -116,10 +115,10 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
 
     <!-- Corpo da página -->
     <div id="cotacoesEmAndamento" class="styleCotacoesOpcoes">
-        <h1 class='actualPageTitle'><img src="../assets/dark-clock.svg">Cotações reprovadas</h3>
+        <h1 class='actualPageTitle'><img src="../assets/dark-clock.svg">Cotações Canceladas</h3>
 
             <div class="searchItens">
-                <form action="configs_reprovadas.php" method="POST">
+                <form action="configs_canceladas.php" method="POST">
                     <div class="search-container">
                         <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchKeyWord" for="searchKeyWordInput">Busca</label>
@@ -162,7 +161,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn" idtype="submit" name="pesquisaValoresReprovadas" id="pesquisaValoresReprovadas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn" idtype="submit" name="pesquisaValoresCanceladas" id="pesquisaValoresCanceladas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>
@@ -170,7 +169,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
             <div class="resultSearch">
                 <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
                 <br>
-                <form action="configs_reprovadas.php" method="POST">
+                <form action="configs_canceladas.php" method="POST">
                     <table>
                         <thead>
                             <tr>
@@ -181,7 +180,6 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 <th class='titulosTabela'>Ano</th>
                                 <th class='titulosTabela'>Centro custo</th>
                                 <th class='titulosTabela'>Tipo Solicitação</th>
-                                <th class='titulosTabela'>Opções</th>
                             </tr>
                         </thead>
                         <tbody>

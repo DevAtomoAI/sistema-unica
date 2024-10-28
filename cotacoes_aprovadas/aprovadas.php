@@ -44,6 +44,22 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
 </head>
 
 <body>
+    <style>
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+        }
+
+        .file-input {
+            display: none;
+        }
+    </style>
 
     <div class="overlay" id="overlay"></div>
 
@@ -87,7 +103,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li>
@@ -169,7 +185,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
             <div class="resultSearch">
                 <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
                 <br>
-                <form action="configs_reprovadas.php" method="POST">
+                <form action="configs_aprovadas.php" method="POST" enctype="multipart/form-data">
                     <table>
                         <thead>
                             <tr>
@@ -195,6 +211,17 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
                                 echo "<td class='resultadosTabela' >
+                                        <label for='faturaServicos' class='custom-file-upload'>
+                                            Fatura peças
+                                        </label>
+                                        <input class='file-input' type='file' id='faturaServicos' name='faturaServicos' accept='.pdf' required></input>
+
+                                        <label for='faturaPecas' class='custom-file-upload'>
+                                            Fatura serviços
+                                        </label>
+                                        <input class='file-input' type='file' id='faturaPecas' name='faturaPecas' accept='.pdf' required></input>
+                                        <br>
+                                        <button name='enviaFaturas' value=".$user_data['id_infos_veiculos_inclusos'].">Enviar faturas</button>
                                     </td>";
                                 echo "</tr>";
                             }
@@ -204,8 +231,6 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </form>
             </div>
     </div>
-
-    <!-- <script src="../script.js"></script> -->
 
 </body>
 

@@ -85,7 +85,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php" data-target="cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li> 

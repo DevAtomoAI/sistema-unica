@@ -1,8 +1,9 @@
 <?php
 session_start();
-include_once('../database/config.php') ;
+include_once('../database/config.php');
 
-function checkUserLoggedIn() {
+function checkUserLoggedIn()
+{
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -11,7 +12,8 @@ function checkUserLoggedIn() {
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
 
-function executeQuery($connectionDB, $query) {
+function executeQuery($connectionDB, $query)
+{
     $stmt = $connectionDB->prepare($query);
     $stmt->execute();
     return $stmt->get_result();
@@ -21,7 +23,7 @@ $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_repro
 
 if (isset($_SESSION['filtrosPesquisaRespondidas']) || !empty($_SESSION['filtrosPesquisaRespondidas'])) {
     $selectTable = $_SESSION['filtrosPesquisaRespondidas'];
-} 
+}
 
 $_SESSION['filtrosPesquisaRespondidas'] = null;
 
@@ -46,7 +48,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
     <div class="overlay" id="overlay"></div>
 
     <!-- Barra lateral -->
-    <div class="sidebar" id="sidebar"> 
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <button id="closeBtn"></button>
         </div>
@@ -60,7 +62,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
 
             <li>
                 <a opcao="opcaoRejeitadas" href="../cotacoes_rejeitadas/rejeitadas.php">
-                    <img src="../assets/triangle-exclamation.svg"> Rejeitado 
+                    <img src="../assets/triangle-exclamation.svg"> Rejeitado
                 </a>
             </li>
 
@@ -85,10 +87,10 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
-            </li> 
+            </li>
         </ul>
         <img id='logo-side-bar' src="../assets/logo.svg" alt="">
     </div>
@@ -159,7 +161,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="procuraValoresRespondidas" id="procuraValoresRespondidas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn" idtype="submit" name="procuraValoresRespondidas" id="procuraValoresRespondidas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>

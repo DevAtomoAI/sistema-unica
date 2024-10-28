@@ -2,7 +2,8 @@
 include_once('../database/config.php');
 session_start();
 
-function applyCotacaoFilters($connectionDB) {
+function applyCotacaoFilters($connectionDB)
+{
     $searchKeyWordInput = isset($_POST["searchKeyWordInput"]) ? $_POST["searchKeyWordInput"] : null;
     $searchInstitutionInput = isset($_POST["searchInstitutionInput"]) ? $_POST["searchInstitutionInput"] : null;
     $orderByInput = isset($_POST["orderByInput"]) ? $_POST["orderByInput"] : null;
@@ -33,15 +34,48 @@ function applyCotacaoFilters($connectionDB) {
 
     $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE $whereClause $orderByClause";
     $_SESSION['filtrosPesquisaAprovadas'] = $selectTable;
-    header('Location: andamento.php');
 }
 
-botaoOrcarRejeitar($connectionDB);
+function insereFaturasBD($connectionDB)
+{    
+    $estadoVeiculo = 'Faturada Oficina';
+    $idVeiculoInclusoOrgaoPublico = $_POST['enviaFaturas'];
+    $faturaPecas = file_get_contents($_FILES['faturaPecas']['tmp_name']);
+    $faturaServicos = file_get_contents($_FILES['faturaServicos']['tmp_name']);
 
-if(isset($_POST['pesquisaValoresAprovadas'])){
+    $stmtFatura = $connectionDB->prepare("UPDATE infos_veiculos_aprovados_oficina SET fatura_pecas=?, fatura_servicos=? WHERE id_veiculo_incluso_orgao_publico=? ");
+    $stmtFatura->bind_param("ssi", $faturaPecas, $faturaServicos, $idVeiculoInclusoOrgaoPublico);
+    if ($stmtFatura->execute()) {
+        echo "certo";
+    } else {
+        echo "erro" . $stmtFatura->error;
+    }
+
+    $stmtEstadoVeiculo = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=?");
+    $stmtEstadoVeiculo->bind_param("si", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico);
+    
+    if ($stmtEstadoVeiculo->execute()) {
+        echo "certo";
+    } else {
+        echo "erro: " . $stmtEstadoVeiculo->error;
+    }
+
+    $stmtFatura->close();
+    $stmtEstadoVeiculo->close();
+
+    $connectionDB->close();
+}
+
+
+
+if (isset($_POST['pesquisaValoresAprovadas'])) {
     applyCotacaoFilters($connectionDB);
+    header('Location: aprovadas.php');
+    exit();
 }
 
-
-
-?>
+if (isset($_POST['enviaFaturas'])) {
+    insereFaturasBD($connectionDB);
+    header('Location: aprovadas.php');
+    exit();
+}

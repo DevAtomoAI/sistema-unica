@@ -1,8 +1,9 @@
 <?php
 session_start();
-include_once('../database/config.php') ;
+include_once('../database/config.php');
 
-function checkUserLoggedIn() {
+function checkUserLoggedIn()
+{
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -11,7 +12,8 @@ function checkUserLoggedIn() {
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
 
-function executeQuery($connectionDB, $query) {
+function executeQuery($connectionDB, $query)
+{
     $stmt = $connectionDB->prepare($query);
     $stmt->execute();
     return $stmt->get_result();
@@ -54,7 +56,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
         <ul class="nav-options">
             <h1 class="side-bar-title">COTAÇÕES</h1>
             <li>
-                <a id='opcaoEmAndamento' href="../cotacoes_andamento/andamento.php" >
+                <a id='opcaoEmAndamento' href="../cotacoes_andamento/andamento.php">
                     <img src="../assets/clock.svg"> Em andamento
                 </a>
             </li>
@@ -86,7 +88,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li>
@@ -160,7 +162,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="procuraValoresRejeitadas" id="procuraValoresRejeitadas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn" idtype="submit" name="procuraValoresRejeitadas" id="procuraValoresRejeitadas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>
