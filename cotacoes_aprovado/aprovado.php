@@ -149,8 +149,8 @@ $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
                 <thead>
                     <tr>
                         <th>Nº</th>
-                        <th>Placa</th>
-                        <th>Modelo</th>
+                        <th>Fatura serviços</th>
+                        <th>Fatura peças</th>
                         <th>Centro de Custo</th>
                         <th>Data de Abertura</th>
                         <th>Valor Fechamento</th>

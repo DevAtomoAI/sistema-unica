@@ -13,6 +13,7 @@ function checkUserLoggedIn()
 checkUserLoggedIn();
 
 $usuarioLogado = $_SESSION['nameLoggedUser'];
+$idVeiculoEscolhido = $_SESSION['idVeiculoEscolhido'];
 
 $valores = [
     'responsavelAtual' => $_SESSION['responsavelAtual'],
@@ -37,11 +38,17 @@ $valores = [
 $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idOrgaoPublicoVeiculo = $_SESSION['idOrgaoPublico'];
 
-$selectOrgaoPublicoCotado = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_orgao_publico='$idOrgaoPublicoVeiculo' ";
+$selectInfosVeiculosCotadoOficina = "SELECT * FROM infos_veiculos_inclusos WHERE id_orgao_publico = '$idOrgaoPublicoVeiculo' AND opcao_aprovada_reprovada_oficina= 'Respondida' AND id_infos_veiculos_inclusos='$idVeiculoEscolhido'";
+$execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculosCotadoOficina);
+$orgaoPublicoCotado = mysqli_fetch_assoc($execConnectionInfosVeiculosCotadoOficina);
+$id = $orgaoPublicoCotado['id_infos_veiculos_inclusos'];
+
+$selectOrgaoPublicoCotado = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico='$id' ";
 $execConnectionOrgaoPublicoCotado = $conexao->query($selectOrgaoPublicoCotado);
 
-$selectInfosVeiculosCotadoOficina = "SELECT * FROM infos_veiculos_inclusos WHERE id_orgao_publico = '$idOrgaoPublicoVeiculo' AND opcao_aprovada_reprovada_oficina= 'Respondida'";
-$execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculosCotadoOficina);
+
+
+
 
 
 ?>
@@ -65,17 +72,20 @@ $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculos
             <form action="configs_gerenciar.php" method="POST" class="form">
                 <div class="input-group">
                     <label for="responsavelAtual">Nome do responsável atual</label>
-                    <input type="text" name="responsavelAtual" id="responsavelAtual" value="<?= $valores['responsavelAtual']; ?>" placeholder="Responsável atual">
+                    <input type="text" name="responsavelAtual" id="responsavelAtual"
+                        value="<?= $valores['responsavelAtual']; ?>" placeholder="Responsável atual">
                 </div>
 
                 <div class="input-group">
                     <label for="fornecedor">Nome do fornecedor</label>
-                    <input type="text" name="fornecedor" id="fornecedor" value="<?= $valores['fornecedor']; ?>" placeholder="Nome do fornecedor">
+                    <input type="text" name="fornecedor" id="fornecedor" value="<?= $valores['fornecedor']; ?>"
+                        placeholder="Nome do fornecedor">
                 </div>
 
                 <div class="input-group">
                     <label for="veiculo">Veículo</label>
-                    <input type="text" name="veiculo" id="veiculo" value="<?= $valores['veiculo']; ?>" placeholder="Veículo">
+                    <input type="text" name="veiculo" id="veiculo" value="<?= $valores['veiculo']; ?>"
+                        placeholder="Veículo">
                 </div>
 
                 <div class="input-group">
@@ -85,23 +95,27 @@ $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculos
 
                 <div class="input-group">
                     <label for="centroCusto">Centro de custo</label>
-                    <input type="text" name="centroCusto" id="centroCusto" value="<?= $valores['centroCusto']; ?>" placeholder="Centro de custo">
+                    <input type="text" name="centroCusto" id="centroCusto" value="<?= $valores['centroCusto']; ?>"
+                        placeholder="Centro de custo">
                 </div>
 
                 <div class="input-group">
                     <label for="kmAtual">Km atual</label>
-                    <input type="text" name="kmAtual" id="kmAtual" value="<?= $valores['kmAtual']; ?>" placeholder="Km atual">
+                    <input type="text" name="kmAtual" id="kmAtual" value="<?= $valores['kmAtual']; ?>"
+                        placeholder="Km atual">
                 </div>
 
                 <div class="input-group">
                     <label for="modelo">Modelo</label>
-                    <input type="text" name="modelo" id="modelo" value="<?= $valores['modelo']; ?>" placeholder="Modelo">
+                    <input type="text" name="modelo" id="modelo" value="<?= $valores['modelo']; ?>"
+                        placeholder="Modelo">
                 </div>
 
                 <div class="input-group">
                     <label for="tipoSolicitacao">Tipo de solicitação</label>
                     <select name="tipoSolicitacao" id="tipoSolicitacao" value="<?= $valores['tipoSolicitacao']; ?>"> ;
-                        <option value="Aquisição de Óleos Lubrificantes e Filtros"> Aquisição de Óleos Lubrificantes e Filtros </option>
+                        <option value="Aquisição de Óleos Lubrificantes e Filtros"> Aquisição de Óleos Lubrificantes e
+                            Filtros </option>
                         <option value="Aquisição de Peças"> Aquisição de Peças</option>
                         <option value="Aquisição de Peças + Serviços"> Aquisição de Peças + Serviços </option>
                         <option value="Aquisição de Pneus"> Aquisição de Pneus </option>
@@ -135,7 +149,8 @@ $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculos
 
                 <div class="input-group">
                     <label for="modeloContratacao">Modelo de contratação</label>
-                    <input type="text" name="modeloContratacao" id="modeloContratacao" value="<?= $valores['modeloContratacao']; ?>" placeholder="Modelo de contratação">
+                    <input type="text" name="modeloContratacao" id="modeloContratacao"
+                        value="<?= $valores['modeloContratacao']; ?>" placeholder="Modelo de contratação">
                 </div>
 
                 <div class="input-group">
@@ -174,6 +189,7 @@ $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculos
 
                 <table>
                     <thead>
+                        <tr>Nome oficina</tr>
                         <tr>Valor total peças</tr>
                         <tr>Valor total serviços</tr>
                         <tr>Valor total orçamento</tr>
@@ -182,18 +198,21 @@ $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculos
 
                     <tbody>
                         <?php
-
-                        while ($valoresSelectInfosVeiculosCotadoOficina = mysqli_fetch_assoc($execConnectionInfosVeiculosCotadoOficina)) {
-                            while ($orgaoPublicoCotado = mysqli_fetch_assoc($execConnectionOrgaoPublicoCotado)) {
-                                echo "<td>" . $orgaoPublicoCotado["valor_total_pecas"] . "</td>";
-                                echo "<td>" . $orgaoPublicoCotado["valor_total_servicos"] . "</td>";
-                                echo "<td>" . $orgaoPublicoCotado["valor_total_servico_pecas"] . "</td>";
-                            }
-
-                            echo "<form action='configs_responder.php' method='POST'>
-                                                    <td> <button name='aprovaCotacaoOficina'>Aprovar</button> <button name='cancelaCotacaoOficina'>Cancelar</button></td>
-                                                </form>";
+                        while($cotacoes = mysqli_fetch_assoc($execConnectionOrgaoPublicoCotado)){
+                            echo "<td>" . $cotacoes["nome_oficina_aprovado"] . "</td>";
+                            echo "<td>" . $cotacoes["valor_total_pecas"] . "</td>";
+                            echo "<td>" . $cotacoes["valor_total_servicos"] . "</td>";
+                            echo "<td>" . $cotacoes["valor_total_servico_pecas"] . "</td>";
+    
                         }
+                        echo "<form action='configs_responder.php' method='POST'>
+                        <td> <button name='aprovaCotacaoOficina'>Aprovar</button> <button name='cancelaCotacaoOficina'>Cancelar</button></td>
+                    </form>";
+                        // $orgaoPublicoCotado = mysqli_fetch_assoc($execConnectionOrgaoPublicoCotado);
+
+
+
+
 
                         ?>
 
@@ -201,7 +220,8 @@ $execConnectionInfosVeiculosCotadoOficina = $conexao->query($selectInfosVeiculos
                 </table>
                 <div class="button-group">
                     <button name="atualizaValoresBD" id="atualizaValoresBD" class="button">Concluir</button>
-                    <button name="naoAtualizaValoresBD" id="naoAtualizaValoresBD" class="button secondary">Voltar</button>
+                    <button name="naoAtualizaValoresBD" id="naoAtualizaValoresBD"
+                        class="button secondary">Voltar</button>
                 </div>
             </form>
         </div>
