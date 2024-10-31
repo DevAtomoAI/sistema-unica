@@ -13,7 +13,7 @@ $centroCusto = $_SESSION['centroCusto'];
 $planoManutencao = $_SESSION['planoManutencao'];
 $fornecedor = $_SESSION['fornecedor'];
 $modeloContratacao = $_SESSION['modeloContratacao'];
-$valorTotalServicos = $_SESSION['valorTotalServicos']; 
+$valorTotalServicos = $_SESSION['valorTotalServicos'];
 $valorTotalPecas = $_SESSION['valorTotalPecas'];
 
 ?>
@@ -27,7 +27,7 @@ $valorTotalPecas = $_SESSION['valorTotalPecas'];
     <title>Orçamento</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="popup.css">
-    
+
     <script src="popup.js"></script>
 </head>
 
@@ -47,26 +47,26 @@ $valorTotalPecas = $_SESSION['valorTotalPecas'];
             <tr>
                 <th>Código</th>
                 <th>Descrição</th>
-                <th>Valor UN</th>
                 <th>Quantidade</th>
+                <th>Valor Unitário Máximo Aceitável</th>
+                <th>Valor Total Máximo Aceitável</th>
                 <th>Marca</th>
-                <th>Desconto (36.6%)</th>
-                <th>Adicionar</th>
-                <th>Excluir</th>
+                <th>Valor Unitário</th>
+                <th>Valor Total</th>
+                <th>Valor total final</th>
             </tr>
         </thead>
         <tbody>
-            <tr name="trTeste">
-                <!-- <form action="configs_popup.php" method="POST"> -->
-                <td><input type="text" id="codigo1" required></td>
-                <td><input type="text" id="descricao1" required></td>
-                <td><input type="text" id="valor_un1" required></td>
-                <td><input type="text" id="quantidade1" required> </td>
-                <td><input type="text" id="marca1" required></td>
-                <td>36.6</td>
-                <td><button onclick="adicionarLinhaPeças()">+</button></td>
-                <td></td> <!-- A primeira linha não possui botão "Excluir" -->
-                <!-- </form> -->
+            <tr>
+                <td>API OP</td>
+                <td>API OP</td>
+                <td>API OP</td>
+                <td>API OP</td>
+                <td>API OP</td>
+                <td> <input type="text" name="marca" id="marca" required></td>
+                <td> <input type="text" name="valorUN" id="valorUN" required></td>
+                <td>API OP</td>
+                <td>API OP</td>
             </tr>
         </tbody>
     </table>
@@ -76,31 +76,33 @@ $valorTotalPecas = $_SESSION['valorTotalPecas'];
         <thead>
             <tr>
                 <th>Descrição</th>
-                <th>Valor unitário</th>
-                <th>Quantidade</th>
-                <th>Desconto (36.6%)</th>
-                <th>Adicionar</th>
-                <th>Excluir</th>
-            </tr>  
+                <th>Tabela referencial (horas)</th>
+                <th>Valor da mão de obra</th>
+                <th>Valor total máximo aceitável</th>
+                <th>Valor orçado</th>
+                <th>Valor total final</th>
+            </tr>
         </thead>
         <tbody>
             <tr>
-                <form action="">
-
                 </form>
-                <td><input type="text" id="descricao_servico1" required></td>
-                <td><input type="text" id="valor_unitario1" required></td>
-                <td><input type="text" id="quantidade_servico1" required></td>
-                <td>36.6</td>
-                <td><button onclick="adicionarLinhaServicos()">+</button></td>
-                <td></td> <!-- A primeira linha não possui botão "Excluir" -->
+                <td>API OP</td>
+                <td>API OP</td>
+                <td>API OP</td>
+                <td>API OP</td>
+                <td>VALOR ORÇADO</td>
+                <td>API OP</td>
             </tr>
         </tbody>
     </table>
     <br>
+    <h1>VALOR TOTAL DO ORÇAMENTO</h1>
+    <br>
+    <p>Prazo para entrega/execução <input type="text" placeholder="Prazo"></p>
+    <br>
     <br>
     <button name="confirmaCotacao" onclick="enviaValoresBD()">Confirmar</button>
-    <button onclick="fechaPopUp()" name="voltarGerenciar">Voltar</button>
+    <button onclick="fechaPopUp()" name="voltarGerenciar">Voltar</button> 
 
 </body>
 

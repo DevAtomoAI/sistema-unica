@@ -29,67 +29,67 @@ function fechaPopUp(){
 
 }
 
-function adicionarLinhaPeças() {
-    contadorPecas++;
+// function adicionarLinhaPeças() {
+//     contadorPecas++;
 
-    // Seleciona a tabela de peças e adiciona uma nova linha
-    const tabelaPeças = document.getElementById("tabelaPecas").getElementsByTagName('tbody')[0];
-    const novaLinha = tabelaPeças.insertRow();
+//     // Seleciona a tabela de peças e adiciona uma nova linha
+//     const tabelaPeças = document.getElementById("tabelaPecas").getElementsByTagName('tbody')[0];
+//     const novaLinha = tabelaPeças.insertRow();
 
-    // Cria as células com os inputs
-    novaLinha.insertCell(0).innerHTML = '<input type="text" id="codigo' + contadorPecas + '" required>';
-    novaLinha.insertCell(1).innerHTML = '<input type="text" id="descricao' + contadorPecas + '" required>';
-    novaLinha.insertCell(2).innerHTML = '<input type="text" id="valor_un' + contadorPecas + '" required>';
-    novaLinha.insertCell(3).innerHTML = '<input type="text" id="quantidade' + contadorPecas + '" required>';
-    novaLinha.insertCell(4).innerHTML = '<input type="text" id="marca' + contadorPecas + '" required>';
-    novaLinha.insertCell(5).innerHTML = '36.6'; // Desconto fixo
-    novaLinha.insertCell(6).innerHTML = '<button onclick="adicionarLinhaPeças()">+</button>';
-    novaLinha.insertCell(7).innerHTML = '<button onclick="removerLinhaPecas(this)">Excluir</button>';
-}
+//     // Cria as células com os inputs
+//     novaLinha.insertCell(0).innerHTML = '<input type="text" id="codigo' + contadorPecas + '" required>';
+//     novaLinha.insertCell(1).innerHTML = '<input type="text" id="descricao' + contadorPecas + '" required>';
+//     novaLinha.insertCell(2).innerHTML = '<input type="text" id="valor_un' + contadorPecas + '" required>';
+//     novaLinha.insertCell(3).innerHTML = '<input type="text" id="quantidade' + contadorPecas + '" required>';
+//     novaLinha.insertCell(4).innerHTML = '<input type="text" id="marca' + contadorPecas + '" required>';
+//     novaLinha.insertCell(5).innerHTML = '36.6'; // Desconto fixo
+//     novaLinha.insertCell(6).innerHTML = '<button onclick="adicionarLinhaPeças()">+</button>';
+//     novaLinha.insertCell(7).innerHTML = '<button onclick="removerLinhaPecas(this)">Excluir</button>';
+// }
 
-function adicionarLinhaServicos() {
-    contadorServicos++;
+// function adicionarLinhaServicos() {
+//     contadorServicos++;
 
-    // Seleciona a tabela de serviços e adiciona uma nova linha
-    const tabelaServicos = document.getElementById("tabelaServicos").getElementsByTagName('tbody')[0];
-    const novaLinha = tabelaServicos.insertRow();
+//     // Seleciona a tabela de serviços e adiciona uma nova linha
+//     const tabelaServicos = document.getElementById("tabelaServicos").getElementsByTagName('tbody')[0];
+//     const novaLinha = tabelaServicos.insertRow();
 
-    // Cria as células com os inputs
-    novaLinha.insertCell(0).innerHTML = '<input type="text" id="descricao_servico' + contadorServicos + '" required>';
-    novaLinha.insertCell(1).innerHTML = '<input type="text" id="valor_unitario' + contadorServicos + '" required>';
-    novaLinha.insertCell(2).innerHTML = '<input type="text" id="quantidade_servico' + contadorServicos + '" required>';
-    novaLinha.insertCell(3).innerHTML = '36.6'; // Desconto fixo
-    novaLinha.insertCell(4).innerHTML = '<button onclick="adicionarLinhaServicos()">+</button>';
-    novaLinha.insertCell(5).innerHTML = '<button onclick="removerLinhaServico(this)">Excluir</button>';
-}
+//     // Cria as células com os inputs
+//     novaLinha.insertCell(0).innerHTML = '<input type="text" id="descricao_servico' + contadorServicos + '" required>';
+//     novaLinha.insertCell(1).innerHTML = '<input type="text" id="valor_unitario' + contadorServicos + '" required>';
+//     novaLinha.insertCell(2).innerHTML = '<input type="text" id="quantidade_servico' + contadorServicos + '" required>';
+//     novaLinha.insertCell(3).innerHTML = '36.6'; // Desconto fixo
+//     novaLinha.insertCell(4).innerHTML = '<button onclick="adicionarLinhaServicos()">+</button>';
+//     novaLinha.insertCell(5).innerHTML = '<button onclick="removerLinhaServico(this)">Excluir</button>';
+// }
 
-function removerLinhaServico(botao) {
-    // Remove a linha do botão clicado
-    console.log('botao pressionado')
-    const linha = botao.parentNode.parentNode;
-    const tabela = linha.parentNode;
+// function removerLinhaServico(botao) {
+//     // Remove a linha do botão clicado
+//     console.log('botao pressionado')
+//     const linha = botao.parentNode.parentNode;
+//     const tabela = linha.parentNode;
 
-    // Só permite excluir se a tabela tiver mais de uma linha
-    if (tabela.rows.length > 1) {
-        linha.parentNode.removeChild(linha);
-    }
+//     // Só permite excluir se a tabela tiver mais de uma linha
+//     if (tabela.rows.length > 1) {
+//         linha.parentNode.removeChild(linha);
+//     }
 
-    contadorServicos = contadorServicos - 1;
-}
+//     contadorServicos = contadorServicos - 1;
+// }
 
-function removerLinhaPecas(botao) {
-    console.log('botao pressionado')
-    // Remove a linha do botão clicado
-    const linha = botao.parentNode.parentNode;
-    const tabela = linha.parentNode;
+// function removerLinhaPecas(botao) {
+//     console.log('botao pressionado')
+//     // Remove a linha do botão clicado
+//     const linha = botao.parentNode.parentNode;
+//     const tabela = linha.parentNode;
 
-    // Só permite excluir se a tabela tiver mais de uma linha
-    if (tabela.rows.length > 1) {
-        linha.parentNode.removeChild(linha);
-    }
+//     // Só permite excluir se a tabela tiver mais de uma linha
+//     if (tabela.rows.length > 1) {
+//         linha.parentNode.removeChild(linha);
+//     }
 
-    contadorPecas = contadorPecas - 1;
-}
+//     contadorPecas = contadorPecas - 1;
+// }
 
 function enviaValoresBD() {
     var pecas = [];
@@ -105,7 +105,7 @@ function enviaValoresBD() {
             var valorUNPecas = parseFloat(document.getElementById('valor_un' + contadorLaco)?.value) || 0;
             var quantidadePecas = parseInt(document.getElementById('quantidade' + contadorLaco)?.value) || 0;
             var marcaPecas = document.getElementById('marca' + contadorLaco)?.value || '';
-            var valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
+            var valorTotalPecas = (valorUNPecas * quantidadePecas);
 
             // Adiciona os dados das peças ao array
             pecas.push({
@@ -123,7 +123,7 @@ function enviaValoresBD() {
             var descricaoServico = document.getElementById('descricao_servico' + contadorLaco)?.value || '';
             var valorUNServicos = parseFloat(document.getElementById('valor_unitario' + contadorLaco)?.value) || 0;
             var quantidadeServicos = parseInt(document.getElementById('quantidade_servico' + contadorLaco)?.value) || 0;
-            var valorTotalServicos = (valorUNServicos * quantidadeServicos) * (36.6 / 100);
+            var valorTotalServicos = (valorUNServicos * quantidadeServicos);
 
             // Adiciona os dados dos serviços ao array
             servicos.push({

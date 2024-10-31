@@ -46,7 +46,7 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
         $quantidadeServicos = isset($servicos[$i]) ? (int)$servicos[$i]['quantidadeServicos'] : 0; // Convertendo para int
 
         // Calcular o valor total dos serviços
-        $valorTotalServicos = ($valorUNServicos * $quantidadeServicos) + (36.6/100); // Corrigido para calcular o valor total dos serviços
+        $valorTotalServicos = ($valorUNServicos * $quantidadeServicos); // Corrigido para calcular o valor total dos serviços
 
         // Variáveis temporárias para bind_param
         $codigoPecas = $peca ? $peca['codigoPecas'] : ''; 
@@ -55,7 +55,7 @@ function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
         $quantidadePecas = $peca ? (int)$peca['quantidadePecas'] : 0; 
 
         // Calcular o valor total das peças
-        $valorTotalPecas = ($valorUNPecas * $quantidadePecas) + (36.6/100); // Corrigido para calcular o valor total das peças
+        $valorTotalPecas = ($valorUNPecas * $quantidadePecas); // Corrigido para calcular o valor total das peças
 
         $marcaPecas = $peca ? $peca['marcaPecas'] : ''; // Usar string vazia em vez de null
 

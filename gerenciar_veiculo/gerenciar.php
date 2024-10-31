@@ -35,7 +35,6 @@ $executaConexao2 = executaSelectTable($connectionDB, $selectTable2);
 
 $user_data2 = mysqli_fetch_assoc($executaConexao2);
 $idOrgaoPublico = $user_data2['id_orgao_publico'];
- echo $idOrgaoPublico;
 
 $selectTableNomeOrgaoPublico= "SELECT * FROM usuarios_orgao_publico WHERE id_usuarios_orgao_publico='$idOrgaoPublico'";
 $executaConexaoNomeOrgaoPublico = executaSelectTable($connectionDB, $selectTableNomeOrgaoPublico);
@@ -84,6 +83,8 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
         </tbody>
 
     </table>
+
+    <p>Nome Órgão Público: <?= $resultNomeOrgaoPublico ?></p>
    
     <br>
     <br>
