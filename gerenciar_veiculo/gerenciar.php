@@ -92,11 +92,10 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
     <table>
         <thead>
             <td>N° orçamento </td>
-            <!-- N° orçamento = id nova tabela criada no mysql -->
             <td>Valor mão de obra</td>
             <td>Valor total de peças</td>
             <td>Valor total</td>
-            <td>Data registro</td>
+            <td>Tempo execução</td>
             <br>
         </thead>
 
@@ -104,12 +103,11 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
             <?php
                 while ($user_data = mysqli_fetch_assoc($executaConexao)) {
                     // $_SESSION['idVeiculoGerenciado'] = $user_data["modelo_contratacao"];
-                    echo "<tr><td>". $idVeiculoGerenciar. "</td>";
-                    echo "<td>". $user_data["valor_total_servicos"] . "</td>";
-                    echo "<td>". $user_data["valor_total_pecas"] . "</td>";
-                    echo "<td>". $user_data["valor_total_pecas"] . "</td>";
-                    echo "<td>".  $user_data["valor_total_servico_pecas"] . "</td>";
-                    echo "<td>".  $user_data["data_registro"] . "</td></tr>";
+                    echo "<tr><td> NUM ORCAMENTO API</td>";
+                    echo "<td>VAL TOTAL MAO DE OBRA</td>";
+                    echo "<td>VAL TOTAL PECAS API</td>";
+                    echo "<td> VAL TOTAL FINAL API</td>";
+                    echo "<td>".  $user_data["dias_execucao"] . "</td></tr>";
                 }
             ?>
         </tbody>

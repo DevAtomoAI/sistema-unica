@@ -41,68 +41,73 @@ $valorTotalPecas = $_SESSION['valorTotalPecas'];
     <p>Órgão solicitante: <strong><?= $nomeOrgaoPublico ?></strong></p>
     <p>Tipo de solicitação: <strong> <?= $modeloContratacao ?></strong></p>
 
-    <h3>Peças</h3>
-    <table id="tabelaPecas" border="1" cellpadding="5" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Descrição</th>
-                <th>Quantidade</th>
-                <th>Valor Unitário Máximo Aceitável</th>
-                <th>Valor Total Máximo Aceitável</th>
-                <th>Marca</th>
-                <th>Valor Unitário</th>
-                <th>Valor Total</th>
-                <th>Valor total final</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>API OP</td>
-                <td>API OP</td>
-                <td>API OP</td>
-                <td>API OP</td>
-                <td>API OP</td>
-                <td> <input type="text" name="marca" id="marca" required></td>
-                <td> <input type="text" name="valorUN" id="valorUN" required></td>
-                <td>API OP</td>
-                <td>API OP</td>
-            </tr>
-        </tbody>
-    </table>
+    <form action="configs_popup.php" method="POST">
 
-    <h3>Serviços</h3>
-    <table id="tabelaServicos" border="1" cellpadding="5" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Descrição</th>
-                <th>Tabela referencial (horas)</th>
-                <th>Valor da mão de obra</th>
-                <th>Valor total máximo aceitável</th>
-                <th>Valor orçado</th>
-                <th>Valor total final</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                </form>
-                <td>API OP</td>
-                <td>API OP</td>
-                <td>API OP</td>
-                <td>API OP</td>
-                <td>VALOR ORÇADO</td>
-                <td>API OP</td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-    <h1>VALOR TOTAL DO ORÇAMENTO</h1>
-    <br>
-    <p>Prazo para entrega/execução <input type="text" placeholder="Prazo"></p>
-    <br>
-    <br>
-    <button name="confirmaCotacao" onclick="enviaValoresBD()">Confirmar</button>
-    <button onclick="fechaPopUp()" name="voltarGerenciar">Voltar</button> 
+        <h3>Peças</h3>
+        <table id="tabelaPecas" border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                    <th>Valor Unitário Máximo Aceitável</th>
+                    <th>Valor Total Máximo Aceitável</th>
+                    <th>Marca</th>
+                    <th>Valor Unitário</th>
+                    <th>Valor Total</th>
+                    <th>Valor total final</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                    <td> <input type="text" name="marca" id="marca" required></td>
+                    <td> <input type="text" name="valorUN" id="valorUN" required></td>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Serviços</h3>
+        <table id="tabelaServicos" border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Tabela referencial (horas)</th>
+                    <th>Valor da mão de obra</th>
+                    <th>Valor total máximo aceitável</th>
+                    <th>Valor orçado</th>
+                    <th>Valor total final</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                    <td>API OP</td>
+                    <td><input type="text" name="valorOrcado" id="valorOrcado" placeholder="Valor orçado"></td>
+                    <td>API OP</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <h1>VALOR TOTAL DO ORÇAMENTO</h1>
+        <br>
+        <p>Prazo para entrega/execução <input name="prazoEntrega" type="text" placeholder="Prazo"></p>
+        <br>
+        <br>
+        <button name="confirmaCotacao">Confirmar</button>
+        <button onclick="fechaPopUp()" name="voltarGerenciar">Voltar</button> 
+    </form>
+
+
 
 </body>
 

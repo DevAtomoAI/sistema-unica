@@ -12,12 +12,12 @@ function verifyLogin($emailUser, $passwordUser, $rememberUser, $connectionDB) {
     $stmt->bind_param("ss", $emailUser, $passwordUser); // "s" para string
     $stmt->execute();
     $result = $stmt->get_result();
-    $valuesTable = $result->num_rows;
 
-    if ($valuesTable > 0) {
-        $_SESSION['nameLoggedUser'] = $valuesTable['nome'];
+    if ($result->num_rows > 0) {
+        $userData = $result->fetch_assoc();
+        $_SESSION['nameLoggedUser'] = $userData['nome'];
         $_SESSION['emailLoggedUser'] = $emailUser;
-        $_SESSION['nomeOficina'] = $valuesTable['nome_oficina'];
+        $_SESSION['nomeOficina'] = $userData['nome_oficina'];
 
         // Definir cookie se "Lembrar-me" estiver marcado
         if ($rememberUser) {
