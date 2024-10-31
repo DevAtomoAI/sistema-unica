@@ -29,10 +29,9 @@ $nameUser = $_SESSION['nameLoggedUser'];
     <div class="sidebar-header">
     </div>
     <ul class="nav-options">
-        <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li>
+        <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
         <li><a href="incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
         <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
-        <li><a href="../cotacoes_responder/responder.php"><img src=""> Responder</a></li>
         <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
         <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
         <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>

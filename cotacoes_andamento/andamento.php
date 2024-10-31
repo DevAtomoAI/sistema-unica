@@ -83,7 +83,7 @@ $numLinhasTotal2 = $execConnection2->num_rows;
     <div class="sidebar" id="sidebar">
 
         <ul class="nav-options">
-            <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li>
+            <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
             <li><a href="../incluir_cotacao/incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
             <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>

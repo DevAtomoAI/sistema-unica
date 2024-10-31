@@ -52,11 +52,11 @@ $numLinhasTotal = $execConnection->num_rows;
         </div>
         <ul class="nav-options">
 
-            <li>
+            <!-- <li>
                 <a href="../dados/dados.php">
                     <img src="../imgs/dados.svg"> Meus dados
                 </a>
-            </li>
+            </li> -->
 
             <li>
                 <a href="../incluir_cotacao/incluir.php">

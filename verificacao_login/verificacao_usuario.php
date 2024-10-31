@@ -11,14 +11,14 @@ function verificaLogin($email, $senha, $rememberUsuario, $conexao) {
     $stmt->bind_param("ss", $email, $senha); // "s" para string
     $stmt->execute();
     $result = $stmt->get_result();
-    $valuesTable = $result->num_rows;
 
     // Verifica se o usuário existe e se a senha está correta
-    if ($valuesTable > 0) {
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
         // Definir variáveis de sessão
-        $_SESSION['nameLoggedUser'] = $valuesTable['nome'];
+        $_SESSION['nameLoggedUser'] = $row['nome'];
         $_SESSION['emailLoggedUser'] = $email;
-        $_SESSION['idOrgaoPublico'] = $valuesTable['id_usuarios_orgao_publico'];
+        $_SESSION['idOrgaoPublico'] = $row['id_usuarios_orgao_publico'];
 
         // Definir cookie se "Lembrar-me" estiver marcado
         if ($rememberUsuario) {
