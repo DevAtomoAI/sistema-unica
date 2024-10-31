@@ -7,14 +7,14 @@ $senha = $_POST['senha'];
 $rememberUsuario = isset($_POST['remember']);
 function verificaLogin($email, $senha, $rememberUsuario, $conexao) {
     // Usando prepared statement para evitar SQL Injection
-    $stmt = $conexao->prepare("SELECT * FROM usuarios_orgao_publico WHERE email = ?");
-    $stmt->bind_param("s", $email); // "s" para string
+    $stmt = $conexao->prepare("SELECT * FROM usuarios_orgao_publico WHERE email = ? AND senha=?");
+    $stmt->bind_param("ss", $email, $senha); // "s" para string
     $stmt->execute();
     $result = $stmt->get_result();
-    $valuesTable = $result->fetch_assoc();
+    $valuesTable = $result->num_rows;
 
     // Verifica se o usuário existe e se a senha está correta
-    if ($valuesTable && password_verify($senha, $valuesTable['senha'])) {
+    if ($valuesTable > 0) {
         // Definir variáveis de sessão
         $_SESSION['nameLoggedUser'] = $valuesTable['nome'];
         $_SESSION['emailLoggedUser'] = $email;

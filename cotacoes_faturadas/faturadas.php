@@ -147,8 +147,6 @@ $numLinhasAprovadas = $execConnectionFaturadas->num_rows;
                     ?>
                 </tbody>
             </table>
-            <button> Aprovar </button>            
-            <button> Reprovar </button>
         </div>
     </div>
 </body>
