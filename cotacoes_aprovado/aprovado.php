@@ -96,7 +96,7 @@ $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <img src="../imgs/Doorbell.svg">
+                <?= $numLinhasAprovadas ?><img src="../imgs/Doorbell.svg">
             </div>
 
             <div class="user-name">

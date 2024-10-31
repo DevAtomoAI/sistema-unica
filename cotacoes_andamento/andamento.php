@@ -97,12 +97,12 @@ $numLinhasTotal2 = $execConnection2->num_rows;
     <header class="top-bar">
         <div class="left-icons">
             <div class="menu-icon" id="menuBtn">
-                <a> <img src="../imgs/menu.svg"> </a>
+                <a><img src="../imgs/menu.svg"> </a>
             </div>
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
-            <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
+            <div class="notification-icon"> <?= $numLinhasTotal ?><img src="../imgs/Doorbell.svg"></div>
 
             <div class="user-name">
                 <p><?= $nomeUsuario; ?></p>
