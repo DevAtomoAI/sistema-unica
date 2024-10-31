@@ -12,6 +12,7 @@ checkUserLoggedIn();
 
 $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+$idVeiculosInclusosOrgaoPublico;
 
 
 $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida'  AND id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
@@ -28,7 +29,7 @@ $numLinhasTotal = $execConnection->num_rows;
 // Criar o array de cotações
 $cotacoes = [];
 while ($user_data = mysqli_fetch_assoc($execConnection)) {
-    
+    $idVeiculosInclusosOrgaoPublico = $user_data['id_infos_veiculos_inclusos'];
     $cotacoes[] = [
         'id' => $user_data['id_infos_veiculos_inclusos'],
         'veiculo' => $user_data['veiculo'],
@@ -43,13 +44,22 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
         'fornecedor' => $user_data['fornecedor'],
         'responsavel' => $user_data['responsavel'],
         'placa' => $user_data['placa'],
-        'propostas' => $user_data['propostas'],
+        'justificativa' => $user_data['justificativa'],
         'anoVeiculo' => $user_data['ano_veiculo']
+        // 'idVeiculoInclusoOrgaoPublico' => $user_data['id_infos_veiculos_inclusos']
+
     ];
+
+
 }
 
 // Passar as cotações para o JavaScript
 echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
+
+$selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico=$idVeiculosInclusosOrgaoPublico";
+$execConnection2 = $conexao->query($selectTable2);
+$numLinhasTotal2 = $execConnection2->num_rows;
+
 ?>
 
 <!DOCTYPE html>
@@ -138,11 +148,12 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <table>
                 <thead>
                     <tr>
-                    <th>Nº</th>
+                        <th>Nº</th>
                         <th>Veiculo</th>
                         <th>Modelo</th>
                         <th>Centro de Custo</th>
                         <th>Justificativa</th>
+                        <th>Propostas</th>
                         <th>Data de Abertura</th>
                         <th>Opções</th>
                     </tr>
@@ -158,7 +169,8 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                             echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
+                            echo "<td class='resultadosTabela'>" . $cotacao['justificativa'] . "</td>";
+                            echo "<td class='resultadosTabela'>".$numLinhasTotal2."</td>";
                             echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
                             echo "<td class='resultadosTabela'>
                                   <form method='POST' action='configs_andamento.php'>

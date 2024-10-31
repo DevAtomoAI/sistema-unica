@@ -3,62 +3,59 @@
 include_once('../database/config.php');
 session_start();
 
+// Verifica se as variáveis de sessão estão definidas
+
 $idVeiculoEscolhido = $_SESSION['idVeiculoEscolhido'];
 $usuarioLogado = $_SESSION['nameLoggedUser'];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
 function acessaValoresBD($conexao, $idVeiculoEscolhido)
 {
+    $idVeiculoEscolhido = mysqli_real_escape_string($conexao, $idVeiculoEscolhido);
     $selectTabelaInfos = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhido'";
     $execConnectionInfos = $conexao->query($selectTabelaInfos);
 
-    if (mysqli_num_rows($execConnectionInfos) > 0) {
-        // Caso existam resultados, salvar os valores na sessão
+    if ($execConnectionInfos && mysqli_num_rows($execConnectionInfos) > 0) {
         while ($user_data = mysqli_fetch_assoc($execConnectionInfos)) {
-            $_SESSION['responsavelAtual'] = $user_data['responsavel'];
-            $_SESSION['fornecedor'] = $user_data['fornecedor'];
-            $_SESSION['veiculo'] = $user_data['veiculo'];
-            $_SESSION['placa'] = $user_data['placa'];
-            $_SESSION['centroCusto'] = $user_data['centro_custo'];
+            $_SESSION['responsavelAtual'] = htmlspecialchars($user_data['responsavel']);
+            $_SESSION['fornecedor'] = htmlspecialchars($user_data['fornecedor']);
+            $_SESSION['veiculo'] = htmlspecialchars($user_data['veiculo']);
+            $_SESSION['placa'] = htmlspecialchars($user_data['placa']);
+            $_SESSION['centroCusto'] = htmlspecialchars($user_data['centro_custo']);
             $_SESSION['kmAtual'] = intval($user_data['km_atual']);
-            $_SESSION['modelo'] = $user_data['modelo_contratacao'];
-            $_SESSION['tipoSolicitacao'] = $user_data['tipo_solicitacao'];
-            $_SESSION['planoManutencao'] = $user_data['plano_manutencao'];
-            $_SESSION['modeloContratacao'] = $user_data['modelo_contratacao'];
-            $_SESSION['dataAbertura'] = $user_data['data_abertura'];
-            $_SESSION['dataFinal'] = $user_data['data_final'];
-            $_SESSION['cpfCNPJProprietario'] = $user_data['identificacao_cpf_cnpj'];
-            $_SESSION['arrendatario'] = $user_data['arrendatario'];
-            $_SESSION['inscricaoEstadual'] = $user_data['inscricao_estadual'];
-            $_SESSION['subunidade'] = $user_data['subunidade'];
-
-
+            $_SESSION['modelo'] = htmlspecialchars($user_data['modelo_contratacao']);
+            $_SESSION['tipoSolicitacao'] = htmlspecialchars($user_data['tipo_solicitacao']);
+            $_SESSION['planoManutencao'] = htmlspecialchars($user_data['plano_manutencao']);
+            $_SESSION['modeloContratacao'] = htmlspecialchars($user_data['modelo_contratacao']);
+            $_SESSION['dataAbertura'] = htmlspecialchars($user_data['data_abertura']);
+            $_SESSION['dataFinal'] = htmlspecialchars($user_data['data_final']);
+            $_SESSION['cpfCNPJProprietario'] = htmlspecialchars($user_data['identificacao_cpf_cnpj']);
+            $_SESSION['arrendatario'] = htmlspecialchars($user_data['arrendatario']);
+            $_SESSION['inscricaoEstadual'] = htmlspecialchars($user_data['inscricao_estadual']);
+            $_SESSION['subunidade'] = htmlspecialchars($user_data['subunidade']);
         }
 
-        // Redirecionar para 'gerenciar.php' se dados foram encontrados
         header('Location: gerenciar.php');
+        exit();
+    } else {
+        // Tratar o caso onde não há resultados ou a consulta falhou
+        echo "Erro ao acessar dados do veículo.";
     }
-    exit();
 }
 
 function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
 {
-    $responsavelAtual = $_POST['responsavelAtual'];
-    $fornecedor = $_POST['fornecedor'];
-    $veiculo = $_POST['veiculo'];
-    $placa = $_POST['placa'];
-    $centroCusto = $_POST['centroCusto'];
-    $kmAtual = $_POST['kmAtual'];
-    $tipoSolicitacao = $_POST['tipoSolicitacao'];
-    $planoManutencao = $_POST['planoManutencao'];
-    $modeloContratacao = $_POST['modelo'];
-    $dataAbertura = $_POST['dataAbertura'];
-    $dataFinal = $_POST['dataFinal'];
-
-    $identificacaoCPF_CNPJ = $_POST['identificacaoCPF_CNPJ'];
-    $arrendatario = $_POST['arrendatario'];
-    $inscricaoEstadual = $_POST['inscricaoEstadual'];
-    $subunidade = $_POST['subunidade'];
+    $responsavelAtual = mysqli_real_escape_string($conexao, $_POST['responsavelAtual']);
+    $fornecedor = mysqli_real_escape_string($conexao, $_POST['fornecedor']);
+    $veiculo = mysqli_real_escape_string($conexao, $_POST['veiculo']);
+    $placa = mysqli_real_escape_string($conexao, $_POST['placa']);
+    $centroCusto = mysqli_real_escape_string($conexao, $_POST['centroCusto']);
+    $kmAtual = intval($_POST['kmAtual']);
+    $tipoSolicitacao = mysqli_real_escape_string($conexao, $_POST['tipoSolicitacao']);
+    $planoManutencao = mysqli_real_escape_string($conexao, $_POST['planoManutencao']);
+    $modeloContratacao = mysqli_real_escape_string($conexao, $_POST['modelo']);
+    $dataAbertura = mysqli_real_escape_string($conexao, $_POST['dataAbertura']);
+    $dataFinal = mysqli_real_escape_string($conexao, $_POST['dataFinal']);
 
     $atualizaInfosVeiculos = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
                     veiculo = '$veiculo', 
@@ -71,18 +68,23 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
                     tipo_solicitacao = '$tipoSolicitacao', 
                     fornecedor = '$fornecedor', 
                     responsavel = '$responsavelAtual', 
-                    placa = '$placa',
-                    identificacao_cpf_cnpj = '$identificacaoCPF_CNPJ', 
-                    arrendatario = '$arrendatario', 
-                    inscricao_estadual = '$inscricaoEstadual', 
-                    subunidade = '$subunidade'
+                    placa = '$placa' 
                     WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhido'");
+
+    if (!$atualizaInfosVeiculos) {
+        echo "Erro ao atualizar os dados: " . mysqli_error($conexao);
+    }
 }
 
 function mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, $condicao) {
+    $idOrgaoPublicoLogado = mysqli_real_escape_string($conexao, $idOrgaoPublicoLogado);
     $mudaEstadoCotacaoOficina = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
     opcao_aprovada_reprovada_oficina = '$condicao'
     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' AND opcao_aprovada_reprovada_oficina='Respondida'");
+
+    if (!$mudaEstadoCotacaoOficina) {
+        echo "Erro ao mudar o estado da cotação: " . mysqli_error($conexao);
+    }
 }
 
 if (isset($_POST['atualizaValoresBD'])) {
@@ -90,6 +92,7 @@ if (isset($_POST['atualizaValoresBD'])) {
     header('Location:../cotacoes_andamento/andamento.php');
     exit();
 }
+
 if (isset($_POST['naoAtualizaValoresBD'])) {
     header('Location:../cotacoes_andamento/andamento.php');
     exit();
@@ -107,4 +110,5 @@ if(isset($_POST["cancelaCotacaoOficina"])) {
     exit();
 }
 
+// Acessa valores do banco de dados
 acessaValoresBD($conexao, $idVeiculoEscolhido);

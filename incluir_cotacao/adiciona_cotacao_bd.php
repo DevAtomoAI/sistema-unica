@@ -20,14 +20,14 @@ function adicionarValoresBD($conexao){
     $modeloContratacao = $_POST['modelo-contratacao'];
     $placa = $_POST['placa'];
     $anoVeiculo = $_POST['anoVeiculo'];
-    $propostas = $_POST['propostas'];
+    $justificativa = $_POST['justificativa'];
     $idOrgaoPublico = $_SESSION['idOrgaoPublico'];
 
 
     $insertValuesTable  = mysqli_query($conexao, "INSERT INTO infos_veiculos_inclusos 
-    (id_orgao_publico, veiculo, modelo_veiculo, km_atual, ano_veiculo, plano_manutencao, modelo_contratacao, data_abertura, data_final, centro_custo, tipo_solicitacao, fornecedor, responsavel, placa, propostas)  
+    (id_orgao_publico, veiculo, modelo_veiculo, km_atual, ano_veiculo, plano_manutencao, modelo_contratacao, data_abertura, data_final, centro_custo, tipo_solicitacao, fornecedor, responsavel, placa, justificativa)  
     VALUES 
-    ('$idOrgaoPublico', '$veiculo', '$modeloVeiculo', '$kmAtual', '$anoVeiculo', '$planoManutencao', '$modeloContratacao', '$dataAbertura', '$dataFinal', '$centroCusto', '$tipoSolicitacao', '$fornecedor', '$responsavel', '$placa', '$propostas')");
+    ('$idOrgaoPublico', '$veiculo', '$modeloVeiculo', '$kmAtual', '$anoVeiculo', '$planoManutencao', '$modeloContratacao', '$dataAbertura', '$dataFinal', '$centroCusto', '$tipoSolicitacao', '$fornecedor', '$responsavel', '$placa', '$justificativa')");
 
     header('Location: incluir.php');
 
