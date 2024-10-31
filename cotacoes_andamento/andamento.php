@@ -17,13 +17,12 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina=' ' ORDER BY id_infos_veiculos_inclusos ASC";
 
-if (isset($_SESSION['filtrosPesquisaEmAndamento']) || !empty($_SESSION['filtrosPesquisaEmAndamento'])) {
-    $selectTable = $_SESSION['filtrosPesquisaEmAndamento'];
-} 
-
-$_SESSION['filtrosPesquisaEmAndamento'] = null;
+if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
+    $selectTable = $_SESSION['filtrosPesquisa'];
+} else {
+}
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
@@ -53,7 +52,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
         <ul class="nav-options">
             <h1 class="side-bar-title">COTAÇÕES</h1>
             <li>
-                <a id="opcaoAndamento" href="#emAndamento">
+                <a id="opcaoAndamento">
                     <img src="../assets/clock.svg"> Em andamento
                 </a>
             </li>
@@ -70,12 +69,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php" >
+                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php">
+                <a id='opcaoReprovado' href="#reprovado" data-target='cotacoesReprovadas'>
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
@@ -85,12 +84,14 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li> 
+            <div class="logotype"> 
+                <img src="../assets/biglogo.svg">
+            </div>
         </ul>
-        <img id='logo-side-bar' src="../assets/logo.svg" alt="">
     </div>
 
     <!-- Barra Superior -->
@@ -159,10 +160,11 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="pesquisaValoresEmAndamento" id="pesquisaValoresEmAndamento"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>
+
 
             <div class="resultSearch">
                 <?php echo "<p id='resultsFound'>Foram encontrado(s) " . $numLinhasTotal . " serviço(s)</p>" ?>
@@ -194,6 +196,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
                                 echo "<td class='resultadosTabela' >
                                     <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoGerenciar' name='botaoGerenciar' class='botaoGerenciar'>Gerenciar</button>
+                                    <br>
                                     <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoRejeitado' name='botaoRejeitado' class='botaoRejeitado'>Rejeitar</button>
                                 </td>";
                                 echo "</tr>";
@@ -205,7 +208,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
             </div>
     </div>
 
-    <!-- <script src="../script.js"></script> -->
+    <script src="../script.js"></script>
 
 </body>
 

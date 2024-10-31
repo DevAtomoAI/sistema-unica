@@ -1,9 +1,8 @@
 <?php
 session_start();
-include_once('../database/config.php');
+include_once('../database/config.php') ;
 
-function checkUserLoggedIn()
-{
+function checkUserLoggedIn() {
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -12,21 +11,18 @@ function checkUserLoggedIn()
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
 
-function executeQuery($connectionDB, $query)
-{
+function executeQuery($connectionDB, $query) {
     $stmt = $connectionDB->prepare($query);
     $stmt->execute();
     return $stmt->get_result();
 }
 
-$selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
 
-
-if (isset($_SESSION['filtrosPesquisaRejeitadas']) || !empty($_SESSION['filtrosPesquisaRejeitadas'])) {
-    $selectTableRejeitadas = $_SESSION['filtrosPesquisaRejeitadas'];
+if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
+    $selectTableRejeitadas = $_SESSION['filtrosPesquisa'];
+} else {
 }
-
-$_SESSION['filtrosPesquisaRejeitadas'] = null;
+$selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
 
 $execConnection = executeQuery($connectionDB, $selectTableRejeitadas);
 $numLinhasTotal = $execConnection->num_rows;
@@ -56,7 +52,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
         <ul class="nav-options">
             <h1 class="side-bar-title">COTAÇÕES</h1>
             <li>
-                <a id='opcaoEmAndamento' href="../cotacoes_andamento/andamento.php">
+                <a id='opcaoEmAndamento' href="../cotacoes_andamento/andamento.php" >
                     <img src="../assets/clock.svg"> Em andamento
                 </a>
             </li>
@@ -73,12 +69,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php">
+                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php">
+                <a id='opcaoReprovado' href="#reprovado" data-target='cotacoesReprovadas'>
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
@@ -88,10 +84,15 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php">
+                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li>
+
+            <div class="logotype"> 
+                <img src="../assets/biglogo.svg">
+            </div>
+
         </ul>
         <img id='logo-side-bar' src="../assets/logo.svg" alt="">
     </div>
@@ -162,7 +163,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn" idtype="submit" name="procuraValoresRejeitadas" id="procuraValoresRejeitadas"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>
@@ -181,6 +182,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                                 <th class='titulosTabela'>Ano</th>
                                 <th class='titulosTabela'>Centro custo</th>
                                 <th class='titulosTabela'>Tipo Solicitação</th>
+                                <th class='titulosTabela'>Opções</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -194,6 +196,9 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                                 echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
+                                echo "<td class='resultadosTabela' >
+                                <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoGerenciar' name='botaoGerenciar' class='botaoGerenciar'>Gerenciar</button>
+                            </td>";
                                 echo "</tr>";
                             }
                             ?>
@@ -203,7 +208,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
             </div>
     </div>
 
-    <!-- <script src="../script.js"></script> -->
+    <script src="../script.js"></script>
 
 </body>
 

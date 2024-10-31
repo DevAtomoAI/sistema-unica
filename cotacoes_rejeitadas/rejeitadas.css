@@ -15,8 +15,19 @@ body {
     margin-right: 0;
 }
 
+.botaoGerenciar {
+    background-color: #4CAF50; /* Cor verde */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
 .top-bar {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -30,7 +41,6 @@ body {
 }
 
 .user-icon {
-    color: black;
     display: flex; /* Utiliza Flexbox para alinhar o conteúdo */
     align-items: center; /* Alinha verticalmente no centro */
     /* overflow: hidden; Evita que o conteúdo transborde */
@@ -56,6 +66,11 @@ body {
 .left-icons, .right-icons {
     display: flex;
     align-items: center;
+}
+
+.logotype{
+    margin-top: 150px;
+    margin-left: 30px;
 }
 
 .left-icons .menu-icon, .right-icons .notification-icon, .right-icons .user-icon, .left-icons .logo {
@@ -167,50 +182,39 @@ td:last-child {
     text-align: center;
 }
 
-
-/* Estilização do botão "Gerenciar" - Verde */
-.botaoGerenciar {
-    background-color: #4CAF50; /* Cor verde */
-    color: white;
-    padding: 10px 15px;
+.btn {
+    padding: 5px 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.botaoGerenciar:hover {
-    background-color: #45a049; /* Cor verde escuro no hover */
-    transform: scale(1.05); /* Leve aumento no hover */
-}
-
-.botaoGerenciar:active {
-    transform: scale(0.95); /* Efeito de clique */
-}
-
-/* Estilização do botão "Rejeitar" - Vermelho */
-.botaoRejeitado {
-    background-color: #f44336; /* Cor vermelha */
+.btn.orcar {
+    background-color: #4CAF50;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.botaoRejeitado:hover {
-    background-color: #d32f2f; /* Cor vermelha escura no hover */
-    transform: scale(1.05); /* Leve aumento no hover */
+.btn.rejeitar {
+    background-color: #f44336;
+    color: white;
 }
 
-.botaoRejeitado:active {
-    transform: scale(0.95); /* Efeito de clique */
+.btn:hover {
+    opacity: 0.9;
 }
 
 
+/* Overlay para escurecer o restante do site */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 5;
+}
 
 /* Barra lateral */
 .sidebar {
@@ -263,6 +267,15 @@ a img {
     background-color: #141434;
 }
 
+/* Botão de fechar */
+.sidebar-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 /* Ícone de menu (três linhas) */
 #menuBtn {
     font-size: 30px;
@@ -281,7 +294,6 @@ a img {
 }
 
 .notification-icon{
-    padding-top: 3px;
     cursor: pointer;
 }
 
@@ -379,6 +391,7 @@ a img {
     font-size: 24px;
     cursor: pointer;
 }
+
 
 /* Corpo da pagina */
 .styleCotacoesOpcoes{

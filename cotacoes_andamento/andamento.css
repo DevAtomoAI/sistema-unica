@@ -180,6 +180,11 @@ td:last-child {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+.logotype{
+    margin-top: 150px;
+    margin-left: 30px;
+}
+
 .botaoGerenciar:hover {
     background-color: #45a049; /* Cor verde escuro no hover */
     transform: scale(1.05); /* Leve aumento no hover */

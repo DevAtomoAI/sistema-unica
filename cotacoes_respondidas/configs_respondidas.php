@@ -32,12 +32,12 @@ function applyCotacaoFilters($connectionDB) {
     }
 
     $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE $whereClause $orderByClause";
-    $_SESSION['filtrosPesquisaRespondidas'] = $selectTable;
+    $_SESSION['filtrosPesquisa'] = $selectTable;
     header('Location: respondidas.php');
 }
 
 
-if(isset($_POST['procuraValoresRespondidas'])){
+if(isset($_POST['searchValuesOnGoing'])){
     applyCotacaoFilters($connectionDB);
 }
 

@@ -16,7 +16,7 @@ body {
 }
 
 .top-bar {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -29,8 +29,23 @@ body {
     z-index: 10;
 }
 
+.logotype{
+    margin-top: 150px;
+    margin-left: 30px;
+}
+
+.botaoGerenciar {
+    background-color: #4CAF50; /* Cor verde */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
 .user-icon {
-    color: black;
     display: flex; /* Utiliza Flexbox para alinhar o conteúdo */
     align-items: center; /* Alinha verticalmente no centro */
     /* overflow: hidden; Evita que o conteúdo transborde */
@@ -167,50 +182,39 @@ td:last-child {
     text-align: center;
 }
 
-
-/* Estilização do botão "Gerenciar" - Verde */
-.botaoGerenciar {
-    background-color: #4CAF50; /* Cor verde */
-    color: white;
-    padding: 10px 15px;
+.btn {
+    padding: 5px 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.botaoGerenciar:hover {
-    background-color: #45a049; /* Cor verde escuro no hover */
-    transform: scale(1.05); /* Leve aumento no hover */
-}
-
-.botaoGerenciar:active {
-    transform: scale(0.95); /* Efeito de clique */
-}
-
-/* Estilização do botão "Rejeitar" - Vermelho */
-.botaoRejeitado {
-    background-color: #f44336; /* Cor vermelha */
+.btn.orcar {
+    background-color: #4CAF50;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.botaoRejeitado:hover {
-    background-color: #d32f2f; /* Cor vermelha escura no hover */
-    transform: scale(1.05); /* Leve aumento no hover */
+.btn.rejeitar {
+    background-color: #f44336;
+    color: white;
 }
 
-.botaoRejeitado:active {
-    transform: scale(0.95); /* Efeito de clique */
+.btn:hover {
+    opacity: 0.9;
 }
 
 
+/* Overlay para escurecer o restante do site */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 5;
+}
 
 /* Barra lateral */
 .sidebar {
@@ -263,6 +267,15 @@ a img {
     background-color: #141434;
 }
 
+/* Botão de fechar */
+.sidebar-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 /* Ícone de menu (três linhas) */
 #menuBtn {
     font-size: 30px;
@@ -281,7 +294,6 @@ a img {
 }
 
 .notification-icon{
-    padding-top: 3px;
     cursor: pointer;
 }
 
@@ -378,6 +390,15 @@ a img {
     color: white;
     font-size: 24px;
     cursor: pointer;
+}
+/* Quando a barra lateral for aberta */
+.sidebar.open {
+    left: 0; /* Mostra a barra lateral */
+}
+
+/* Quando o overlay estiver ativo */
+.overlay.active {
+    display: block;
 }
 
 /* Corpo da pagina */
@@ -477,7 +498,48 @@ a img {
     transition: 500ms;
     transform: scale(1.1); 
 }
+/* Estilos para mobile */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
 
+    .form-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    .form-group select, .form-group input, .form-group textarea, .btn-confirmar {
+        width: 100%; /* Ajustar largura dos campos e botão */
+        margin-bottom: 15px; /* Espaçamento entre os campos no mobile */
+    }
+
+    .mobile-header {
+        display: flex;
+    }
+
+    .sidebar {
+        display: none; /* Esconder no mobile */
+    }
+
+    .sidebar.active {
+        display: block; /* Mostrar quando ativo */
+        position: absolute;
+        z-index: 999;
+        width: 250px;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: #003150;
+        padding: 20px;
+    }
+}
 .text-menu {
     margin-top: 30px;
 }

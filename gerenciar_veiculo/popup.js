@@ -1,8 +1,8 @@
 let contadorPecas = 1
 let contadorServicos = 1;
 
-let contadorLacoServicos = 1;
-let contadorLacoPecas = 1;
+let contadorLacoServicos = 1; 
+let contadorLacoPecas = 1; 
 
 // let maiorValor;
 
@@ -23,18 +23,10 @@ function abrirPopUp() {
     window.open("popup.php", "popupWindow", "width=600,height=400,scrollbars=yes");
 }
 
-function fechaPopUp() {
+function fechaPopUp(){
     window.close("popup.php");
-    window.addEventListener("storage", (event) => {
-        if (event.key === "reloadPage" && event.newValue === "true") {
-            window.location.reload();
-        }
-    });
+    // window.open("gerenciar.php");
 
-    localStorage.setItem("reloadPage", "true");
-
-    // Remove o valor para permitir futuros reloads
-    localStorage.removeItem("reloadPage");
 }
 
 function adicionarLinhaPeças() {
@@ -113,10 +105,7 @@ function enviaValoresBD() {
             var valorUNPecas = parseFloat(document.getElementById('valor_un' + contadorLaco)?.value) || 0;
             var quantidadePecas = parseInt(document.getElementById('quantidade' + contadorLaco)?.value) || 0;
             var marcaPecas = document.getElementById('marca' + contadorLaco)?.value || '';
-            var valorTotalPecas = (valorUNPecas * quantidadePecas) + (36.6 / 100);
-
-            console.log(typeof (valorUNPecas))
-            console.log(valorUNPecas)
+            var valorTotalPecas = (valorUNPecas * quantidadePecas) * (36.6 / 100);
 
             // Adiciona os dados das peças ao array
             pecas.push({
@@ -134,7 +123,7 @@ function enviaValoresBD() {
             var descricaoServico = document.getElementById('descricao_servico' + contadorLaco)?.value || '';
             var valorUNServicos = parseFloat(document.getElementById('valor_unitario' + contadorLaco)?.value) || 0;
             var quantidadeServicos = parseInt(document.getElementById('quantidade_servico' + contadorLaco)?.value) || 0;
-            var valorTotalServicos = (valorUNServicos * quantidadeServicos) + (36.6 / 100);
+            var valorTotalServicos = (valorUNServicos * quantidadeServicos) * (36.6 / 100);
 
             // Adiciona os dados dos serviços ao array
             servicos.push({
@@ -147,6 +136,10 @@ function enviaValoresBD() {
 
         contadorLaco++; // Incrementa o contador
     }
+
+    // Verificar o conteúdo dos arrays antes de enviar
+    console.log('Peças:', pecas);
+    console.log('Serviços:', servicos);
 
     // Após o laço, faz uma única requisição AJAX enviando todos os dados
     $.ajax({
@@ -162,6 +155,8 @@ function enviaValoresBD() {
         success: function (retorno) {
             alert('Valores salvos com sucesso');
             // window.location.reload();
+
+
         },
         error: function (a, b, c) {
             console.log('Erro: ' + a.status + ' ' + c);

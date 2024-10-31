@@ -15,15 +15,12 @@ $usuarioCookie = (isset($_COOKIE['cookieLoginUser'])) ? $_COOKIE['cookieLoginUse
     <header class="top-bar">
         <div class="left-icons">
             <div class="logo">
-                <img src="assets/minilogo.svg" alt="">
             </div>
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <img src="assets/Doorbell.svg" alt="">
             </div>
             <div class="user-icon">
-                <img src="assets/user.svg" alt="">
             </div>
         </div>
     </header>
@@ -52,10 +49,9 @@ $usuarioCookie = (isset($_COOKIE['cookieLoginUser'])) ? $_COOKIE['cookieLoginUse
                         </label>
                         <!-- <a href="../forgot_password/forgot_password.php">Esqueceu a senha?</a> -->
                     </div>
-                    <button type="submit" name="submitLogin" id="submitLogin">Sign In</button>
+                    <button type="submit" name="submitLogin" id="submitLogin">Entrar</button>
                 </form>
                 <br>
-                <p class="txt">Não tem uma conta? <a href="create_account/create_account.php"> Sign Up </a></p>
             </div>
         </div>
     </div>

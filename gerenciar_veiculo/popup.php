@@ -3,7 +3,6 @@ include_once("../database/config.php");
 session_start();
 
 $nomeOrgaoPublico = $_SESSION['nomeOrgaoPublico'];
-
 $idVeiculoGerenciar = $_SESSION['idVeiculoGerenciar'];
 $veiculo = $_SESSION['veiculo'];
 $modeloVeiculo = $_SESSION['modeloVeiculo'];
@@ -14,6 +13,8 @@ $centroCusto = $_SESSION['centroCusto'];
 $planoManutencao = $_SESSION['planoManutencao'];
 $fornecedor = $_SESSION['fornecedor'];
 $modeloContratacao = $_SESSION['modeloContratacao'];
+$valorTotalServicos = $_SESSION['valorTotalServicos']; 
+$valorTotalPecas = $_SESSION['valorTotalPecas'];
 
 ?>
 
@@ -25,10 +26,9 @@ $modeloContratacao = $_SESSION['modeloContratacao'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orçamento</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-    <script src="popup.js"></script>
     <link rel="stylesheet" href="popup.css">
-
+    
+    <script src="popup.js"></script>
 </head>
 
 <body>
@@ -99,11 +99,8 @@ $modeloContratacao = $_SESSION['modeloContratacao'];
     </table>
     <br>
     <br>
-
     <button name="confirmaCotacao" onclick="enviaValoresBD()">Confirmar</button>
     <button onclick="fechaPopUp()" name="voltarGerenciar">Voltar</button>
-
-
 
 </body>
 
