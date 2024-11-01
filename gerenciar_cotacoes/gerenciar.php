@@ -108,7 +108,8 @@ $valores = [
                 </thead>
                 <tbody>
                     <?php
-                    $selectOrgaoPublicoCotado = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = ? AND orcamento_aprovado_reprovado != 'Aprovada' AND id_orgao_publico=?";
+                    $selectOrgaoPublicoCotado = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = ? 
+                    AND orcamento_aprovado_reprovado != 'Aprovada' AND orcamento_aprovado_reprovado != 'Cancelada' AND id_orgao_publico=?";
                     $stmt = $conexao->prepare($selectOrgaoPublicoCotado);
                     $stmt->bind_param("ii", $idVeiculoEscolhido, $idOrgaoPublicoLogado);
                     $stmt->execute();

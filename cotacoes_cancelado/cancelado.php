@@ -31,7 +31,8 @@ $numLinhasTotal = $execConnection->num_rows;
 
 if ($idVeiculosInclusosOrgaoPublico) {
     $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'";
+                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'
+                AND orcamento_aprovado_reprovado!='Cancelada'";
     $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
 
     $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
