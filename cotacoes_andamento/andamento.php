@@ -2,31 +2,34 @@
 session_start();
 include_once("../database/config.php");
 
-// Verificar se o usuário está logado
-if (empty($_SESSION['emailLoggedUser'])) {
-    header('Location: ../index.php');
-    exit;
+function checkUserLoggedIn()
+{
+    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
+        header('Location: ../index.php');
+        exit;
+    }
 }
+checkUserLoggedIn();
 
 $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
-// Definir consulta com ou sem filtros
-$selectTable = $_SESSION['filtrosPesquisa'] ??
-    "SELECT * FROM infos_veiculos_inclusos 
-     WHERE (opcao_aprovada_reprovada_oficina = '' OR opcao_aprovada_reprovada_oficina = 'Respondida') 
-     AND id_orgao_publico = '$idOrgaoPublicoLogado' 
-     ORDER BY id_infos_veiculos_inclusos ASC";
+
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida'  AND id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
+
+if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
+    $selectTable = $_SESSION['filtrosPesquisa'];
+}
 
 $_SESSION['filtrosPesquisa'] = null;
 
-// Executar consulta principal
 $execConnection = $conexao->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
 
-// Criar array de cotações
+// Criar o array de cotações
 $cotacoes = [];
-while ($user_data = $execConnection->fetch_assoc()) {
+while ($user_data = mysqli_fetch_assoc($execConnection)) {
+    $idVeiculosInclusosOrgaoPublico = $user_data['id_infos_veiculos_inclusos'];
     $cotacoes[] = [
         'id' => $user_data['id_infos_veiculos_inclusos'],
         'veiculo' => $user_data['veiculo'],
@@ -43,16 +46,17 @@ while ($user_data = $execConnection->fetch_assoc()) {
         'placa' => $user_data['placa'],
         'justificativa' => $user_data['justificativa'],
         'anoVeiculo' => $user_data['ano_veiculo']
+        // 'idVeiculoInclusoOrgaoPublico' => $user_data['id_infos_veiculos_inclusos']
+
     ];
 }
 
-// Executar consultas adicionais
 $idVeiculosInclusosOrgaoPublico = $cotacoes[0]['id'] ?? null;
 $_SESSION['idVeiculosInclusosOrgaoPublico'] = $idVeiculosInclusosOrgaoPublico;
 
 if ($idVeiculosInclusosOrgaoPublico) {
     $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                     WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico";
+                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'";
     $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
 
     $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
@@ -67,11 +71,6 @@ if ($idVeiculosInclusosOrgaoPublico) {
     $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
 }
 
-$selectTable5 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                 WHERE orcamento_aprovado_reprovado = '' 
-                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-$numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
-
 
 // Passar as cotações para o JavaScript
 echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
@@ -79,8 +78,8 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 // echo "Você tem ". $numLinhasTotal3 . " orçamento(s) para o veículo ". $nomeVeiculo;
 //mensagem que deve aparecer quando apertar no botao de notificação
 
-// echo $numLinhasTotal5;
-//no numerozinho, aparecera apenas $numLinhasTotal5
+// echo $numLinhasTotal2;
+//no numerozinho, aparecera apenas $numLinhasTotal2
 
 ?>
 
@@ -105,16 +104,13 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
     <div class="sidebar" id="sidebar">
 
         <ul class="nav-options">
-            <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li>
+            <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
             <li><a href="../incluir_cotacao/incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
             <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
             <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
             <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
-            <li><a href="../cotacoes_responder/responder.php"><img src=""> Responder</a></li>
-            <div class="logotype">
-                <img src="../imgs/biglogo.svg">
-            </div>
+
         </ul>
     </div>
 
@@ -122,12 +118,12 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
     <header class="top-bar">
         <div class="left-icons">
             <div class="menu-icon" id="menuBtn">
-                <a> <img src="../imgs/menu.svg"> </a>
+                <a><img src="../imgs/menu.svg"> </a>
             </div>
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
-            <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
+            <div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>
 
             <div class="user-name">
                 <p><?= $nomeUsuario; ?></p>
@@ -194,7 +190,8 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
                         echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
                         echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
-                        echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['justificativa'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $numLinhasTotal2 . "</td>";
                         echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
                         echo "<td class='resultadosTabela'>
                                   <form method='POST' action='configs_andamento.php'>

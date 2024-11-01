@@ -11,9 +11,10 @@ function checkUserLoggedIn()
 }
 checkUserLoggedIn();
 
-$nomeUsuario = $_SESSION["nameLoggedUser"];
-$idVeiculosInclusosOrgaoPublico = $_SESSION['idVeiculosInclusosOrgaoPublico'];
+
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+$nomeUsuario = $_SESSION["nameLoggedUser"];
+$idVeiculosInclusosOrgaoPublico = $_SESSION["idVeiculosInclusosOrgaoPublico"];
 
 $selectTableFaturadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Faturada Oficina'";
 
@@ -26,23 +27,25 @@ $_SESSION['filtrosPesquisaFaturadas'] = null;
 $execConnectionFaturadas = $conexao->query($selectTableFaturadas);
 $numLinhasAprovadas = $execConnectionFaturadas->num_rows;
 
-$selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+if ($idVeiculosInclusosOrgaoPublico) {
+    $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'";
+    $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
+
+    $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
                      WHERE orcamento_aprovado_reprovado = '' AND
                      id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
                      AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-$numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
+    $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
 
-$selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
-                WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
-                AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
-$nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
-
-$selectTable5 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                 WHERE orcamento_aprovado_reprovado = '' 
-                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-$numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
+    $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
+                     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
+                     AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
+    $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+}
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,14 +68,13 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
     <div class="sidebar" id="sidebar">
 
         <ul class="nav-options">
-            <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li>
+            <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
             <li><a href="../incluir_cotacao/incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
-            <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
+            <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
-            <li><a href=""><img src="../imgs/paper.svg"> Faturado</a></li>
+            <li><a href="#cotacoesFaturadas"><img src="../imgs/paper.svg"> Faturado</a></li>
             <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
-            <li><a href="../cotacoes_responder/responder.php"><img src=""> Responder</a></li>
-            <div class="logotype"> <img src="../imgs/biglogo.svg"></div>
+
         </ul>
     </div>
 
@@ -97,16 +99,16 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
 
     <!-- CONTEUDO PRINCIPAL -->
     <div class="main-content" id="main-content">
-        <h1 class="text-cotand">Faturado</h1>
+        <h1 class="text-cotand">Cotações Faturadas</h1>
 
         <!-- Barra de busca -->
         <div class="search-bar">
-            <form action="configs_andamento.php" method="POST">
+            <form action="configs_faturadas.php" method="POST">
                 <input name='palavra-chave' type="text" placeholder="Busca">
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Faturado Oficina' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
@@ -131,76 +133,42 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
             <table>
                 <thead>
                     <tr>
-                    <th>Nº</th>
-                        <th>Veiculo</th>
-                        <th>Modelo</th>
-                        <th>Centro de Custo</th>
-                        <th>Justificativa</th>
-                        <th>Data de Abertura</th>
-                        <th>Opções</th>
+                        <th>Nº</th>
+                        <!-- <th>Veiculo</th> -->
+                        <th>Oficina</th>
+                        <th>Fatura peças</th>
+                        <th>Fatura serviços</th>
+                        <!-- <th>Opção</th> -->
                     </tr>
                 </thead>
                 <tbody id="cotacoes-body">
                     <!-- Conteúdo da tabela será inserido dinamicamente -->
                     <?php
-                        foreach ($cotacoes as $cotacao) {
 
-                            echo "<tr>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['id'] . 
-                                "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
-                            echo "<td class='resultadosTabela'>
-                                  <form method='POST' action='inserir_faturas.php'>
-                                    <button name='button-option-aproved' class='btn-action btn-green' value='" . $cotacao['id'] . "'>
-                                        Gerenciar<i class='fas fa-check'></i>
-                                    </button>
-                                    </form>
-                            </td>";
-                            echo "</tr>";
+                        while ($userData = mysqli_fetch_assoc($execConnectionFaturadas)) {
+                            $idVeiculoIncluso = $userData['id_infos_veiculos_inclusos'];
+
+                            $selectTableFaturadas2 = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico='$idVeiculoIncluso'";
+
+                            $execConnectionFaturadas2 = $conexao->query($selectTableFaturadas2);
+
+                            while($userData2 = mysqli_fetch_assoc($execConnectionFaturadas2)){
+                                echo "<tr>";
+                                echo "<td class='resultadosTabela'>" . $userData['id_infos_veiculos_inclusos'] . "</td>";
+                                // echo "<td class='resultadosTabela'>" . $userData[] . "</td>";
+                                echo "<td class='resultadosTabela'>" . $userData2['nome_oficina_aprovado'] . "</td>";
+                                echo "<td class='resultadosTabela'><a href='faturasPecas.php?id=" . $userData2['id_veiculo_incluso_orgao_publico'] . "'> Fatura peças</a></td>";
+                                echo "<td class='resultadosTabela'> <a href='faturasServicos.php?id=" . $userData2['id_veiculo_incluso_orgao_publico'] . "'> Fatura serviço </a></td>";
+                                echo "</tr>";
+                            }
+
                         }
+
                     ?>
                 </tbody>
             </table>
         </div>
-
-        <!-- Estrutura do Pop-up -->
-        <div id="popup" class="popup" style="display: none;">
-            <div class="popup-content">
-                <span class="close-btn" onclick="fecharPopUp()">&times;</span>
-                <h3 class="popup-title">Informações</h3>
-                <div class="popup-details">
-                    <div class="popup-column">
-                        <p><strong>Veículo:</strong> <span id="veiculo"></span></p>
-                        <p><strong>Km Atual:</strong> <span id="kmAtual"></span></p>
-                        <p><strong>Plano de Manutenção:</strong> <span id="planoManutencao"></span></p>
-                        <p><strong>Placa:</strong> <span id="placa"></span></p>
-                        <p><strong>Ano veículo:</strong> <span id="anoVeiculo"></span></p>
-
-                    </div>
-                    <div class="popup-column">
-                        <p><strong>Modelo de Contratação:</strong> <span id="modeloContratacao"></span></p>
-                        <p><strong>Data de Abertura:</strong> <span id="dataAbertura"></span></p>
-                        <p><strong>Data de Recebimento:</strong> <span id="dataRecebimento"></span></p>
-                    </div>
-                    <div class="popup-column">
-                        <p><strong>Centro de Custo:</strong> <span id="centroCusto"></span></p>
-                        <p><strong>Tipo de Solicitação:</strong> <span id="tipoSolicitacao"></span></p>
-                        <p><strong>Fornecedor:</strong> <span id="fornecedor"></span></p>
-                        <p><strong>Responsável:</strong> <span id="responsavel"></span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Overlay para o pop-up -->
-        <div id="popup-overlay" class="popup-overlay" style="display: none;" onclick="fecharPopUp()"></div>
     </div>
-
-    <script src="faturada.js"></script>
 </body>
 
 </html>

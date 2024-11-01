@@ -29,10 +29,6 @@ function acessaValoresBD($conexao, $idVeiculoEscolhido)
             $_SESSION['modeloContratacao'] = htmlspecialchars($user_data['modelo_contratacao']);
             $_SESSION['dataAbertura'] = htmlspecialchars($user_data['data_abertura']);
             $_SESSION['dataFinal'] = htmlspecialchars($user_data['data_final']);
-            $_SESSION['cpfCNPJProprietario'] = htmlspecialchars($user_data['identificacao_cpf_cnpj']);
-            $_SESSION['arrendatario'] = htmlspecialchars($user_data['arrendatario']);
-            $_SESSION['inscricaoEstadual'] = htmlspecialchars($user_data['inscricao_estadual']);
-            $_SESSION['subunidade'] = htmlspecialchars($user_data['subunidade']);
         }
 
         header('Location: gerenciar.php');
@@ -76,11 +72,17 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
     }
 }
 
-function mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, $condicao) {
+function mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, $condicao, $idOrcamentoEscolhido)
+{
     $idOrgaoPublicoLogado = mysqli_real_escape_string($conexao, $idOrgaoPublicoLogado);
     $mudaEstadoCotacaoOficina = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
     opcao_aprovada_reprovada_oficina = '$condicao'
     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' AND opcao_aprovada_reprovada_oficina='Respondida'");
+
+    $mudaEstadoCotacaoOficina2 = mysqli_query($conexao, "UPDATE infos_veiculos_aprovados_oficina 
+SET orcamento_aprovado_reprovado = '$condicao' 
+WHERE id_veiculo_aprovado_oficina = '$idOrcamentoEscolhido' 
+AND id_orgao_publico = '$idOrgaoPublicoLogado'");
 
     if (!$mudaEstadoCotacaoOficina) {
         echo "Erro ao mudar o estado da cotação: " . mysqli_error($conexao);
@@ -98,14 +100,16 @@ if (isset($_POST['naoAtualizaValoresBD'])) {
     exit();
 }
 
-if(isset($_POST["aprovaCotacaoOficina"])){
-    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Aprovada');
+if (isset($_POST["aprovaCotacaoOficina"])) {
+    $idOrcamentoEscolhido = $_POST["aprovaCotacaoOficina"];
+    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Aprovada', $idOrcamentoEscolhido);
     header('Location: ../cotacoes_aprovado/aprovado.php');
     exit();
 }
 
-if(isset($_POST["cancelaCotacaoOficina"])) {
-    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Cancelada');
+if (isset($_POST["cancelaCotacaoOficina"])) {
+    $idOrcamentoEscolhido = $_POST["cancelaCotacaoOficina"];
+    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Cancelada', $idOrcamentoEscolhido);
     header('Location: ../cotacoes_cancelado/cancelado.php');
     exit();
 }

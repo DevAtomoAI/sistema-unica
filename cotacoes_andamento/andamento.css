@@ -44,43 +44,22 @@ a {
     text-decoration: none;
 }
 
-
-.menu-options {
-    position: absolute;
-    top: 2px; /* Ajuste conforme necessário */
-    left: 50px;
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
-    display: flex;
-    font-weight: bold;
-    gap: 50PX;
-}
-
-.menu-options .option {
-    margin: 5px 0;
-    padding: 5px;
-    cursor: pointer;
-}
-
-
-.menu-options .option:hover {
-    color: #eef5f9;
-    border-radius: 3px;
-}
-
-
-
 a:hover {
     text-decoration: underline;
 }
 
 
-.logotype{
-    margin-top: 150px;
-    margin-left: 30px;
+/* Overlay para escurecer o restante do site */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 5;
 }
-
 
 /* Barra lateral */
 .sidebar {

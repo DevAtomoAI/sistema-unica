@@ -1,6 +1,7 @@
 
 
 function abrirPopUp(cotacaoId) {
+    console.log('aqui');
     // Ajuste para a comparação de ID
     const cotacao = cotacoes.find(c => c.id == (cotacaoId)); // Ajuste conforme necessário
 

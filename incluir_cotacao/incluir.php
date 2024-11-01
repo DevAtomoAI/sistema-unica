@@ -1,6 +1,5 @@
 <?php
 session_start();
-include_once('../database/config.php');
 function checkUserLoggedIn() {
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
@@ -8,25 +7,26 @@ function checkUserLoggedIn() {
     }
 }
 checkUserLoggedIn();
-$nameUser = $_SESSION['nameLoggedUser'];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
-$idVeiculosInclusosOrgaoPublico = $_SESSION['idVeiculosInclusosOrgaoPublico'];
+$nomeUsuario = $_SESSION["nameLoggedUser"];
+$idVeiculosInclusosOrgaoPublico = $_SESSION["idVeiculosInclusosOrgaoPublico"];
 
-$selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+if ($idVeiculosInclusosOrgaoPublico) {
+    $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'";
+    $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
+
+    $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
                      WHERE orcamento_aprovado_reprovado = '' AND
                      id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
                      AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-$numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
+    $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
 
-$selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
-                WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
-                AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
-$nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
-
-$selectTable5 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                 WHERE orcamento_aprovado_reprovado = '' 
-                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-$numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
+    $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
+                     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
+                     AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
+    $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+}
 ?>
 
 
@@ -47,13 +47,13 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
     <div class="sidebar-header">
     </div>
     <ul class="nav-options">
+        <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
         <li><a href="incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
         <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
-        <li><a href="../cotacoes_responder/responder.php"><img src=""> Responder</a></li>
         <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
         <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
         <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
-        <div class="logotype"> <img src="../imgs/biglogo.svg"></div>
+
     </ul>
 </div>
 
@@ -63,18 +63,12 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
             <div class="menu-icon" id="menuBtn">
                <a> <img src="../imgs/menu.svg"> </a>  
             </div>
-
-            <div id="menu-options" class="menu-options">
-    <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
-    <div class="option"><a href="#opcao2">Opção 2</a></div>
-    <div class="option"><a href="#opcao3">Opção 3</a></div>
-    <!-- Adicione mais opções conforme necessário -->
-</div>
+            <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
             <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
             <div class="user-name"> 
-    <p><?php echo $nomeUsuario; ?></p>
+    <p><?php echo $nameUser; ?></p>
 </div>
             <div class="user-icon"><img src="../imgs/user.svg"></div>
         </div>
@@ -90,6 +84,9 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
                 <div class="form-group">
                     <label for="veiculo">Veículo</label>
                     <input name='veiculo' type="text" id="veiculo" placeholder="Informe o veiculo">
+
+                    <label for="veiculo">Modelo veículo</label>
+                    <input name='modeloVeiculo' type="text" id="modeloVeiculo" placeholder="Informe o modelo do veiculo">
 
                     <label for="centro-custo">Centro de Custo</label>
                     <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo">
@@ -130,24 +127,17 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
                     <select name="plano-manutencao" id="plano-manutencao">
                         <option value="">Selecione o Plano de Manutenção</option>
                         <option>Garantia</option>
-                        <option>Emergencial</option>
-                        <option>Preventiva</option>
                         <option>Corretiva</option>
                     </select>
                     <br>
-
-                    <label for="anexo"> Anexo </label> 
-                    <input name="anexo" type="file" id="anexo" placeholder="Anexo" >
-                      </div>
+                    <label for="fornecedor">Fornecedor</label>
+                    <input name="fornecedor" type="text" id="fornecedor" placeholder="Nome do fornecedor">
+                </div>
 
                 <div class="form-group">
                     <label for="modelo-contratacao">Modelo de Contratação</label>
-                    <select name="modelo-contratacao" id="modelo-contratacao">
-                        <option value="">Selecione o Modelo de Contratação</option>
-                        <option>Global</option>
-                        <option>Item</option>
-                    </select>
-<br>
+                    <input name="modelo-contratacao" type="text" id="modelo-contratacao" placeholder="Digite o modelo de Contratação">
+
                     <label for="responsavel">Responsável</label>
                     <input name="responsavel" type="text" id="responsavel" placeholder="Nome do Responsável">
                 </div>
@@ -160,12 +150,16 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
                     <textarea name="propostas" id="propostas" placeholder="Descreva a justificativa"></textarea>
                     <br>
 
-                     </div>
+                    <label for="anoVeiculo">Ano do veiculo</label>
+                    <input name="anoVeiculo" type="number" id="anoVeiculo" placeholder="Informe o ano do veiculo">
+                    </div>
                     
                 <div class="form-group">
                 <label for="data-fim">Data Final de Recebimento</label>
                 <input name="data-fim" type="date" id="data-fim">
 
+                <label for="Placa">Placa</label>
+                <input name="placa" type="text" id="placa" placeholder="Informe a placa">
                 </div>
 
            

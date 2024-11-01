@@ -4,9 +4,9 @@ include_once("../database/config.php");
 
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 $nomeUsuario = $_SESSION["nameLoggedUser"];
-$idVeiculosInclusosOrgaoPublico = $_SESSION['idVeiculosInclusosOrgaoPublico'];
-function checkUserLoggedIn()
-{
+$idVeiculosInclusosOrgaoPublico = $_SESSION["idVeiculosInclusosOrgaoPublico"];
+
+function checkUserLoggedIn() {
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -15,7 +15,7 @@ function checkUserLoggedIn()
 checkUserLoggedIn();
 
 $selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
-if (isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
+if(isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
     $selectTableAprovadas = $_SESSION['filtrosPesquisaAprovada'];
 }
 
@@ -24,21 +24,32 @@ $_SESSION['filtrosPesquisaAprovada'] = null;
 $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
 $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
 
-$selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+$idVeiculosInclusosOrgaoPublico = $cotacoes[0]['id'] ?? null;
+$_SESSION['idVeiculosInclusosOrgaoPublico'] = $idVeiculosInclusosOrgaoPublico;
+
+
+if ($idVeiculosInclusosOrgaoPublico) {
+    $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'";
+    $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
+
+    $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
                      WHERE orcamento_aprovado_reprovado = '' AND
                      id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
                      AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-$numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
+    $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
 
-$selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
-                WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
-                AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
-$nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+    $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
+                     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
+                     AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
+    $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+}
 
-$selectTable5 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                 WHERE orcamento_aprovado_reprovado = '' 
-                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-$numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
+// echo "Você tem ". $numLinhasTotal3 . " orçamento(s) para o veículo ". $nomeVeiculo;
+//mensagem que deve aparecer quando apertar no botao de notificação
+
+// echo $numLinhasTotal2;
+//no numerozinho, aparecera apenas $numLinhasTotal2
 
 ?>
 
@@ -67,11 +78,11 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
         </div>
         <ul class="nav-options">
 
-            <li>
+            <!-- <li>
                 <a href="../dados/dados.php">
                     <img src="../imgs/dados.svg"> Meus dados
                 </a>
-            </li>
+            </li> -->
 
             <li>
                 <a href="../incluir_cotacao/incluir.php">
@@ -98,16 +109,6 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
-            <li>
-                <a href="../cotacoes_responder/responder.php">
-                    <img src=""> Responder
-                </a>
-            </li>
-
-            <div class="logotype">
-                <img src="../imgs/biglogo.svg">
-            </div>
-
         </ul>
     </div>
 
@@ -123,7 +124,7 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <img src="../imgs/Doorbell.svg">
+                <?= $numLinhasAprovadas ?><img src="../imgs/Doorbell.svg">
             </div>
 
             <div class="user-name">
@@ -176,11 +177,9 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
                 <thead>
                     <tr>
                         <th>Nº</th>
-                        <th>Placa</th>
-                        <th>Modelo</th>
+                        <th>Fatura serviços</th>
+                        <th>Fatura peças</th>
                         <th>Centro de Custo</th>
-                        <th>Vencedor</th>
-                        <!-- Nome oficina que venceu o bid -->
                         <th>Data de Abertura</th>
                         <th>Valor Fechamento</th>
                     </tr>
@@ -194,7 +193,6 @@ $numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
                         echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
                         echo "<td class='resultadosTabela' ></td>";
                         echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
-                        echo "<td class='resultadosTabela' > NOME VENCEDOR BID</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['data_abertura'] . "</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['data_final'] . "</td>";
                         // echo "<td class='resultadosTabela' > <button name='button-option-aproved' class='btn-action btn-green' value='" . $user_data['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $user_data['id'] . "'><i class='fas fa-times'></i></button></td>";
