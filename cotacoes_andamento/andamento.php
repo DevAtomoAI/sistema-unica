@@ -17,7 +17,6 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
-
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
 } else {
@@ -26,8 +25,9 @@ $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_repro
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
-// $numLinhasTotal
 $execCentroCusto = executeQuery($connectionDB, $selectTable);
+
+//o orcamento x foi aprovado OU reprovado
 ?>
 
 
