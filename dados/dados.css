@@ -24,6 +24,11 @@ table th {
     color: white;
 }   
 
+.logotype{
+    margin-top: 150px;
+    margin-left: 30px;
+}
+
 input{
     padding: 12px 15px;
     border: 1px solid #ccc;

@@ -2,34 +2,31 @@
 session_start();
 include_once("../database/config.php");
 
-function checkUserLoggedIn() {
-    if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
-        header('Location: ../index.php');
-        exit;
-    }
+// Verificar se o usuário está logado
+if (empty($_SESSION['emailLoggedUser'])) {
+    header('Location: ../index.php');
+    exit;
 }
-checkUserLoggedIn();
 
 $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
-$idVeiculosInclusosOrgaoPublico;
 
-
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida'  AND id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
-
-if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
-    $selectTable = $_SESSION['filtrosPesquisa'];
-} 
+// Definir consulta com ou sem filtros
+$selectTable = $_SESSION['filtrosPesquisa'] ??
+    "SELECT * FROM infos_veiculos_inclusos 
+     WHERE (opcao_aprovada_reprovada_oficina = '' OR opcao_aprovada_reprovada_oficina = 'Respondida') 
+     AND id_orgao_publico = '$idOrgaoPublicoLogado' 
+     ORDER BY id_infos_veiculos_inclusos ASC";
 
 $_SESSION['filtrosPesquisa'] = null;
 
+// Executar consulta principal
 $execConnection = $conexao->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
 
-// Criar o array de cotações
+// Criar array de cotações
 $cotacoes = [];
-while ($user_data = mysqli_fetch_assoc($execConnection)) {
-    $idVeiculosInclusosOrgaoPublico = $user_data['id_infos_veiculos_inclusos'];
+while ($user_data = $execConnection->fetch_assoc()) {
     $cotacoes[] = [
         'id' => $user_data['id_infos_veiculos_inclusos'],
         'veiculo' => $user_data['veiculo'],
@@ -46,19 +43,44 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
         'placa' => $user_data['placa'],
         'justificativa' => $user_data['justificativa'],
         'anoVeiculo' => $user_data['ano_veiculo']
-        // 'idVeiculoInclusoOrgaoPublico' => $user_data['id_infos_veiculos_inclusos']
-
     ];
-
-
 }
+
+// Executar consultas adicionais
+$idVeiculosInclusosOrgaoPublico = $cotacoes[0]['id'] ?? null;
+$_SESSION['idVeiculosInclusosOrgaoPublico'] = $idVeiculosInclusosOrgaoPublico;
+
+if ($idVeiculosInclusosOrgaoPublico) {
+    $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                     WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico";
+    $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
+
+    $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                     WHERE orcamento_aprovado_reprovado = '' AND
+                     id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
+                     AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+    $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
+
+    $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
+                     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
+                     AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
+    $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+}
+
+$selectTable5 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                 WHERE orcamento_aprovado_reprovado = '' 
+                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+$numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
+
 
 // Passar as cotações para o JavaScript
 echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 
-$selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico=$idVeiculosInclusosOrgaoPublico";
-$execConnection2 = $conexao->query($selectTable2);
-$numLinhasTotal2 = $execConnection2->num_rows;
+// echo "Você tem ". $numLinhasTotal3 . " orçamento(s) para o veículo ". $nomeVeiculo;
+//mensagem que deve aparecer quando apertar no botao de notificação
+
+// echo $numLinhasTotal5;
+//no numerozinho, aparecera apenas $numLinhasTotal5
 
 ?>
 
@@ -83,13 +105,16 @@ $numLinhasTotal2 = $execConnection2->num_rows;
     <div class="sidebar" id="sidebar">
 
         <ul class="nav-options">
-            <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
+            <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li>
             <li><a href="../incluir_cotacao/incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
             <li><a href="andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
             <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
             <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
-
+            <li><a href="../cotacoes_responder/responder.php"><img src=""> Responder</a></li>
+            <div class="logotype">
+                <img src="../imgs/biglogo.svg">
+            </div>
         </ul>
     </div>
 
@@ -97,12 +122,12 @@ $numLinhasTotal2 = $execConnection2->num_rows;
     <header class="top-bar">
         <div class="left-icons">
             <div class="menu-icon" id="menuBtn">
-                <a><img src="../imgs/menu.svg"> </a>
+                <a> <img src="../imgs/menu.svg"> </a>
             </div>
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
-            <div class="notification-icon"> <?= $numLinhasTotal ?><img src="../imgs/Doorbell.svg"></div>
+            <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
 
             <div class="user-name">
                 <p><?= $nomeUsuario; ?></p>
@@ -161,18 +186,17 @@ $numLinhasTotal2 = $execConnection2->num_rows;
                 <tbody id="cotacoes-body">
                     <!-- Conteúdo da tabela será inserido dinamicamente -->
                     <?php
-                        foreach ($cotacoes as $cotacao) {
+                    foreach ($cotacoes as $cotacao) {
 
-                            echo "<tr>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['id'] . 
-                                "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['justificativa'] . "</td>";
-                            echo "<td class='resultadosTabela'>".$numLinhasTotal2."</td>";
-                            echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
-                            echo "<td class='resultadosTabela'>
+                        echo "<tr>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['id'] .
+                            "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['centroCusto'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['propostas'] . "</td>";
+                        echo "<td class='resultadosTabela'>" . $cotacao['dataAbertura'] . "</td>";
+                        echo "<td class='resultadosTabela'>
                                   <form method='POST' action='configs_andamento.php'>
                                     <button name='button-option-aproved' class='btn-action btn-green' value='" . $cotacao['id'] . "'>
                                         Gerenciar<i class='fas fa-check'></i>
@@ -182,8 +206,8 @@ $numLinhasTotal2 = $execConnection2->num_rows;
                                     </button>
                                     </form>
                             </td>";
-                            echo "</tr>";
-                        }
+                        echo "</tr>";
+                    }
                     ?>
                 </tbody>
             </table>

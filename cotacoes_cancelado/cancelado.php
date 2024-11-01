@@ -1,7 +1,10 @@
 <?php
 session_start();
 include_once("../database/config.php");
-function checkUserLoggedIn() {
+
+
+function checkUserLoggedIn()
+{
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -10,14 +13,12 @@ function checkUserLoggedIn() {
 checkUserLoggedIn();
 
 $nomeUsuario = $_SESSION["nameLoggedUser"];
-
-// $selectTableAprovadas = "SELECT * FROM  infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
-// $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
-// $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
+$idVeiculosInclusosOrgaoPublico = $_SESSION['idVeiculosInclusosOrgaoPublico'];
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
 $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ";
 
-if(isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
+if (isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
     $selectTable = $_SESSION['filtrosPesquisaCancelado'];
 }
 
@@ -25,8 +26,25 @@ $_SESSION['filtrosPesquisaCancelado'] = null;
 
 $execConnection = $conexao->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
-?>
 
+$selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                     WHERE orcamento_aprovado_reprovado = '' AND
+                     id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
+                     AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+$numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
+
+$selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
+                WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
+                AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
+$nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+
+$selectTable5 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+                 WHERE orcamento_aprovado_reprovado = '' 
+                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+$numLinhasTotal5 = $conexao->query($selectTable5)->num_rows;
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,11 +70,11 @@ $numLinhasTotal = $execConnection->num_rows;
         </div>
         <ul class="nav-options">
 
-            <!-- <li>
+            <li>
                 <a href="../dados/dados.php">
                     <img src="../imgs/dados.svg"> Meus dados
                 </a>
-            </li> -->
+            </li>
 
             <li>
                 <a href="../incluir_cotacao/incluir.php">
@@ -83,6 +101,15 @@ $numLinhasTotal = $execConnection->num_rows;
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
+            <li>
+                <a href="../cotacoes_responder/responder.php"><img src=""> Responder
+                </a>
+            </li>
+
+            <div class="logotype">
+                <img src="../imgs/biglogo.svg">
+            </div>
+
         </ul>
     </div>
 

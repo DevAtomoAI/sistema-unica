@@ -23,6 +23,11 @@ body {
     animation: fadeIn 1s ease-in-out;
 }
 
+.logotype{
+    margin-top: 150px;
+    margin-left: 30px;
+}
+
 .section-title {
     font-size: 1.5rem;
     color: #333;
