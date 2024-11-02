@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once("../database/config.php");
 function checkUserLoggedIn()
 {
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
@@ -80,14 +81,14 @@ if ($idVeiculosInclusosOrgaoPublico) {
         <div class="right-icons">
             <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
             <div class="user-name">
-                <p><?php echo $nameUser; ?></p>
+                <p><?php ?></p>
             </div>
             <div class="user-icon"><img src="../imgs/user.svg"></div>
         </div>
     </header>
 
     <!-- Conteudo Principal -->
-    <form action="adiciona_cotacao_bd.php" method="POST">
+    <form action="adiciona_cotacao_bd.php" method="POST" enctype="multipart/form-data">
         <div class="main-content" id="main-content">
             <h1 class="text-incco">Incluir Cotações</h1>
             <br>
@@ -98,7 +99,18 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <input name='veiculo' type="text" id="veiculo" placeholder="Informe o veiculo">
 
                     <label for="centro-custo">Centro de Custo</label>
-                    <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo">
+                    <select name="centro-custo" id="centro-custo">
+                        <?php
+                        $selectTableCentroCusto = "SELECT nome FROM centros_custos
+                                                    WHERE id_orgao_publico = '$idOrgaoPublicoLogado'";
+                        $result = $conexao->query($selectTableCentroCusto);
+
+                        while ($valores = $result->fetch_assoc()) {
+                            echo "<option name='centro-custo' value=".$valores['nome'].">".$valores['nome']."</option>";
+                        }
+                        ?>
+                    </select>
+                    <!-- <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo"> -->
 
                 </div>
 
@@ -143,7 +155,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <br>
 
                     <label for="anexo"> Anexo </label>
-                    <input name="anexo" type="file" id="anexo" placeholder="Anexo">
+                    <input name="anexo" type="file" id="anexo" accept=".pdf" placeholder="Anexo">
                 </div>
 
                 <div class="form-group">
@@ -163,7 +175,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <input name="data-abertura" type="date" id="data-abertura">
 
                     <label for="propostas">Justificativa</label>
-                    <textarea name="propostas" id="propostas" placeholder="Descreva a justificativa"></textarea>
+                    <textarea name="justificativa" id="justificativa" placeholder="Descreva a justificativa"></textarea>
                     <br>
 
                 </div>
