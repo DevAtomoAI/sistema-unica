@@ -1,25 +1,3 @@
-const menuBtn = document.getElementById('menuBtn');
-const closeBtn = document.getElementById('closeBtn');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-
-// Função para abrir a barra lateral
-menuBtn.addEventListener('click', () => {
-    sidebar.classList.add('open');
-    overlay.classList.add('active');
-});
-
-// Função para fechar a barra lateral
-closeBtn.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('active');
-});
-
-// Fechar a barra lateral ao clicar fora dela (overlay)
-overlay.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('active');
-});
 
 document.getElementById('incluir-btn').addEventListener('click', function() {
     const veiculo = document.getElementById('veiculo').value;
@@ -60,3 +38,27 @@ document.getElementById('incluir-btn').addEventListener('click', function() {
     // Redirecionar para a página "Em Andamento"
     // window.location.href = 'andamento.php';
 });
+
+// Alternar o menu ao clicar no botão
+document.getElementById("menuBtn").addEventListener("click", function(event) {
+    event.stopPropagation();  // Impede que o clique no botão feche o menu
+    toggleMenu();
+});
+
+function toggleMenu() {
+    const menuOptions = document.getElementById("menu-options");
+    menuOptions.style.display = (menuOptions.style.display === "" || menuOptions.style.display === "")
+        ? "block"
+        : "";
+}
+
+// Ocultar o menu ao clicar fora dele
+document.addEventListener("click", function(event) {
+    const menuBtn = document.getElementById("menuBtn");
+    const menuOptions = document.getElementById("menu-options");
+
+    if (!menuBtn.contains(event.target) && !menuOptions.contains(event.target)) {
+        menuOptions.style.display = "none";
+    }
+});
+

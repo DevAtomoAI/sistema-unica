@@ -1,6 +1,7 @@
 <?php
 session_start();
-function checkUserLoggedIn() {
+function checkUserLoggedIn()
+{
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -33,50 +34,60 @@ if ($idVeiculosInclusosOrgaoPublico) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incluir</title>
     <link rel="stylesheet" href="incluir.css">
 </head>
+
 <body>
 
     <div class="overlay" id="overlay"></div>
- 
+
     <!-- Barra lateral -->
-<div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+        </div>
+        <ul class="nav-options">
+            <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
+            <li><a href="incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
+            <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
+            <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
+            <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
+            <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
+            <div class="logotype"> <img src="../imgs/biglogo.svg"></div>
+        </ul>
     </div>
-    <ul class="nav-options">
-        <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
-        <li><a href="incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
-        <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
-        <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
-        <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
-        <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
 
-    </ul>
-</div>
-
- <!-- Barra Superior -->
+    <!-- Barra Superior -->
     <header class="top-bar">
         <div class="left-icons">
             <div class="menu-icon" id="menuBtn">
-               <a> <img src="../imgs/menu.svg"> </a>  
+                <a> <img src="../imgs/menu.svg"> </a>
             </div>
+
+            <div id="menu-options" class="menu-options">
+                <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+                <div class="option"><a href="#opcao2">Opção 2</a></div>
+                <div class="option"><a href="#opcao3">Opção 3</a></div>
+                <!-- Adicione mais opções conforme necessário -->
+            </div>
+
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
             <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
-            <div class="user-name"> 
-    <p><?php echo $nameUser; ?></p>
-</div>
+            <div class="user-name">
+                <p><?php echo $nameUser; ?></p>
+            </div>
             <div class="user-icon"><img src="../imgs/user.svg"></div>
         </div>
     </header>
- 
-     <!-- Conteudo Principal -->
-     <form action="adiciona_cotacao_bd.php" method="POST">
+
+    <!-- Conteudo Principal -->
+    <form action="adiciona_cotacao_bd.php" method="POST">
         <div class="main-content" id="main-content">
             <h1 class="text-incco">Incluir Cotações</h1>
             <br>
@@ -86,17 +97,14 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <label for="veiculo">Veículo</label>
                     <input name='veiculo' type="text" id="veiculo" placeholder="Informe o veiculo">
 
-                    <label for="veiculo">Modelo veículo</label>
-                    <input name='modeloVeiculo' type="text" id="modeloVeiculo" placeholder="Informe o modelo do veiculo">
-
                     <label for="centro-custo">Centro de Custo</label>
                     <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo">
-                  
+
                 </div>
 
                 <div class="form-group">
-                <label for="km-atual">Km Atual</label>
-                <input name="km-atual" type="text" id="km-atual" placeholder="Informe o Km Atual">
+                    <label for="km-atual">Km Atual</label>
+                    <input name="km-atual" type="text" id="km-atual" placeholder="Informe o Km Atual">
 
                     <label for="tipo-solicitacao">Tipo de Solicitação</label>
                     <select name="tipo-solicitacao" id="tipo-solicitacao">
@@ -128,17 +136,24 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <select name="plano-manutencao" id="plano-manutencao">
                         <option value="">Selecione o Plano de Manutenção</option>
                         <option>Garantia</option>
+                        <option>Emergencial</option>
+                        <option>Preventiva</option>
                         <option>Corretiva</option>
                     </select>
                     <br>
-                    <label for="fornecedor">Fornecedor</label>
-                    <input name="fornecedor" type="text" id="fornecedor" placeholder="Nome do fornecedor">
+
+                    <label for="anexo"> Anexo </label>
+                    <input name="anexo" type="file" id="anexo" placeholder="Anexo">
                 </div>
 
                 <div class="form-group">
                     <label for="modelo-contratacao">Modelo de Contratação</label>
-                    <input name="modelo-contratacao" type="text" id="modelo-contratacao" placeholder="Digite o modelo de Contratação">
-
+                    <select name="modelo-contratacao" id="modelo-contratacao">
+                        <option value="">Selecione o Modelo de Contratação</option>
+                        <option>Global</option>
+                        <option>Item</option>
+                    </select>
+                    <br>
                     <label for="responsavel">Responsável</label>
                     <input name="responsavel" type="text" id="responsavel" placeholder="Nome do Responsável">
                 </div>
@@ -151,25 +166,22 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <textarea name="propostas" id="propostas" placeholder="Descreva a justificativa"></textarea>
                     <br>
 
-                    <label for="anoVeiculo">Ano do veiculo</label>
-                    <input name="anoVeiculo" type="number" id="anoVeiculo" placeholder="Informe o ano do veiculo">
-                    </div>
-                    
-                <div class="form-group">
-                <label for="data-fim">Data Final de Recebimento</label>
-                <input name="data-fim" type="date" id="data-fim">
-
-                <label for="Placa">Placa</label>
-                <input name="placa" type="text" id="placa" placeholder="Informe a placa">
                 </div>
 
-           
+                <div class="form-group">
+                    <label for="data-fim">Data Final de Recebimento</label>
+                    <input name="data-fim" type="date" id="data-fim">
+
+                </div>
+
+
                 <button name="incluir-btn" id="incluir-btn">Incluir</button>
             </div>
         </div>
     </form>
 
-    <script src="incluir.js">  </script>
+    <script src="incluir.js"> </script>
 
 </body>
+
 </html>

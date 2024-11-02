@@ -14,8 +14,11 @@ body {
 
 }
 
+
+
+
 .top-bar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -33,7 +36,43 @@ body {
     align-items: center;
 }
 
-.left-icons .menu-icon, .right-icons .notification-icon, .right-icons .user-icon, .left-icons .logo {
+.logotype{
+    margin-top: 350px;
+    margin-left: 30px;
+}
+
+.menu-icon {
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-options {
+    position: absolute;
+    top: 2px; /* Ajuste conforme necessário */
+    left: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: flex;
+    font-weight: bold;
+    gap: 50PX;
+}
+
+.menu-options .option {
+    margin: 5px 0;
+    padding: 5px;
+    cursor: pointer;
+}
+
+
+.menu-options .option:hover {
+    color: #eef5f9;
+    border-radius: 3px;
+}
+
+.left-icons, .right-icons .notification-icon, .right-icons .user-icon, .left-icons .logo {
     width: 40px;
     height: 40px;
     border-radius: 50%;

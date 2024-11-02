@@ -73,14 +73,14 @@ if ($idVeiculosInclusosOrgaoPublico) {
 }
 
 
-// Passar as cotações para o JavaScript
-echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
+// // Passar as cotações para o JavaScript
+// echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 
 // echo "Você tem ". $numLinhasTotal3 . " orçamento(s) para o veículo ". $nomeVeiculo;
-//mensagem que deve aparecer quando apertar no botao de notificação
+// mensagem que deve aparecer quando apertar no botao de notificação
 
 // echo $numLinhasTotal2;
-//no numerozinho, aparecera apenas $numLinhasTotal2
+// no numerozinho, aparecera apenas $numLinhasTotal2
 
 ?>
 
@@ -111,7 +111,9 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
             <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
             <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
-
+            <div class="logotype"> 
+                <img src="../imgs/biglogo.svg">
+            </div>
         </ul>
     </div>
 
@@ -121,6 +123,12 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <div class="menu-icon" id="menuBtn">
                 <a><img src="../imgs/menu.svg"> </a>
             </div>
+            <div id="menu-options" class="menu-options">
+    <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+    <div class="option"><a href="#opcao2">Opção 2</a></div>
+    <div class="option"><a href="#opcao3">Opção 3</a></div>
+    <!-- Adicione mais opções conforme necessário -->
+</div>
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">

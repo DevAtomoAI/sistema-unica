@@ -104,6 +104,9 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
+
+            <div class="logotype"> <img src="../imgs/biglogo.svg"></div>
+
         </ul>
     </div>
 
@@ -113,6 +116,12 @@ if ($idVeiculosInclusosOrgaoPublico) {
             <div class="menu-icon" id="menuBtn">
                 <a> <img src="../imgs/menu.svg"> </a>
             </div>
+            <div id="menu-options" class="menu-options">
+<div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+<div class="option"><a href="#opcao2">Opção 2</a></div>
+<div class="option"><a href="#opcao3">Opção 3</a></div>
+<!-- Adicione mais opções conforme necessário -->
+        </div>
             <div class="logo">
                 <img src="../imgs/minilogo.svg">
             </div>

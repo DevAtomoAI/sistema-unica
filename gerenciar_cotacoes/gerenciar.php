@@ -31,8 +31,6 @@ $valores = [
     'dataAbertura' => $_SESSION['dataAbertura'] ?? '',
     'dataFinal' => $_SESSION['dataFinal'] ?? ''
 ];
-
-
 ?>
 
 <!DOCTYPE html>

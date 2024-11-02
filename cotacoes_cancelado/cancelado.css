@@ -49,6 +49,30 @@ a:hover {
 }
 
 
+.logotype{
+    margin-top: 350px;
+    margin-left: 30px;
+}
+
+.menu-options {
+    position: absolute;
+    top: 2px; /* Ajuste conforme necessário */
+    left: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: flex;
+    font-weight: bold;
+    gap: 50PX;
+}
+
+.menu-options .option {
+    margin: 5px 0;
+    padding: 5px;
+    cursor: pointer;
+}
+
+
 /* Barra lateral */
 .sidebar {
     position: fixed;

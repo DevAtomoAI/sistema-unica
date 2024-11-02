@@ -47,10 +47,10 @@ if ($idVeiculosInclusosOrgaoPublico) {
 }
 
 // echo "Você tem ". $numLinhasTotal3 . " orçamento(s) para o veículo ". $nomeVeiculo;
-//mensagem que deve aparecer quando apertar no botao de notificação
+// mensagem que deve aparecer quando apertar no botao de notificação
 
 // echo $numLinhasTotal2;
-//no numerozinho, aparecera apenas $numLinhasTotal2
+// no numerozinho, aparecera apenas $numLinhasTotal2
 
 ?>
 
@@ -110,6 +110,12 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <img src="../imgs/cancel.svg"> Cancelado
                 </a>
             </li>
+
+            
+<div class="logotype"> 
+<img src="../imgs/biglogo.svg">
+</div>
+
         </ul>
     </div>
 
@@ -119,6 +125,14 @@ if ($idVeiculosInclusosOrgaoPublico) {
             <div class="menu-icon" id="menuBtn">
                 <a> <img src="../imgs/menu.svg"> </a>
             </div>
+
+            <div id="menu-options" class="menu-options">
+<div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+<div class="option"><a href="#opcao2">Opção 2</a></div>
+<div class="option"><a href="#opcao3">Opção 3</a></div>
+<!-- Adicione mais opções conforme necessário -->
+        </div>
+
             <div class="logo">
                 <img src="../imgs/minilogo.svg">
             </div>
@@ -154,9 +168,9 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
-                    while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
-                        echo "<option value='" . $orgaoSolicitantes['id'] . "'>" . $orgaoSolicitantes['centro_custo'] . "</option>";
-                    }
+                    // while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
+                    //     echo "<option value='" . $orgaoSolicitantes['id'] . "'>" . $orgaoSolicitantes['centro_custo'] . "</option>";
+                    // }
 
                     ?>
                 </select>
