@@ -17,12 +17,13 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Respondida' ORDER BY id_infos_veiculos_inclusos ASC";
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
-} else {
-}
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Respondida' ORDER BY id_infos_veiculos_inclusos ASC";
+} 
+
+$_SESSION['filtrosPesquisa'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
@@ -106,7 +107,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <img src="../assets/Doorbell.svg">
+            <?= $_SESSION['numLinhasTotalNotificacao'] ?> <img src="../assets/Doorbell.svg">
             </div>
             <div id='userId' class="user-icon">
                 <a id="nameLoggedUser"><?= $nameUser ?></a>

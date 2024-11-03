@@ -99,12 +99,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
     <header class="top-bar">
         <div class="left-icons">
             <div class="menu-icon" id="menuBtn">
-                <a id="menuText"> Menu <img src="../assets/menu.svg"></a>
+               <a id="menuText"> Menu <img src="../assets/menu.svg"></a>
             </div>
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <img src="../assets/Doorbell.svg">
+            <?= $_SESSION['numLinhasTotalNotificacao'] ?> <img src="../assets/Doorbell.svg">
             </div>
             <div id='userId' class="user-icon">
                 <a id="nameLoggedUser"><?= $nameUser ?></a>

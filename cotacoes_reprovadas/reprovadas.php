@@ -105,7 +105,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <img src="../assets/Doorbell.svg">
+            <?= $_SESSION['numLinhasTotalNotificacao'] ?> <img src="../assets/Doorbell.svg">
             </div>
             <div id='userId' class="user-icon">
                 <a id="nameLoggedUser"><?= $nameUser ?></a>

@@ -17,14 +17,15 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
-} else {
 }
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' ORDER BY id_infos_veiculos_inclusos ASC";
+$_SESSION['filtrosPesquisa'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
+$_SESSION['numLinhasTotalNotificacao'] = $numLinhasTotal;
 $execCentroCusto = executeQuery($connectionDB, $selectTable);
 
 //o orcamento x foi aprovado OU reprovado
