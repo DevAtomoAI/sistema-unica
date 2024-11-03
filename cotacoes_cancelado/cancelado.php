@@ -128,7 +128,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <img src="../imgs/Doorbell.svg">
+                <?= $_SESSION['notificacao'] ?><img src="../imgs/Doorbell.svg">
             </div>
 
             <div class="user-name">
@@ -177,6 +177,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
 
         <!-- Tabela de cotações aprovadas -->
         <div class="table-responsive">
+            <p>Foram encontrados <?= $numLinhasTotal ?> registros</p>
             <table>
                 <thead>
                     <tr>

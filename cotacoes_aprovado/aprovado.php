@@ -46,12 +46,6 @@ if ($idVeiculosInclusosOrgaoPublico) {
     $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
 }
 
-// echo "Você tem ". $numLinhasTotal3 . " orçamento(s) para o veículo ". $nomeVeiculo;
-// mensagem que deve aparecer quando apertar no botao de notificação
-
-// echo $numLinhasTotal2;
-// no numerozinho, aparecera apenas $numLinhasTotal2
-
 ?>
 
 
@@ -139,7 +133,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-                <?= $numLinhasAprovadas ?><img src="../imgs/Doorbell.svg">
+                <?= $_SESSION['notificacao']  ?><img src="../imgs/Doorbell.svg">
             </div>
 
             <div class="user-name">
@@ -188,6 +182,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
 
         <!-- Tabela de cotações aprovadas -->
         <div class="table-responsive">
+            <p>Foram encontrados <?=$numLinhasAprovadas ?> registros </p>
             <table>
                 <thead>
                     <tr>

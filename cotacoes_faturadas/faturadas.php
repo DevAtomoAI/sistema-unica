@@ -95,7 +95,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
-            <div class="notification-icon"><img src="../imgs/Doorbell.svg"></div>
+            <div class="notification-icon"><?= $_SESSION['notificacao'] ?><img src="../imgs/Doorbell.svg"></div>
 
             <div class="user-name">
                 <p><?= $nomeUsuario; ?></p>

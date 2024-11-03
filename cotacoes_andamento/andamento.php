@@ -25,6 +25,8 @@ $_SESSION['filtrosPesquisa'] = null;
 
 $execConnection = $conexao->query($selectTable);
 $numLinhasTotal = $execConnection->num_rows;
+$_SESSION['notificacao'] = $numLinhasTotal;
+
 
 $cotacoes = [];
 
@@ -133,7 +135,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
-            <div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>
+            <?= $numLinhasTotal ?><div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>
 
             <div class="user-name">
                 <p><?= $nomeUsuario; ?></p>
@@ -174,6 +176,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
         </div>
 
         <!-- Tabela de cotações com ícones -->
+         <p>Foram encontrados <?= $numLinhasTotal ?> registros</p>
         <div class="table-responsive">
             <table>
                 <thead>
