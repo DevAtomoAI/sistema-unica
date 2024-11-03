@@ -5,10 +5,7 @@ session_start();
 $idVeiculoGerenciar = $_SESSION['idVeiculoGerenciar'];
 
 $veiculo = $_SESSION['veiculo'];
-$modeloVeiculo = $_SESSION['modeloVeiculo'];
 $kmAtual = $_SESSION['kmAtual'];
-$placa = $_SESSION['placa'];
-$anoVeiculo = $_SESSION['anoVeiculo'];
 $centroCusto = $_SESSION['centroCusto'];
 $planoManutencao = $_SESSION['planoManutencao'];
 $fornecedor = $_SESSION['fornecedor'];
@@ -21,7 +18,6 @@ $dataRegistro;
 
 $selectTable = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico='$idVeiculoGerenciar'";
 $selectTable2 = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciar'";
-
 
 function executaSelectTable($connectionDB, $query)
 {
@@ -40,7 +36,8 @@ $selectTableNomeOrgaoPublico= "SELECT * FROM usuarios_orgao_publico WHERE id_usu
 $executaConexaoNomeOrgaoPublico = executaSelectTable($connectionDB, $selectTableNomeOrgaoPublico);
 $nomeOrgaoPublico = mysqli_fetch_assoc($executaConexaoNomeOrgaoPublico);
 $resultNomeOrgaoPublico = $nomeOrgaoPublico['nome_orgao_publico'];
-$_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
+$cnpjOrgaoPublico = $nomeOrgaoPublico['identificacao_cnpj'];
+
 
 ?>
 
@@ -60,10 +57,10 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
         <thead>
             <td>N</td>
             <td>Veiculo</td>
-            <td>Modelo</td>
+            <!-- <td>Modelo</td> -->
             <td>Km atual</td>
-            <td>Placa</td>
-            <td>Ano veiculo</td>
+            <!-- <td>Placa</td> -->
+            <!-- <td>Ano veiculo</td> -->
             <td>Centro custo</td>
             <td>Plano manutenção</td>
             <td>Fornecedor</td>
@@ -72,10 +69,10 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
         <tbody>
             <td><?= $idVeiculoGerenciar ?></td>
             <td><?= $veiculo ?></td>
-            <td><?= $modeloVeiculo ?></td>
+            <!-- <td><?= $modeloVeiculo ?></td> -->
             <td><?= $kmAtual ?></td>
-            <td><?= $placa ?></td>
-            <td><?= $anoVeiculo ?></td>
+            <!-- <td><?= $placa ?></td> -->
+            <!-- <td><?= $anoVeiculo ?></td> -->
             <td><?= $centroCusto ?></td>
             <td><?= $planoManutencao ?></td>
             <td><?= $fornecedor ?></td>
@@ -85,6 +82,8 @@ $_SESSION['nomeOrgaoPublico'] = $resultNomeOrgaoPublico;
     </table>
 
     <p>Nome Órgão Público: <?= $resultNomeOrgaoPublico ?></p>
+    <p>CNPJ Órgão Público: <?= $cnpjOrgaoPublico ?></p>
+
    
     <br>
     <br>

@@ -176,10 +176,10 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                         <thead>
                             <tr>
                                 <th class='titulosTabela'>Nº</th>
-                                <th class='titulosTabela'>Placa</th>
+                                <!-- <th class='titulosTabela'>Placa</th> -->
                                 <th class='titulosTabela'>Marca</th>
-                                <th class='titulosTabela'>Modelo</th>
-                                <th class='titulosTabela'>Ano</th>
+                                <!-- <th class='titulosTabela'>Modelo</th> -->
+                                <!-- <th class='titulosTabela'>Ano</th> -->
                                 <th class='titulosTabela'>Centro custo</th>
                                 <th class='titulosTabela'>Tipo Solicitação</th>
                                 <th class='titulosTabela'>Opções</th>
@@ -190,10 +190,10 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             while ($user_data = mysqli_fetch_assoc($execConnection)) {
                                 echo "<tr>";
                                 echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
+                                // echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['veiculo'] . "</td>";
-                                echo "<td class='resultadosTabela'>" . $user_data['modelo_veiculo'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
+                                // echo "<td class='resultadosTabela'>" . $user_data['modelo_veiculo'] . "</td>";
+                                // echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
                                 echo "<td class='resultadosTabela' >
