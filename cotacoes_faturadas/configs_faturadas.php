@@ -22,7 +22,7 @@ function filters()
                 $selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos 
                                         WHERE opcao_aprovada_reprovada_oficina = 'Faturada Oficina' 
                                         AND id_orgao_publico = :idOrgaoPublico 
-                                        AND (placa LIKE :searchKeyWordInput 
+                                        AND (veiculo LIKE :searchKeyWordInput 
                                             OR modelo_contratacao LIKE :searchKeyWordInput 
                                             OR tipo_solicitacao LIKE :searchKeyWordInput 
                                             OR DATE_FORMAT(data_abertura, '%Y-%m-%d') = :searchKeyWordInput

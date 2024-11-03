@@ -11,10 +11,10 @@ function adicionarValoresBD($conexao) {
 
     // Lê o conteúdo do arquivo
     $anexo = file_get_contents($_FILES['anexo']['tmp_name']);
-    
-    // Obtém os dados do formulário
+    // $anexo = '';
     $veiculo = $_POST['veiculo'];
     $kmAtual = $_POST['km-atual'];
+    $fornecedor = $_POST['fornecedor'];
     $centroCusto = $_POST['centro-custo'];
     $tipoSolicitacao = $_POST['tipo-solicitacao'];
     $planoManutencao = $_POST['plano-manutencao'];
@@ -27,8 +27,8 @@ function adicionarValoresBD($conexao) {
 
     // Prepara a consulta
     $stmt = $conexao->prepare("INSERT INTO infos_veiculos_inclusos 
-    (id_orgao_publico, veiculo, km_atual, plano_manutencao, modelo_contratacao, data_abertura, data_final, centro_custo, tipo_solicitacao, responsavel, justificativa, anexo)  
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    (id_orgao_publico, veiculo, km_atual, fornecedor, plano_manutencao, modelo_contratacao, data_abertura, data_final, centro_custo, tipo_solicitacao, responsavel, justificativa, anexo)  
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     // Verifica se a preparação da consulta foi bem-sucedida
     if ($stmt === false) {
@@ -37,7 +37,7 @@ function adicionarValoresBD($conexao) {
     }
 
     // Vincula os parâmetros
-    $stmt->bind_param("isisssssssss", $idOrgaoPublico, $veiculo, $kmAtual, $planoManutencao, $modeloContratacao, $dataAbertura, $dataFinal, $centroCusto, $tipoSolicitacao, 
+    $stmt->bind_param("isissssssssss", $idOrgaoPublico, $veiculo, $kmAtual, $fornecedor, $planoManutencao, $modeloContratacao, $dataAbertura, $dataFinal, $centroCusto, $tipoSolicitacao, 
     $responsavel, $justificativa, $anexo);
 
     // Executa a consulta

@@ -106,12 +106,10 @@ if ($idVeiculosInclusosOrgaoPublico) {
                         $result = $conexao->query($selectTableCentroCusto);
 
                         while ($valores = $result->fetch_assoc()) {
-                            echo "<option name='centro-custo' value=".$valores['nome'].">".$valores['nome']."</option>";
+                            echo "<option name='centro-custo' value=" . $valores['nome'] . ">" . $valores['nome'] . "</option>";
                         }
                         ?>
                     </select>
-                    <!-- <input name="centro-custo" type="text" id="centro-custo" placeholder="Informe o centro de custo"> -->
-
                 </div>
 
                 <div class="form-group">
@@ -140,6 +138,20 @@ if ($idVeiculosInclusosOrgaoPublico) {
                         <option value="Serviço Geral"> Serviço Geral </option>
                         <option value="Inspeção Veícular"> Inspeção Veícular </option>
                         <option value="Vistoria Veícular"> Vistoria Veícular </option>
+                    </select>
+                </div>
+
+                <div>
+                    <select name="fornecedor" id="fornecedor">
+                        <?php
+                        $selectTableFornecedor = "SELECT nome FROM dados_fornecedores
+                                                    WHERE id_orgao_publico = '$idOrgaoPublicoLogado'";
+                        $result = $conexao->query($selectTableFornecedor);
+
+                        while ($valores = $result->fetch_assoc()) {
+                            echo "<option name='fornecedor' value=" . $valores['nome'] . ">" . $valores['nome'] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
 

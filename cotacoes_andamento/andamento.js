@@ -17,10 +17,14 @@ function abrirPopUp(cotacaoId) {
         document.getElementById("tipoSolicitacao").innerText = cotacao.tipoSolicitacao;
         document.getElementById("fornecedor").innerText = cotacao.fornecedor;
         document.getElementById("responsavel").innerText = cotacao.responsavel;
-        document.getElementById("placa").innerText = cotacao.placa;
-
+        const anexo = cotacao.anexo;
+        const anexoElement = document.getElementById("anexo");
+        if (anexo) {
+            anexoElement.innerHTML = `<a href="${anexo}" target="_blank">Ver Anexo</a>`;
+        } else {
+            anexoElement.innerText = "Nenhum anexo disponível.";
+        }
         // document.getElementById("modeloVeiculo").innerText = cotacao.modelo;
-        document.getElementById("anoVeiculo").innerText = cotacao.anoVeiculo;
 
         // Exibir o pop-up
         document.getElementById("popup").style.display = "block";
@@ -35,49 +39,6 @@ function fecharPopUp() {
     document.getElementById("popup").style.display = "none";
     document.getElementById("popup-overlay").style.display = "none";
 }
-
-
-
-
-
-// function caregarCotacoesAndamento() {
-//     const cotacoesBody = document.getElementById("cotacoes-body");
-//     cotacoesBody.innerHTML = '';
-
-//     let cotacoes = JSON.parse(localStorage.getItem('cotacoes')) || [];
-
-//     cotacoes.forEach((cotacao, index) => {
-//         let row = document.createElement('tr');
-
-//         row.innerHTML = `
-//             <td>${index + 1}</td>
-//             <td>${cotacao.placa}</td>
-//             <td>${cotacao.modelo}</td>
-//             <td>${cotacao.centroCusto}</td>
-//             <td>${cotacao.propostas}</td>
-//             <td>${cotacao.dataAbertura}</td>
-//             <td>
-//                 <button class="btn-action btn-green" onclick="aprovarCotacao(${index})"><i class="fas fa-check"></i></button>
-//                 <button class="btn-action btn-red" onclick="rejeitarCotacao(${index})"><i class="fas fa-times"></i></button>
-//             </td>
-//         `;
-//         cotacoesBody.appendChild(row);
-//     });
-// }
-
-// function aprovarCotacao(index) {
-//     let cotacoes = JSON.parse(localStorage.getItem('cotacoes')) || [];
-//     let aprovadas = JSON.parse(localStorage.getItem('aprovadas')) || [];
-
-//     let cotacaoAprovada = cotacoes.splice(index, 1)[0];
-//     aprovadas.push(cotacaoAprovada);
-
-//     // Atualize o localStorage
-//     localStorage.setItem('cotacoes', JSON.stringify(cotacoes));
-//     localStorage.setItem('aprovadas', JSON.stringify(aprovadas));
-
-//     carregarCotacoesAndamento();
-// }
 
 // Função para imprimir a tabela de cotações
 function imprimirTabela() {

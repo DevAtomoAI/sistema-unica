@@ -20,7 +20,7 @@ function filters()
             case !empty($searchKeyWordInput):
                 $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
                 opcao_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado' AND
-                (placa LIKE '%$searchKeyWordInput%' OR  
+                (veiculo LIKE '%$searchKeyWordInput%' OR  
                 modelo_contratacao LIKE '%$searchKeyWordInput%' OR 
                 tipo_solicitacao LIKE '%$searchKeyWordInput%' OR 
                 data_abertura LIKE '%$searchKeyWordInput%')";
