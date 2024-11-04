@@ -36,6 +36,8 @@ $selectTableNomeOrgaoPublico= "SELECT * FROM usuarios_orgao_publico WHERE id_usu
 $executaConexaoNomeOrgaoPublico = executaSelectTable($connectionDB, $selectTableNomeOrgaoPublico);
 $nomeOrgaoPublico = mysqli_fetch_assoc($executaConexaoNomeOrgaoPublico);
 $resultNomeOrgaoPublico = $nomeOrgaoPublico['nome_orgao_publico'];
+
+$_SESSION['nomeOrgaoPublico'] = $nomeOrgaoPublico['nome_orgao_publico'];
 $cnpjOrgaoPublico = $nomeOrgaoPublico['identificacao_cnpj'];
 
 

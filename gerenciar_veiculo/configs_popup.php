@@ -12,7 +12,7 @@ $count = 0;
 function adicionaValoresCotacaoOficina($connectionDB, $idVeiculoGerenciado, $nomeOficina)
 {
     $stmt = $connectionDB->prepare("SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos=?");
-    $stmt->bind_param("i", $idVeiculoGerenciado); 
+    $stmt->bind_param("i", $idVeiculoGerenciado);
     $stmt->execute();
     $result = $stmt->get_result();
     $valuesTable = $result->fetch_assoc();
@@ -20,114 +20,60 @@ function adicionaValoresCotacaoOficina($connectionDB, $idVeiculoGerenciado, $nom
     $idOrgaoPublico = $valuesTable['id_orgao_publico'];
     $idVeiculoGerenciado;
 
+    $selectInfosPecasXML = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' AND id_orgao_publico = '$idOrgaoPublico' AND quantidade_pecas != 0";
+    $result2 = $connectionDB->query($selectInfosPecasXML);
 
-    $marcaPecas = $_POST['marca'];
-    $valorUNPecas = $_POST['valorUN'];
-    $valorOrcadoServicos = $_POST['valorOrcado'];
-    $prazoEntrega = $_POST['prazoEntrega'];
+    $selectInfosServicosXML = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' AND id_orgao_publico = '$idOrgaoPublico' AND quantidade_pecas = 0";
+    $result3 = $connectionDB->query($selectInfosServicosXML);
 
-    $stmtInsert = $connectionDB->prepare("
-        INSERT INTO infos_veiculos_aprovados_oficina 
-        (id_veiculo_incluso_orgao_publico, id_orgao_publico, nome_oficina_aprovado, marca_pecas, valor_un_pecas, valor_orcado_servicos, dias_execucao) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        ");
+    $contadorPecas = 1;
+    while ($resultados2 = $result2->fetch_assoc()) {
+        $idVeiculoAprovadoOficina = $resultados2['id_veiculo_aprovado_oficina'];
+        $marcaPecas = $_POST['marcaPecas' . $contadorPecas];
+        $valorUNPecas = (float)$_POST['valorUNPecas']; // decimal (float)
+        $prazoEntrega = (int)$_POST['prazoEntrega']; // inteiro
 
-    $stmtInsert->bind_param(
-        "iissdds",
-        $idVeiculoGerenciado,
-        $idOrgaoPublico,
-        $nomeOficina,
-        $marcaPecas,
-        $valorUNPecas,
-        $valorOrcadoServicos,
-        $prazoEntrega
-    );
+        // echo "<br>";
+        echo $idVeiculoAprovadoOficina, $marcaPecas;
+        echo "<br>";
 
-    $stmtInsert->execute();
+        $sql = "
+        UPDATE infos_veiculos_aprovados_oficina 
+        SET marca_pecas = '$marcaPecas', valor_un_pecas = '$valorUNPecas', 
+            dias_execucao = '$prazoEntrega' 
+        WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' 
+        AND id_orgao_publico = '$idOrgaoPublico' 
+        AND id_veiculo_aprovado_oficina = '$idVeiculoAprovadoOficina' 
+        AND quantidade_pecas != 0";
+
+        $connectionDB->query($sql);
+
+        $contadorPecas++;
+    }
+    $contadorServicos = 1;
+    while ($resultados3 = $result3->fetch_assoc()) {
+        $idVeiculoAprovadoOficina = $resultados3['id_veiculo_aprovado_oficina'];
+        $valorOrcadoServicos = (float)$_POST['valorOrcadoServico'.$contadorServicos ]; // decimal
+        $prazoEntrega = (int)$_POST['prazoEntrega']; 
+
+        $sql = "
+        UPDATE infos_veiculos_aprovados_oficina 
+        SET valor_orcado_servicos = '$valorOrcadoServicos', dias_execucao= '$prazoEntrega'
+        WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado'
+        AND id_orgao_publico = '$idOrgaoPublico' 
+        AND id_veiculo_aprovado_oficina = '$idVeiculoAprovadoOficina' 
+        AND quantidade_pecas = 0";
+
+        $connectionDB->query($sql);
+
+        $contadorServicos++;
+
+    }
+
 }
 
 if (isset($_POST['confirmaCotacao'])) {
     adicionaValoresCotacaoOficina($connectionDB, $idVeiculoGerenciado, $nomeOficina);
-    header('Location: popup.php');
+    // header('Location: popup.php');
     exit();
 }
-
-// function insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado)
-// {
-//     // Receber arrays de peças e serviços do POST
-//     $pecas = isset($_POST['pecas']) ? $_POST['pecas'] : [];
-//     $servicos = isset($_POST['servicos']) ? $_POST['servicos'] : [];
-
-//     $stmt = $connectionDB->prepare("SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos=?");
-//     $stmt->bind_param("i", $idVeiculoGerenciado); // "s" para string
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-//     $valuesTable = $result->fetch_assoc();
-//     $idOrgaoPublico = $valuesTable['id_orgao_publico'];
-
-//     // Preparar a inserção
-//     $stmtInsert = $connectionDB->prepare("
-//         INSERT INTO infos_veiculos_aprovados_oficina 
-//         (id_veiculo_incluso_orgao_publico, id_orgao_publico, nome_oficina_aprovado, marca_pecas, valor_un_pecas, valor_orcado_servicos) 
-//         VALUES (?, ?, ?, ?, ?, ?)
-//     ");
-
-//     // Itera sobre os arrays para inserir os valores
-//     $maxItems = max(count($pecas), count($servicos));
-//     for ($i = 0; $i < $maxItems; $i++) {
-//         // Obter dados da peça se existir
-//         $peca = isset($pecas[$i]) ? $pecas[$i] : null;
-//         $valorUNServicos = isset($servicos[$i]) ? (float)$servicos[$i]['valorUNServicos'] : 0; // Convertendo para float
-//         $valorUNPecas = $peca ? (float)$peca['valorUNPecas'] : 0; // Convertendo para float
-//         $marcaPecas = $peca ? $peca['marcaPecas'] : ''; // Usar string vazia em vez de null
-
-
-
-//         // Obter dados do serviço correspondente se existir
-//         // $quantidadeServicos = isset($servicos[$i]) ? (int)$servicos[$i]['quantidadeServicos'] : 0; // Convertendo para int
-
-//         // Calcular o valor total dos serviços
-
-//         // $quantidadePecas = $peca ? (int)$peca['quantidadePecas'] : 0; 
-
-//         // Calcular o valor total das peças
-//         // $valorTotalPecas = ($valorUNPecas * $quantidadePecas); // Corrigido para calcular o valor total das peças
-//         // $valorTotalServicos = ($valorUNServicos * $quantidadeServicos); // Corrigido para calcular o valor total dos serviços
-
-
-
-//         // Calcular o valor total final
-//         // $valorTotalFinal = $valorTotalServicos + $valorTotalPecas;
-//         // $_SESSION['valorTotalServicos'] = $valorTotalServicos; 
-//         // $_SESSION['valorTotalPecas'] = $valorTotalPecas;
-//         // Obter a data atual
-//         // Vincular os parâmetros
-//         $stmtInsert->bind_param(
-//             "iivvff",
-//             $idVeiculoGerenciado,
-//             $idOrgaoPublico,
-//             $nomeOficina,
-//             $marcaPecas,
-//             $valorUNPecas,
-//             $valorUNServicos
-//         );
-
-//         // Executa e verifica se houve erro
-//         if (!$stmtInsert->execute()) {
-//             echo "Erro ao inserir o item $i: " . $stmtInsert->error;
-//         } else {
-//             echo "Item $i inserido com sucesso.<br>";
-//         }
-//     }
-
-//     // Fechar o statement
-//     $stmtInsert->close();
-// }
-
-
-// // Chamar a função se os dados foram recebidos via POST
-// if (isset($_POST['pecas']) || isset($_POST['servicos'])) {
-//     insereValoresBD($connectionDB, $nomeOficina, $idVeiculoGerenciado);
-// } else {
-//     echo "Nenhum dado recebido.";
-// }
