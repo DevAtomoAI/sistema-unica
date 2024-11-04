@@ -17,14 +17,14 @@ function acessaValoresBD($conexao, $idVeiculoEscolhido)
 
     if ($execConnectionInfos && mysqli_num_rows($execConnectionInfos) > 0) {
         while ($user_data = mysqli_fetch_assoc($execConnectionInfos)) {
+            echo $user_data['tipo_solicitacao'];
             $_SESSION['responsavelAtual'] = htmlspecialchars($user_data['responsavel']);
             $_SESSION['fornecedor'] = htmlspecialchars($user_data['fornecedor']);
             $_SESSION['veiculo'] = htmlspecialchars($user_data['veiculo']);
-            $_SESSION['placa'] = htmlspecialchars($user_data['placa']);
             $_SESSION['centroCusto'] = htmlspecialchars($user_data['centro_custo']);
             $_SESSION['kmAtual'] = intval($user_data['km_atual']);
             $_SESSION['modelo'] = htmlspecialchars($user_data['modelo_contratacao']);
-            $_SESSION['tipoSolicitacao'] = htmlspecialchars($user_data['tipo_solicitacao']);
+            $_SESSION['tipoSolicitacao'] = ($user_data['tipo_solicitacao']);
             $_SESSION['planoManutencao'] = htmlspecialchars($user_data['plano_manutencao']);
             $_SESSION['modeloContratacao'] = htmlspecialchars($user_data['modelo_contratacao']);
             $_SESSION['dataAbertura'] = htmlspecialchars($user_data['data_abertura']);
@@ -44,12 +44,11 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
     $responsavelAtual = mysqli_real_escape_string($conexao, $_POST['responsavelAtual']);
     $fornecedor = mysqli_real_escape_string($conexao, $_POST['fornecedor']);
     $veiculo = mysqli_real_escape_string($conexao, $_POST['veiculo']);
-    $placa = mysqli_real_escape_string($conexao, $_POST['placa']);
     $centroCusto = mysqli_real_escape_string($conexao, $_POST['centroCusto']);
     $kmAtual = intval($_POST['kmAtual']);
     $tipoSolicitacao = mysqli_real_escape_string($conexao, $_POST['tipoSolicitacao']);
     $planoManutencao = mysqli_real_escape_string($conexao, $_POST['planoManutencao']);
-    $modeloContratacao = mysqli_real_escape_string($conexao, $_POST['modelo']);
+    $modeloContratacao = mysqli_real_escape_string($conexao, $_POST['modeloContratacao']);
     $dataAbertura = mysqli_real_escape_string($conexao, $_POST['dataAbertura']);
     $dataFinal = mysqli_real_escape_string($conexao, $_POST['dataFinal']);
 
@@ -63,8 +62,7 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
                     centro_custo = '$centroCusto', 
                     tipo_solicitacao = '$tipoSolicitacao', 
                     fornecedor = '$fornecedor', 
-                    responsavel = '$responsavelAtual', 
-                    placa = '$placa' 
+                    responsavel = '$responsavelAtual'
                     WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhido'");
 
     if (!$atualizaInfosVeiculos) {

@@ -74,6 +74,8 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
         'responsavel' => $user_data['responsavel'],
         'justificativa' => $user_data['justificativa'],
         'numLinhasTotal2' => $numLinhasTotal2,
+        'fornecedor' => $user_data['fornecedor'],
+
     ];
 };
 
@@ -237,7 +239,6 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                     <div class="popup-column">
                         <p><strong>Modelo de Contratação:</strong> <span id="modeloContratacao"></span></p>
                         <p><strong>Data de Abertura:</strong> <span id="dataAbertura"></span></p>
-                        <p><strong>Data de Recebimento:</strong> <span id="dataRecebimento"></span></p>
                     </div>
                     <div class="popup-column">
                         <p><strong>Centro de Custo:</strong> <span id="centroCusto"></span></p>

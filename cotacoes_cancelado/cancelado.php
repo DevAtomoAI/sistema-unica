@@ -182,7 +182,6 @@ if ($idVeiculosInclusosOrgaoPublico) {
                 <thead>
                     <tr>
                         <th>Nº</th>
-                        <th>Placa</th>
                         <th>Modelo</th>
                         <th>Centro de Custo</th>
                         <th>Vencedor</th>
@@ -196,7 +195,6 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     while ($user_data = mysqli_fetch_assoc($execConnection)) {
                         echo "<tr>";
                         echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
-                        echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
                         echo "<td class='resultadosTabela' ></td>";
                         echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                         echo "<td class='resultadosTabela' >" . $user_data['propostas'] . "</td>";

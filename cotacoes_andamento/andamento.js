@@ -17,13 +17,6 @@ function abrirPopUp(cotacaoId) {
         document.getElementById("tipoSolicitacao").innerText = cotacao.tipoSolicitacao;
         document.getElementById("fornecedor").innerText = cotacao.fornecedor;
         document.getElementById("responsavel").innerText = cotacao.responsavel;
-        const anexo = cotacao.anexo;
-        const anexoElement = document.getElementById("anexo");
-        if (anexo) {
-            anexoElement.innerHTML = `<a href="${anexo}" target="_blank">Ver Anexo</a>`;
-        } else {
-            anexoElement.innerText = "Nenhum anexo disponível.";
-        }
         // document.getElementById("modeloVeiculo").innerText = cotacao.modelo;
 
         // Exibir o pop-up
