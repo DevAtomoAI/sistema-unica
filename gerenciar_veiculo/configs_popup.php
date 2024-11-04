@@ -74,6 +74,6 @@ function adicionaValoresCotacaoOficina($connectionDB, $idVeiculoGerenciado, $nom
 
 if (isset($_POST['confirmaCotacao'])) {
     adicionaValoresCotacaoOficina($connectionDB, $idVeiculoGerenciado, $nomeOficina);
-    // header('Location: popup.php');
+    header('Location: popup.php');
     exit();
 }
