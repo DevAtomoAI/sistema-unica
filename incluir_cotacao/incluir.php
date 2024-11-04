@@ -167,7 +167,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <br>
 
                     <label for="anexo"> Anexo </label>
-                    <input name="anexo" type="file" id="anexo" accept=".pdf" placeholder="Anexo">
+                    <input name="anexo" type="file" id="anexo" accept=".xml" placeholder="Anexo">
                 </div>
 
                 <div class="form-group">
