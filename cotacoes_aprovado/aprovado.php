@@ -14,7 +14,7 @@ function checkUserLoggedIn() {
 }
 checkUserLoggedIn();
 
-$selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
+$selectTableAprovadas = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ";
 if(isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
     $selectTableAprovadas = $_SESSION['filtrosPesquisaAprovada'];
 }
@@ -28,23 +28,23 @@ $idVeiculosInclusosOrgaoPublico = $cotacoes[0]['id'] ?? null;
 $_SESSION['idVeiculosInclusosOrgaoPublico'] = $idVeiculosInclusosOrgaoPublico;
 
 
-if ($idVeiculosInclusosOrgaoPublico) {
-    $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'
-                AND orcamento_aprovado_reprovado!='Cancelada'";
-    $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
+// if ($idVeiculosInclusosOrgaoPublico) {
+//     $selectTable2 = "SELECT * FROM infos_veiculos_inclusos 
+//                 WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovada_reprovada_oficina!='Aprovada'
+//                 AND orcamento_aprovado_reprovado!='Cancelada'";
+//     $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
 
-    $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                     WHERE orcamento_aprovado_reprovado = '' AND
-                     id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
-                     AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-    $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
+//     $selectTable3 = "SELECT * FROM infos_veiculos_inclusos 
+//                      WHERE orcamento_aprovada_reprovada_oficina = '' AND
+//                      id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
+//                      AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+//     $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
 
-    $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
-                     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
-                     AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
-    $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
-}
+//     $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
+//                      WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
+//                      AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
+//     $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+// }
 
 ?>
 
@@ -159,12 +159,12 @@ if ($idVeiculosInclusosOrgaoPublico) {
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Aprovada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
-                    // while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
-                    //     echo "<option value='" . $orgaoSolicitantes['id'] . "'>" . $orgaoSolicitantes['centro_custo'] . "</option>";
-                    // }
+                    while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
+                        echo "<option value='" . $orgaoSolicitantes['id'] . "'>" . $orgaoSolicitantes['centro_custo'] . "</option>";
+                    }
 
                     ?>
                 </select>
@@ -190,8 +190,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
                         <th>Fatura serviços</th>
                         <th>Fatura peças</th>
                         <th>Centro de Custo</th>
-                        <th>Data de Abertura</th>
-                        <th>Valor Fechamento</th>
+                        <th>Opção</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -200,12 +199,11 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     while ($user_data = mysqli_fetch_assoc($execConnectionAprovadas)) {
                         echo "<tr>";
                         echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
-                        echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
-                        echo "<td class='resultadosTabela' ></td>";
-                        echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
-                        echo "<td class='resultadosTabela' >" . $user_data['data_abertura'] . "</td>";
-                        echo "<td class='resultadosTabela' >" . $user_data['data_final'] . "</td>";
-                        // echo "<td class='resultadosTabela' > <button name='button-option-aproved' class='btn-action btn-green' value='" . $user_data['id'] . "'><i class='fas fa-check'></i></button> <button name='button-option-rejected' class='btn-action btn-red' value='" . $user_data['id'] . "'><i class='fas fa-times'></i></button></td>";
+                        echo "<td class='resultadosTabela' >FATURA SERVICO ADD INFOS VEICULOS INCLUSOS";
+                        echo "<td class='resultadosTabela' > FATURA PECAS ADD INFOS VEICULOS INCLUSOS</td>";
+                        echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] ."</td>";
+                        echo "<td class='resultadosTabela' > <button name='button-option-aproved' class='btn-action btn-green' value='" . $user_data['id_infos_veiculos_inclusos'] . "'>Faturar<i class='fas fa-check'></i></button>
+                         <button name='button-option-rejected' class='btn-action btn-red' value='" . $user_data['id_infos_veiculos_inclusos'] . "'>Cancelar<i class='fas fa-times'></i></button></td>";
                         echo "</tr>";
                     }
                     ?>

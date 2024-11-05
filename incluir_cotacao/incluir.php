@@ -14,14 +14,14 @@ $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idVeiculosInclusosOrgaoPublico = $_SESSION["idVeiculosInclusosOrgaoPublico"];
 
 if ($idVeiculosInclusosOrgaoPublico) {
-    $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'
-                AND orcamento_aprovado_reprovado!='Cancelada'";
+    $selectTable2 = "SELECT * FROM infos_veiculos_inclusos 
+                WHERE id_infos_veiculos_inclusos = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovada_reprovada_oficina!='Aprovada'
+                AND orcamento_aprovada_reprovada_oficina!='Cancelada'";
     $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
 
-    $selectTable3 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                     WHERE orcamento_aprovado_reprovado = '' AND
-                     id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
+    $selectTable3 = "SELECT * FROM infos_veiculos_inclusos 
+                     WHERE orcamento_aprovada_reprovada_oficina = '' AND
+                     id_infos_veiculos_inclusos = $idVeiculosInclusosOrgaoPublico 
                      AND id_orgao_publico = '$idOrgaoPublicoLogado'";
     $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
 

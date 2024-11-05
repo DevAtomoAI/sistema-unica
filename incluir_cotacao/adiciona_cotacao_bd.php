@@ -52,6 +52,8 @@ function analisaXML($conexao)
 {
     $idOrgaoPublico = $_SESSION['idOrgaoPublico'];
     $idVeiculoEscolhido = $_SESSION['idVeiculoEscolhido'];
+
+    echo $idVeiculoEscolhido;
     if (isset($_FILES['anexo']) && $_FILES['anexo']['error'] === UPLOAD_ERR_OK) {
         $caminhoTemporario = $_FILES['anexo']['tmp_name'];
 
@@ -80,9 +82,9 @@ function analisaXML($conexao)
                 $valorHoraMaoObra = $maoDeObra->valor_hora_mao_de_obra;
 
                 $valoresTotais = $xml->total_do_orcamento[$contadorItens];
-                $valorLiquidoFinalPecas = $valoresTotais->valor_liquido_pecas;
-                $valorLiquidoMaoObra = $valoresTotais->valor_liquido_mao_de_obra;
-                $valorTotalLiquidoGeral = $valoresTotais->valor_total_liquido_geral;
+                $valorLiquidoFinalPecas = $valoresTotais->valor_liquido_pecas[$contadorItens];
+                $valorLiquidoMaoObra = $valoresTotais->valor_liquido_mao_de_obra[$contadorItens];
+                $valorTotalLiquidoGeral = $valoresTotais->valor_total_liquido_geral[$contadorItens];
 
                 if ($tipoItem == 'Peça') {
                     // Para peças
@@ -97,8 +99,8 @@ function analisaXML($conexao)
 
             // Executar a inserção se houver valores
             if (count($valoresParaInserir) > 0) {
-                $sql = "INSERT INTO infos_veiculos_aprovados_oficina (id_veiculo_incluso_orgao_publico, id_orgao_publico, numero_orcamento, codigo_pecas, descricao_pecas, quantidade_pecas, valor_un_pecas, 
-                        valor_orcado_pecas, descricao_servicos, valor_mao_obra, valor_total_servicos, valor_total_final) 
+                $sql = "INSERT INTO infos_cotacao_orgao (id_veiculo_incluso_orgao_publico, id_orgao_publico, numero_orcamento, codigo_pecas, descricao_pecas, quantidade_pecas, 
+                        valor_orcado_pecas, valor_total_final_pecas, descricao_servicos, valor_mao_obra, valor_total_servicos, valor_total_final) 
                         VALUES " . implode(',', $valoresParaInserir);
 
                 // Executar a consulta
@@ -120,6 +122,7 @@ function analisaXML($conexao)
 if (isset($_POST["incluir-btn"])) {
     analisaXML($conexao);
     adicionarValoresBD($conexao);
+    // header('Location: ../cotacoes_andamento/andamento.php');
 }
 
 // Fecha a conexão

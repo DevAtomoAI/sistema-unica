@@ -35,6 +35,28 @@ $_SESSION['notificacao'] = $numLinhasTotal;
 
 $cotacoes = [];
 
+$idVeiculosInclusosOrgaoPublico = $cotacoes[0]['id'] ?? null;
+$_SESSION['idVeiculosInclusosOrgaoPublico'] = $idVeiculosInclusosOrgaoPublico;
+
+if ($idVeiculosInclusosOrgaoPublico) {
+    $selectTable2 = "SELECT * FROM infos_veiculos_inclusos 
+    WHERE id_infos_veiculos_inclusos = $idVeiculosInclusosOrgaoPublico
+    AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+
+    $numLinhasTotal2 = $conexao->query($selectTable2);
+
+    $selectTable3 = "SELECT * FROM infos_veiculos_inclusos 
+                     WHERE orcamento_aprovada_reprovada_oficina = '' AND
+                     id_infos_veiculos_inclusos = $idVeiculosInclusosOrgaoPublico 
+                     AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+    $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
+
+    $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
+                     WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
+                     AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
+    $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
+}
+
 while ($user_data = mysqli_fetch_assoc($execConnection)) {
     $idVeiculosInclusosOrgaoPublico = $user_data['id_infos_veiculos_inclusos'];
 
@@ -61,31 +83,8 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
     ];
 };
 
-// $idVeiculosInclusosOrgaoPublico = $cotacoes[0]['id'] ?? null;
-// $_SESSION['idVeiculosInclusosOrgaoPublico'] = $idVeiculosInclusosOrgaoPublico;
 
-// if ($idVeiculosInclusosOrgaoPublico) {
-//     $selectTable2 = "SELECT * FROM infos_veiculos_inclusos 
-//     WHERE id_infos_veiculos_inclusos = $idVeiculosInclusosOrgaoPublico
-//     AND id_orgao_publico = '$idOrgaoPublicoLogado'";
 
-//     $numLinhasTotal2 = $conexao->query($selectTable2);
-
-//     $selectTable3 = "SELECT * FROM infos_veiculos_inclusos 
-//                      WHERE orcamento_aprovada_reprovada_oficina = '' AND
-//                      id_infos_veiculos_inclusos = $idVeiculosInclusosOrgaoPublico 
-//                      AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-//     $numLinhasTotal3 = $conexao->query($selectTable3)->num_rows;
-
-//     $selectTable4 = "SELECT veiculo FROM infos_veiculos_inclusos 
-//                      WHERE id_orgao_publico = '$idOrgaoPublicoLogado' 
-//                      AND id_infos_veiculos_inclusos = '$idVeiculosInclusosOrgaoPublico'";
-//     $nomeVeiculo = $conexao->query($selectTable4)->fetch_assoc()['veiculo'] ?? '';
-// }
-
-// foreach ($cotacoes as $cotacao){
-//     echo 'op';
-// }
 
 echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 
@@ -160,7 +159,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina=' ' ORDER BY id_infos_veiculos_inclusos ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina=' ' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
@@ -192,7 +191,6 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         <th>Justificativa</th>
                         <th>Propostas</th>
                         <th>Data de Abertura</th>
-                        
                         <th>Opções</th>
                     </tr>
                 </thead>
@@ -202,8 +200,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 
                     foreach ($cotacoes as $cotacao) {
                         echo "<tr>";
-                        echo "<p>asdasd</p>";
-                        // echo "<td class='resultadosTabela'>" . $cotacao['id'] .
+                        echo "<td class='resultadosTabela'>" . $cotacao['id'] .
                             "<button class='info-btn' onclick='abrirPopUp(" . $cotacao['id'] . ")'><i class='fas fa-info-circle'></i></button></td>";
                         echo "<td class='resultadosTabela'>" . $cotacao['veiculo'] . "</td>";
                         echo "<td class='resultadosTabela'>" . $cotacao['modeloContratacao'] . "</td>";

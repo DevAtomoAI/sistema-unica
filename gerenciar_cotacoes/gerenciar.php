@@ -64,9 +64,13 @@ $execConnectionOrcamentos = $conexao->query($selectOrcamentosVeiculoEscolhido);
 $selectInfosCotacaoOP = "SELECT numero_orcamento, valor_total_final, dias_execucao FROM infos_cotacao_orgao WHERE id_orgao_publico='$idOrgaoPublicoLogado' AND id_veiculo_incluso_orgao_publico='$idVeiculoEscolhido'";
 $execConnectionInfosCotacaoOP = $conexao->query($selectInfosCotacaoOP);
 $user_data2 = mysqli_fetch_assoc($execConnectionInfosCotacaoOP);
-$numOrcamento = $user_data2["numero_orcamento"];
-$valTotalFinal = $user_data2["valor_total_final"];
-$diasExec = $user_data2["dias_execucao"];
+
+if($user_data2){
+    $numOrcamento = $user_data2["numero_orcamento"];
+    $valTotalFinal = $user_data2["valor_total_final"];
+    $diasExec = $user_data2["dias_execucao"];
+}
+
 
 ?>
 
