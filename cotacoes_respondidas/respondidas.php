@@ -73,27 +73,27 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
             </li>
 
             <li>
-                <a id="opcaoParaResponder" href="#respondido">
+                <a id="opcaoParaResponder" href="../cotacoes_respondidas/respondidas.php">
                     <img src="../assets/check.svg"> Respondido
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
+                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php" data-target="cotacoesAprovadas">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="#reprovado" data-target='cotacoesReprovadas'>
+                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php" data-target='cotacoesReprovadas'>
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoFaturado' href="#faturado" data-target="cotacoesFaturadas">
+                <a id='opcaoFaturado' href="../cotacoes_faturadas/faturadas.php" data-target="cotacoesFaturadas">
                     <img src="../assets/paper.svg"> Faturado
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php" data-target="cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li> 

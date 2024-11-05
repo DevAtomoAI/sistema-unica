@@ -19,7 +19,7 @@ function executeQuery($connectionDB, $query)
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Reprovadas' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Reprovada' ORDER BY id_infos_veiculos_inclusos ASC";
 
 if (isset($_SESSION['filtrosPesquisaReprovadas']) || !empty($_SESSION['filtrosPesquisaReprovadas'])) {
     $selectTable = $_SESSION['filtrosPesquisaReprovadas'];
@@ -78,12 +78,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="#reprovado">
+                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php">
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoFaturado' href="#faturado" data-target="cotacoesFaturadas">
+                <a id='opcaoFaturado' href="../cotacoes_faturadas/faturadas.php" data-target="cotacoesFaturadas">
                     <img src="../assets/paper.svg"> Faturado
                 </a>
             </li>

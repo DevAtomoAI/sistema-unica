@@ -14,6 +14,8 @@ function botaoOrcarRejeitar($connectionDB){
     
         // Executa a consulta
         $connectionDB->query($sqlInsert);
+
+        header("Location: ../cotacoes_rejeitadas/rejeitadas.php");
     }
      elseif (isset($_POST['botaoGerenciar'])) {
         $idVeiculoGerenciar = $_POST['botaoGerenciar'];

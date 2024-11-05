@@ -82,12 +82,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoFaturado' href="#faturado" data-target="cotacoesFaturadas">
+                <a id='opcaoFaturado' href="../cotacoes_faturadas/faturadas.php" data-target="cotacoesFaturadas">
                     <img src="../assets/paper.svg"> Faturado
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li>

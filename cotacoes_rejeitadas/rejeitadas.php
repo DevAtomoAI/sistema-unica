@@ -23,12 +23,8 @@ if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa']))
     $selectTableRejeitadas = $_SESSION['filtrosPesquisa'];
 } 
 $_SESSION['filtrosPesquisa'] = null;
-$execConnection = executeQuery($connectionDB, $selectTableRejeitadas);
-$row = $execConnection->fetch_assoc();
-$idVeiculoGerenciado = $row['id_veiculo_gerenciado'];
 
-$selectInfosVeiculoRejeitado = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciado'";
-$execConnectionInfosVeiculosRejeitados = executeQuery($connectionDB, $selectInfosVeiculoRejeitado);
+$execConnection = executeQuery($connectionDB, $selectTableRejeitadas);
 
 $numLinhasTotal = $execConnection->num_rows;
 $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
@@ -63,7 +59,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
             </li>
 
             <li>
-                <a id='opcaoRejeitado' href="#rejeitadas">
+                <a id='opcaoRejeitado' href="../cotacoes_rejeitadas/rejeitadas.php">
                     <img src="../assets/triangle-exclamation.svg"> Rejeitado
                 </a>
             </li>
@@ -74,22 +70,22 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
+                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php" data-target="cotacoesAprovadas">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="#reprovado" data-target='cotacoesReprovadas'>
+                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php" data-target='cotacoesReprovadas'>
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoFaturado' href="#faturado" data-target="cotacoesFaturadas">
+                <a id='opcaoFaturado' href="../cotacoes_faturadas/faturadas.php" data-target="cotacoesFaturadas">
                     <img src="../assets/paper.svg"> Faturado
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php" data-target="cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li>
@@ -186,14 +182,22 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                         </thead>
                         <tbody>
                             <?php
-                            while ($user_data = mysqli_fetch_assoc($execConnectionInfosVeiculosRejeitados)) {
-                                echo "<tr>";
-                                echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['veiculo'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
-                                echo "</tr>";
+
+                            while($row = $execConnection->fetch_assoc()){
+                                $idVeiculoGerenciado = $row['id_veiculo_gerenciado'];
+                                $selectInfosVeiculoRejeitado = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciado'";
+                                $execConnectionInfosVeiculosRejeitados = executeQuery($connectionDB, $selectInfosVeiculoRejeitado);
+
+                                while ($user_data = mysqli_fetch_assoc($execConnectionInfosVeiculosRejeitados)) {
+                                    echo "<tr>";
+                                    echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
+                                    echo "<td class='resultadosTabela' >" . $user_data['veiculo'] . "</td>";
+                                    echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
+                                    echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
+                                    echo "</tr>";
+                                }
                             }
+
                             ?>
                         </tbody>
                     </table>

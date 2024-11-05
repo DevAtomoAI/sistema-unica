@@ -23,7 +23,17 @@ function executeQuery($connectionDB, $query) {
 // $idOPOrcado = $orcadosOficina['id_orgao_publico'];
 // $idVeiculoGerenciadoOrcado = $orcadosOficina['id_veiculo_gerenciado'];
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina =' ' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * 
+FROM infos_veiculos_inclusos 
+WHERE orcamento_aprovada_reprovada_oficina != 'Aprovado' 
+  AND orcamento_aprovada_reprovada_oficina != 'Rejeitado'
+  AND id_infos_veiculos_inclusos NOT IN (
+    SELECT id_veiculo_gerenciado 
+    FROM orcamentos_oficinas 
+    WHERE orcamento_aprovado_reprovado = 'Rejeitado'
+)
+ORDER BY id_infos_veiculos_inclusos ASC;";
+
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
@@ -78,22 +88,22 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                 </a>
             </li>
             <li>
-                <a id='opcaoAprovado' href="#aprovado" data-target="cotacoesAprovadas">
+                <a id='opcaoAprovado' href="../cotacoes_aprovadas/aprovadas.php" data-target="cotacoesAprovadas">
                     <img src="../assets/thumbs-up.svg"> Aprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoReprovado' href="#reprovado" data-target='cotacoesReprovadas'>
+                <a id='opcaoReprovado' href="../cotacoes_reprovadas/reprovadas.php" data-target='cotacoesReprovadas'>
                     <img src="../assets/thumbs-down.svg"> Reprovado
                 </a>
             </li>
             <li>
-                <a id='opcaoFaturado' href="#faturado" data-target="cotacoesFaturadas">
+                <a id='opcaoFaturado' href="../cotacoes_faturadas/faturadas.php" data-target="cotacoesFaturadas">
                     <img src="../assets/paper.svg"> Faturado
                 </a>
             </li>
             <li>
-                <a id='opcaoCancelado' href="#cancelado" data-target="cotacoesCanceladas">
+                <a id='opcaoCancelado' href="../cotacoes_canceladas/canceladas.php" data-target="cotacoesCanceladas">
                     <img src="../assets/cancel.svg"> Cancelado
                 </a>
             </li> 
