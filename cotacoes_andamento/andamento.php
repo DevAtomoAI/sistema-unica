@@ -14,8 +14,7 @@ checkUserLoggedIn();
 $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
-
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida'  AND id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_orgao_publico ='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC ";
 
 if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
@@ -56,10 +55,10 @@ if ($idVeiculosInclusosOrgaoPublico) {
 while ($user_data = mysqli_fetch_assoc($execConnection)) {
     $idVeiculosInclusosOrgaoPublico = $user_data['id_infos_veiculos_inclusos'];
 
-    $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-    WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
-    AND id_orgao_publico = '$idOrgaoPublicoLogado'";
-    $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
+    // $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
+    // WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico 
+    // AND id_orgao_publico = '$idOrgaoPublicoLogado'";
+    // $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
 
     $cotacoes[] = [
         'id' => $user_data['id_infos_veiculos_inclusos'],
