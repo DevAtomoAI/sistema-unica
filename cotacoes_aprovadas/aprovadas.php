@@ -19,7 +19,7 @@ function executeQuery($connectionDB, $query)
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC";
 
 if (isset($_SESSION['filtrosPesquisaAprovadas']) || !empty($_SESSION['filtrosPesquisaAprovadas'])) {
     $selectTable = $_SESSION['filtrosPesquisaAprovadas'];
@@ -45,22 +45,6 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
 </head>
 
 <body>
-    <style>
-        .custom-file-upload {
-            display: inline-block;
-            padding: 6px 12px;
-            cursor: pointer;
-            background-color: white;
-            color: black;
-            border: none;
-            border-radius: 4px;
-            font-family: Arial, sans-serif;
-        }
-
-        .file-input {
-            display: none;
-        }
-    </style>
 
     <div class="overlay" id="overlay"></div>
 
@@ -171,9 +155,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 <select name="orderByInput" id="orderByInput">
                                     <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
                                     <option name="numero_veiculo_crescente" id="numero_veiculo_crescente" value="numero_veiculo_crescente">Por número (crescente)</option>
-                                    <option name="placa_veiculo" id="placa_veiculo" value="placa">Por placa </option>
                                     <option name="marca_veiculo" id="marca_veiculo" value="marca_veiculo">Por marca </option>
-                                    <option name="modelo_veiculo" id="modelo_veiculo" value="modelo_veiculo">Por modelo </option>
                                 </select>
                             </form>
                         </div>
@@ -191,10 +173,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                         <thead>
                             <tr>
                                 <th class='titulosTabela'>Nº</th>
-                                <th class='titulosTabela'>Placa</th>
                                 <th class='titulosTabela'>Marca</th>
-                                <th class='titulosTabela'>Modelo</th>
-                                <th class='titulosTabela'>Ano</th>
                                 <th class='titulosTabela'>Centro custo</th>
                                 <th class='titulosTabela'>Tipo Solicitação</th>
                                 <th class='titulosTabela'>Opções</th>
@@ -205,10 +184,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             while ($user_data = mysqli_fetch_assoc($execConnection)) {
                                 echo "<tr>";
                                 echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['veiculo'] . "</td>";
-                                echo "<td class='resultadosTabela'>" . $user_data['modelo_veiculo'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
                                 echo "<td class='resultadosTabela' >

@@ -19,9 +19,12 @@ function executeQuery($connectionDB, $query) {
 $selectOrcadosOficina = "SELECT * FROM orcamentos_oficinas WHERE orcado_oficina='1'";
 $execOrcadosOficina = executeQuery($connectionDB, $selectOrcadosOficina);
 $orcadosOficina = mysqli_fetch_assoc($execOrcadosOficina);
-$idOPOrcado = $orcadosOficina['id_orgao_publico'];
-$idVeiculoGerenciadoOrcado = $orcadosOficina['id_veiculo_gerenciado'];
-
+$idOPOrcado = '';
+$idVeiculoGerenciadoOrcado = '';
+if($orcadosOficina){
+    $idOPOrcado = $orcadosOficina['id_orgao_publico'];
+    $idVeiculoGerenciadoOrcado = $orcadosOficina['id_veiculo_gerenciado'];
+}
 $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_orgao_publico='$idOPOrcado' AND id_infos_veiculos_inclusos='$idVeiculoGerenciadoOrcado' ORDER BY id_infos_veiculos_inclusos ASC";
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {

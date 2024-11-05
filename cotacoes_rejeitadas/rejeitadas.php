@@ -17,13 +17,19 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
-$selectTableRejeitadas = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Rejeitada' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTableRejeitadas = "SELECT * FROM orcamentos_oficinas WHERE orcamento_aprovado_reprovado='Rejeitado'";
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTableRejeitadas = $_SESSION['filtrosPesquisa'];
 } 
 $_SESSION['filtrosPesquisa'] = null;
 $execConnection = executeQuery($connectionDB, $selectTableRejeitadas);
+$row = $execConnection->fetch_assoc();
+$idVeiculoGerenciado = $row['id_veiculo_gerenciado'];
+
+$selectInfosVeiculoRejeitado = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciado'";
+$execConnectionInfosVeiculosRejeitados = executeQuery($connectionDB, $selectInfosVeiculoRejeitado);
+
 $numLinhasTotal = $execConnection->num_rows;
 $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
 ?>
@@ -176,20 +182,16 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                                 <th class='titulosTabela'>Marca</th>
                                 <th class='titulosTabela'>Centro custo</th>
                                 <th class='titulosTabela'>Tipo Solicitação</th>
-                                <th class='titulosTabela'>Opções</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            while ($user_data = mysqli_fetch_assoc($execConnection)) {
+                            while ($user_data = mysqli_fetch_assoc($execConnectionInfosVeiculosRejeitados)) {
                                 echo "<tr>";
                                 echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
-                                echo "<td class='resultadosTabela' >
-                                <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoGerenciar' name='botaoGerenciar' class='botaoGerenciar'>Gerenciar</button>
-                            </td>";
                                 echo "</tr>";
                             }
                             ?>

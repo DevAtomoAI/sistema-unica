@@ -6,8 +6,14 @@ session_start();
 function botaoOrcarRejeitar($connectionDB){
     if (isset($_POST['botaoRejeitado'])) {
         $idButton = $_POST['botaoRejeitado'];
-        $status = 'Rejeitada';
-        header('Location: andamento.php');
+        $nomeOficina = $_SESSION['nomeOficina'];
+        //insert em orcamentos_oficinas e colocar orcamento_aprovado_reprovado como Rejeitado
+        $sqlInsert = "
+        INSERT INTO orcamentos_oficinas (id_veiculo_gerenciado, nome_oficina, orcamento_aprovado_reprovado
+        ) VALUES ('$idButton', '$nomeOficina', 'Rejeitado')";
+    
+        // Executa a consulta
+        $connectionDB->query($sqlInsert);
     }
      elseif (isset($_POST['botaoGerenciar'])) {
         $idVeiculoGerenciar = $_POST['botaoGerenciar'];
@@ -20,16 +26,16 @@ function botaoOrcarRejeitar($connectionDB){
     }
 
     // Usando prepared statements para evitar sql injection
-    $stmt = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=? ");
-    $stmt->bind_param("si", $status, $idButton); // 'si' indica string e inteiro
+    // $stmt = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=? ");
+    // $stmt->bind_param("si", $status, $idButton); // 'si' indica string e inteiro
 
-    try {
-        $stmt->execute();
-        // header('Location: ../index.php');
-        exit;
-    } catch (Exception $e) {
-        echo "Erro: " . $e->getMessage();
-    }
+    // try {
+    //     $stmt->execute();
+    //     // header('Location: ../index.php');
+    //     exit;
+    // } catch (Exception $e) {
+    //     echo "Erro: " . $e->getMessage();
+    // }
 }
 
 function applyCotacaoFilters($connectionDB) {

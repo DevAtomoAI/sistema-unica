@@ -17,13 +17,13 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
-$selectOrcadosOficina = "SELECT * FROM orcamentos_oficinas";
-$execOrcadosOficina = executeQuery($connectionDB, $selectOrcadosOficina);
-$orcadosOficina = mysqli_fetch_assoc($execOrcadosOficina);
-$idOPOrcado = $orcadosOficina['id_orgao_publico'];
-$idVeiculoGerenciadoOrcado = $orcadosOficina['id_veiculo_gerenciado'];
+// $selectOrcadosOficina = "SELECT * FROM orcamentos_oficinas";
+// $execOrcadosOficina = executeQuery($connectionDB, $selectOrcadosOficina);
+// $orcadosOficina = mysqli_fetch_assoc($execOrcadosOficina);
+// $idOPOrcado = $orcadosOficina['id_orgao_publico'];
+// $idVeiculoGerenciadoOrcado = $orcadosOficina['id_veiculo_gerenciado'];
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos!='$idVeiculoGerenciadoOrcado' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina =' ' ORDER BY id_infos_veiculos_inclusos ASC";
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];

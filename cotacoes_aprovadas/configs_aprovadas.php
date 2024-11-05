@@ -43,7 +43,7 @@ function insereFaturasBD($connectionDB)
     $faturaPecas = file_get_contents($_FILES['faturaPecas']['tmp_name']);
     $faturaServicos = file_get_contents($_FILES['faturaServicos']['tmp_name']);
 
-    $stmtFatura = $connectionDB->prepare("UPDATE infos_veiculos_aprovados_oficina SET fatura_pecas=?, fatura_servicos=? WHERE id_veiculo_incluso_orgao_publico=? ");
+    $stmtFatura = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET fatura_pecas=?, fatura_servicos=? WHERE id_infos_veiculos_inclusos=? ");
     $stmtFatura->bind_param("ssi", $faturaPecas, $faturaServicos, $idVeiculoInclusoOrgaoPublico);
     if ($stmtFatura->execute()) {
         echo "certo";
@@ -51,7 +51,7 @@ function insereFaturasBD($connectionDB)
         echo "erro" . $stmtFatura->error;
     }
 
-    $stmtEstadoVeiculo = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET opcao_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=?");
+    $stmtEstadoVeiculo = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=?");
     $stmtEstadoVeiculo->bind_param("si", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico);
     
     if ($stmtEstadoVeiculo->execute()) {
