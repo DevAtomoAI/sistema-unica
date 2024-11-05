@@ -20,56 +20,55 @@ function adicionaValoresCotacaoOficina($connectionDB, $idVeiculoGerenciado, $nom
     $idOrgaoPublico = $valuesTable['id_orgao_publico'];
     $idVeiculoGerenciado;
 
-    $selectInfosPecasXML = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' AND id_orgao_publico = '$idOrgaoPublico' AND quantidade_pecas != 0";
+    $selectInfosPecasXML = "SELECT * FROM infos_cotacao_orgao WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' AND id_orgao_publico = '$idOrgaoPublico'";
     $result2 = $connectionDB->query($selectInfosPecasXML);
 
-    $selectInfosServicosXML = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' AND id_orgao_publico = '$idOrgaoPublico' AND quantidade_pecas = 0";
+    $selectInfosServicosXML = "SELECT * FROM infos_cotacao_orgao WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' AND id_orgao_publico = '$idOrgaoPublico' AND quantidade_pecas = 0";
     $result3 = $connectionDB->query($selectInfosServicosXML);
 
-    $contadorPecas = 1;
+    $valores = []; // Inicializa o array para armazenar os valores
+    $contador = 1;
+    $contador2 = 1;
+
     while ($resultados2 = $result2->fetch_assoc()) {
-        $idVeiculoAprovadoOficina = $resultados2['id_veiculo_aprovado_oficina'];
-        $marcaPecas = $_POST['marcaPecas' . $contadorPecas];
-        $valorUNPecas = (float)$_POST['valorUNPecas']; // decimal (float)
-        $prazoEntrega = (int)$_POST['prazoEntrega']; // inteiro
+        // Coleta dados de peças
+        $idInfosCotacaoOrgao = $resultados2['id_infos_cotacao_orgao'];
+        $marcaPecas = $_POST['marcaPecas' . $contador];
+        $valorUNPecas = (float)$_POST['valorUNPecas' . $contador];
+        $prazoEntrega = (int)$_POST['prazoEntrega'];
 
-        // echo "<br>";
-        echo $idVeiculoAprovadoOficina, $marcaPecas;
-        echo "<br>";
-
-        $sql = "
-        UPDATE infos_veiculos_aprovados_oficina 
-        SET marca_pecas = '$marcaPecas', valor_un_pecas = '$valorUNPecas', 
-            dias_execucao = '$prazoEntrega' 
-        WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado' 
-        AND id_orgao_publico = '$idOrgaoPublico' 
-        AND id_veiculo_aprovado_oficina = '$idVeiculoAprovadoOficina' 
-        AND quantidade_pecas != 0";
-
-        $connectionDB->query($sql);
-
-        $contadorPecas++;
+        if($valorUNPecas == 0){
+            break;
+        }
+        // Adiciona os valores ao array sem valorOrcadoServicos
+        $valores[] = "('$idOrgaoPublico', '$idVeiculoGerenciado', '$idInfosCotacaoOrgao', '$nomeOficina', '$marcaPecas', '$valorUNPecas', NULL, '$prazoEntrega', true)";
+    
+        $contador++; // Incrementa o contador
     }
-    $contadorServicos = 1;
+
     while ($resultados3 = $result3->fetch_assoc()) {
-        $idVeiculoAprovadoOficina = $resultados3['id_veiculo_aprovado_oficina'];
-        $valorOrcadoServicos = (float)$_POST['valorOrcadoServico'.$contadorServicos ]; // decimal
-        $prazoEntrega = (int)$_POST['prazoEntrega']; 
-
-        $sql = "
-        UPDATE infos_veiculos_aprovados_oficina 
-        SET valor_orcado_servicos = '$valorOrcadoServicos', dias_execucao= '$prazoEntrega'
-        WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciado'
-        AND id_orgao_publico = '$idOrgaoPublico' 
-        AND id_veiculo_aprovado_oficina = '$idVeiculoAprovadoOficina' 
-        AND quantidade_pecas = 0";
-
-        $connectionDB->query($sql);
-
-        $contadorServicos++;
-
+        // Coleta dados de peças
+        $valorOrcadoServicos = (float)$_POST['valorOrcadoServico' . $contador2]; 
+        // Adiciona os valores ao array sem valorOrcadoServicos
+        $valores[] = "('$idOrgaoPublico', '$idVeiculoGerenciado', '$idInfosCotacaoOrgao', '$nomeOficina', '$marcaPecas', '$valorUNPecas', '$valorOrcadoServicos', '$prazoEntrega', true)";
+    
+        $contador2++; // Incrementa o contador
     }
 
+
+    print_r($valores);
+    
+    // Monta a consulta de INSERT única
+    if (!empty($valores)) {
+        $sqlInsert = "
+        INSERT INTO orcamentos_oficinas (
+            id_orgao_publico, id_veiculo_gerenciado, id_infos_cotacao_orgao, nome_oficina, marca_pecas, valor_un_pecas, valor_orcado_servicos, dias_execucao, orcado_oficina
+        ) VALUES " . implode(", ", $valores);
+    
+        // Executa a consulta
+        $connectionDB->query($sqlInsert);
+    }
+    
 }
 
 if (isset($_POST['confirmaCotacao'])) {

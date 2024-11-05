@@ -18,10 +18,10 @@ $result = $connectionDB->query($selectIdOrgaoPublico);
 $resultados = $result->fetch_assoc();
 $idOrgaoPublico = $resultados['id_usuarios_orgao_publico'];
 
-$selectInfosPecasXML = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciar' AND id_orgao_publico = '$idOrgaoPublico'";
+$selectInfosPecasXML = "SELECT * FROM infos_cotacao_orgao WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciar' AND id_orgao_publico = '$idOrgaoPublico'";
 $result2 = $connectionDB->query($selectInfosPecasXML);
 
-$selectInfosServicosXML = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciar' AND id_orgao_publico = '$idOrgaoPublico'";
+$selectInfosServicosXML = "SELECT * FROM infos_cotacao_orgao WHERE id_veiculo_incluso_orgao_publico = '$idVeiculoGerenciar' AND id_orgao_publico = '$idOrgaoPublico'";
 $result3= $connectionDB->query($selectInfosServicosXML);
 
 ?>
@@ -85,7 +85,7 @@ $result3= $connectionDB->query($selectInfosServicosXML);
                         echo "<td>" . $resultados2['descricao_pecas'] . "</td>";
                         echo "<td>" . $resultados2['quantidade_pecas'] . "</td>";
                         echo "<td><input name='marcaPecas".$contadorPecas."' type='text' placeholder='marca'></td>";
-                        echo "<td><input name='valorUNPecas' type='text' placeholder='valor unitario'></td>";
+                        echo "<td><input name='valorUNPecas".$contadorPecas."' type='float' placeholder='valor unitario'></td>";
                         echo "<td>" . $resultados2['valor_orcado_pecas'] . "</td>";
                         echo "<td>" . $resultados2['valor_total_final_pecas'] . "</td>";
                         echo "</tr>";
@@ -116,14 +116,14 @@ $result3= $connectionDB->query($selectInfosServicosXML);
                     if (
                         !empty($resultados3['descricao_servicos']) &&
                         !empty($resultados3['valor_mao_obra']) &&
-                        !empty($resultados3['valor_total_final'])
+                        !empty($resultados3['valor_total_servicos'])
                     ) {
 
                         echo "<tr>";
                         echo "<td>" . $resultados3['descricao_servicos'] . "</td>";
                         echo "<td>" . $resultados3['valor_mao_obra'] . "</td>";
-                        echo "<td><input name='valorOrcadoServico".$contadorServico."' type='text' placeholder='valor orcado'></td>";
-                        echo "<td>" . $resultados3['valor_total_final'] . "</td>";
+                        echo "<td><input name='valorOrcadoServico".$contadorServico."' type='float' placeholder='valor orcado'></td>";
+                        echo "<td>" . $resultados3['valor_total_servicos'] . "</td>";
                         echo "</tr>";
 
                         $contadorServico +=1;

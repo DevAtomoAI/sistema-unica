@@ -16,8 +16,13 @@ function executeQuery($connectionDB, $query) {
     $stmt->execute();
     return $stmt->get_result();
 }
+$selectOrcadosOficina = "SELECT * FROM orcamentos_oficinas WHERE orcado_oficina='1'";
+$execOrcadosOficina = executeQuery($connectionDB, $selectOrcadosOficina);
+$orcadosOficina = mysqli_fetch_assoc($execOrcadosOficina);
+$idOPOrcado = $orcadosOficina['id_orgao_publico'];
+$idVeiculoGerenciadoOrcado = $orcadosOficina['id_veiculo_gerenciado'];
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Respondida' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_orgao_publico='$idOPOrcado' AND id_infos_veiculos_inclusos='$idVeiculoGerenciadoOrcado' ORDER BY id_infos_veiculos_inclusos ASC";
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
@@ -157,7 +162,6 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 <select name="orderByInput" id="orderByInput">
                                     <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
                                     <option name="numero_veiculo_crescente" id="numero_veiculo_crescente" value="numero_veiculo_crescente">Por número (crescente)</option>
-                                    <option name="placa_veiculo" id="placa_veiculo" value="placa">Por placa </option>
                                     <option name="marca_veiculo" id="marca_veiculo" value="marca_veiculo">Por marca </option>
                                     <option name="modelo_veiculo" id="modelo_veiculo" value="modelo_veiculo">Por modelo </option>
                                 </select>
@@ -177,10 +181,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                         <thead>
                             <tr>
                                 <th class='titulosTabela'>Nº</th>
-                                <th class='titulosTabela'>Placa</th>
                                 <th class='titulosTabela'>Marca</th>
-                                <th class='titulosTabela'>Modelo</th>
-                                <th class='titulosTabela'>Ano</th>
                                 <th class='titulosTabela'>Centro custo</th>
                                 <th class='titulosTabela'>Tipo Solicitação</th>
                                 <th class='titulosTabela'>Opções</th>
@@ -192,10 +193,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             while ($user_data = mysqli_fetch_assoc($execConnection)) {
                                 echo "<tr>";
                                 echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['placa'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['veiculo'] . "</td>";
-                                echo "<td class='resultadosTabela'>" . $user_data['modelo_veiculo'] . "</td>";
-                                echo "<td class='resultadosTabela' >" . $user_data['ano_veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
                                 echo "<td class='resultadosTabela' >

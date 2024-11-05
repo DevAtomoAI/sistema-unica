@@ -16,7 +16,7 @@ $valorTotalPecas;
 $valorTotalFinal;
 $dataRegistro;
 
-$selectTable = "SELECT * FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico='$idVeiculoGerenciar'";
+$selectTable = "SELECT * FROM infos_cotacao_orgao WHERE id_veiculo_incluso_orgao_publico='$idVeiculoGerenciar'";
 $selectTable2 = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciar'";
 
 function executaSelectTable($connectionDB, $query)
@@ -93,7 +93,9 @@ $cnpjOrgaoPublico = $nomeOrgaoPublico['identificacao_cnpj'];
     <table>
         <thead>
             <td>N° orçamento </td>
+            <td>Descrição serviço</td>
             <td>Valor mão de obra</td>
+            <td>Descrição peças</td>
             <td>Valor total de peças</td>
             <td>Valor total</td>
             <td>Tempo execução</td>
@@ -104,10 +106,12 @@ $cnpjOrgaoPublico = $nomeOrgaoPublico['identificacao_cnpj'];
             <?php
                 while ($user_data = mysqli_fetch_assoc($executaConexao)) {
                     // $_SESSION['idVeiculoGerenciado'] = $user_data["modelo_contratacao"];
-                    echo "<tr><td> NUM ORCAMENTO API</td>";
-                    echo "<td>VAL TOTAL MAO DE OBRA</td>";
-                    echo "<td>VAL TOTAL PECAS API</td>";
-                    echo "<td> VAL TOTAL FINAL API</td>";
+                    echo "<tr><td>".$user_data['numero_orcamento']."</td>";
+                    echo "<td>".$user_data['descricao_servicos']."</td>";
+                    echo "<td>".$user_data['valor_total_servicos']."</td>";
+                    echo "<td>".$user_data['descricao_pecas']."</td>";
+                    echo "<td>".$user_data['valor_total_final_pecas']."</td>";
+                    echo "<td>".$user_data['valor_total_final']."</td>";
                     echo "<td>".  $user_data["dias_execucao"] . "</td></tr>";
                 }
             ?>
