@@ -3,7 +3,7 @@
 include_once("../database/config.php");
 $id = $_GET["id"];
 
-$stmt = $conexao->prepare("SELECT fatura_pecas FROM infos_veiculos_aprovados_oficina WHERE id_veiculo_incluso_orgao_publico = ?");
+$stmt = $conexao->prepare("SELECT fatura_pecas FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos = ?");
 $stmt->bind_param("i", $id);  // Corrigido para usar bind_param para proteger contra SQL Injection
 $stmt->execute();
 

@@ -59,26 +59,21 @@ function filters()
 }
 
 function atualizaEstadoCotacaoOficina($conexao, $estadoCotacao, $idVeiculo){
-    $stmt = $conexao->prepare("UPDATE infos_veiculos_aprovados_oficina SET faturas_aprovada_reprovada='$estadoCotacao' WHERE id_veiculo_aprovado_oficina='$idVeiculo' ");
+    $stmt = $conexao->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina='$estadoCotacao' WHERE id_infos_veiculos_inclusos='$idVeiculo' ");
+    $stmt2 = $conexao->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado='$estadoCotacao' WHERE id_veiculo_gerenciado='$idVeiculo'");
+
     $stmt->execute();
+    $stmt2->execute();
 
 }
 
-if(isset($_POST['aprovarFatura'])){
-    $idVeiculo = $_POST['aprovarFatura'];
+if(isset($_POST['faturarOrcamentoCotacao'])){
+    $idVeiculo = $_POST['faturarOrcamentoCotacao'];
+    echo $idVeiculo;
     atualizaEstadoCotacaoOficina($conexao, 'Aprovada Órgão Público', $idVeiculo);
     header('Location: faturadas.php');
     exit();
 }
-
-if(isset($_POST['reprovarFaturas'])){
-    $idVeiculo = $_POST['reprovarFaturas'];
-    atualizaEstadoCotacaoOficina($conexao, 'Reprovada Órgão Público', $idVeiculo) ;
-    header('Location: faturadas.php');
-    exit();
-
-}
-
 
 
 filters();

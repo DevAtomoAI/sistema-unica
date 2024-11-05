@@ -25,7 +25,18 @@ if (isset($_SESSION['filtrosPesquisaFaturadas']) && !empty($_SESSION['filtrosPes
 $_SESSION['filtrosPesquisaFaturadas'] = null;
 
 $execConnectionFaturadas = $conexao->query($selectTableFaturadas);
-$numLinhasAprovadas = $execConnectionFaturadas->num_rows;   
+$numLinhasAprovadas = $execConnectionFaturadas->num_rows;
+
+$selectNomeOficina = "SELECT nome_oficina FROM orcamentos_oficinas WHERE id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado='Faturada Oficina'";
+$execConnectionNomeOficina = $conexao->query($selectNomeOficina);
+$results = mysqli_fetch_assoc($execConnectionNomeOficina);
+
+if($results){
+    $nomeOficina = $results["nome_oficina"];
+}
+
+
+
 
 ?>
 
@@ -69,11 +80,11 @@ $numLinhasAprovadas = $execConnectionFaturadas->num_rows;
                 <a> <img src="../imgs/menu.svg"> </a>
             </div>
             <div id="menu-options" class="menu-options">
-<div class="option"><a href="../dados/dados.php">Meus dados</a></div>
-<div class="option"><a href="#opcao2">Opção 2</a></div>
-<div class="option"><a href="#opcao3">Opção 3</a></div>
-<!-- Adicione mais opções conforme necessário -->
-        </div>
+                <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+                <div class="option"><a href="#opcao2">Opção 2</a></div>
+                <div class="option"><a href="#opcao3">Opção 3</a></div>
+                <!-- Adicione mais opções conforme necessário -->
+            </div>
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
@@ -120,44 +131,50 @@ $numLinhasAprovadas = $execConnectionFaturadas->num_rows;
         </div>
 
         <!-- Tabela de cotações com ícones -->
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nº</th>
-                        <!-- <th>Veiculo</th> -->
-                        <th>Oficina</th>
-                        <th>Fatura peças</th>
-                        <th>Fatura serviços</th>
-                        <th>Opção</th>
-                    </tr>
-                </thead>
-                <tbody id="cotacoes-body">
-                    <!-- Conteúdo da tabela será inserido dinamicamente -->
-                    <?php
+
+            <div class="table-responsive">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nº</th>
+                            <!-- <th>Veiculo</th> -->
+                            <th>Oficina</th>
+                            <th>Fatura peças</th>
+                            <th>Fatura serviços</th>
+                            <th>Opção</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cotacoes-body">
+                        <!-- Conteúdo da tabela será inserido dinamicamente -->
+                        <?php
 
                         while ($userData = mysqli_fetch_assoc($execConnectionFaturadas)) {
                             $idVeiculoIncluso = $userData['id_infos_veiculos_inclusos'];
+                            // $nomeOficina = $userData['id_infos_veiculos_inclusos'];
                             $selectTableFaturadas2 = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoIncluso'";
                             $execConnectionFaturadas2 = $conexao->query($selectTableFaturadas2);
 
-                            while($userData2 = mysqli_fetch_assoc($execConnectionFaturadas2)){
+                            while ($userData2 = mysqli_fetch_assoc($execConnectionFaturadas2)) {
                                 echo "<tr>";
                                 echo "<td class='resultadosTabela'>" . $userData['id_infos_veiculos_inclusos'] . "</td>";
                                 // echo "<td class='resultadosTabela'>" . $userData[] . "</td>";
-                                echo "<td class='resultadosTabela'>" . $userData2['nome_oficina_aprovado'] . "</td>";
-                                echo "<td class='resultadosTabela'><a href='faturasPecas.php?id=" . $userData2['id_veiculo_incluso_orgao_publico'] . "'> Fatura peças</a></td>";
-                                echo "<td class='resultadosTabela'> <a href='faturasServicos.php?id=" . $userData2['id_veiculo_incluso_orgao_publico'] . "'> Fatura serviço </a></td>";
-                                echo "<td><button>Faturar</button></td>";
+                                echo "<td class='resultadosTabela'>" . $nomeOficina . "</td>";
+                                echo "<td class='resultadosTabela'><a href='faturasPecas.php?id=" . $userData2['id_infos_veiculos_inclusos'] . "'> Fatura peças</a></td>";
+                                echo "<td class='resultadosTabela'> <a href='faturasServicos.php?id=" . $userData2['id_infos_veiculos_inclusos'] . "'> Fatura serviço </a></td>";
+                                echo "<td>
+                                    <form action='configs_faturadas.php' method='POST'>
+                                        <button name='faturarOrcamentoCotacao' value=" . $userData2['id_infos_veiculos_inclusos'] . ">Faturar</button></td>
+                                    </form>";
                                 echo "</tr>";
                             }
-
                         }
 
-                    ?>
-                </tbody>
-            </table>
-        </div>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+
     </div>
 </body>
 
