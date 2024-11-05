@@ -47,20 +47,13 @@ $numLinhasTotal = $execConnection->num_rows;
     <h1>Orçamento faturado</h1>
     <?php
     while ($user_data = mysqli_fetch_assoc($execConnection)) {
-        echo $user_data['id_infos_veiculos_inclusos'];
+        echo "num ". $user_data['id_infos_veiculos_inclusos'];
         echo "<br>";
-        echo $user_data['veiculo'];
+        echo "veiculo ".$user_data['veiculo'];
         echo "<br>";
-        echo $user_data['veiculo'];
+        echo "fornecedor ".$user_data['fornecedor'];
         echo "<br>";
-        echo $user_data['fornecedor'];
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
+        echo "estado orcamento". $user_data['orcamento_aprovada_reprovada_oficina'];
         echo "<br>";
     }
     ?>
