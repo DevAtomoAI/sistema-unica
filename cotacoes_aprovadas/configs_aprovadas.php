@@ -45,21 +45,18 @@ function insereFaturasBD($connectionDB)
 
     $stmtFatura = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET fatura_pecas=?, fatura_servicos=? WHERE id_infos_veiculos_inclusos=? ");
     $stmtFatura->bind_param("ssi", $faturaPecas, $faturaServicos, $idVeiculoInclusoOrgaoPublico);
-    if ($stmtFatura->execute()) {
-        echo "certo";
-    } else {
-        echo "erro" . $stmtFatura->error;
-    }
 
     $stmtEstadoVeiculo = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=?");
     $stmtEstadoVeiculo->bind_param("si", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico);
-    
-    if ($stmtEstadoVeiculo->execute()) {
-        echo "certo";
-    } else {
-        echo "erro: " . $stmtEstadoVeiculo->error;
-    }
 
+    $stmtEstadoVeiculoOrcamentoOficina = $connectionDB->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado=? WHERE id_veiculo_gerenciado=?");
+    $stmtEstadoVeiculoOrcamentoOficina->bind_param("si", $estadoVeiculo, $stmtEstadoVeiculoOrcamentoOficina);
+    
+    $stmtEstadoVeiculoOrcamentoOficina->execute();
+    $stmtEstadoVeiculo->execute();
+    $stmtFatura->execute();
+
+    $stmtEstadoVeiculoOrcamentoOficina->close();
     $stmtFatura->close();
     $stmtEstadoVeiculo->close();
 
