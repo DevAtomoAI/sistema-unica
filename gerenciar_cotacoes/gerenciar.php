@@ -49,7 +49,6 @@ $resultCentrosCustoAtribuidos = $conexao->query($queryCentrosCustoAtribuidos);
 while ($row = mysqli_fetch_assoc($resultCentrosCustoAtribuidos)) {
     $centrosCustoAtribuidos[] = $row['nome'];
 }
-
 // Consulta para buscar todos os fornecedores
 $selectFornecedores = "SELECT nome FROM dados_fornecedores WHERE id_orgao_publico='$idOrgaoPublicoLogado'";
 $execConnectionFornecedores = $conexao->query($selectFornecedores);
@@ -57,16 +56,30 @@ $execConnectionFornecedores = $conexao->query($selectFornecedores);
 // Consulta para buscar todos os centros de custo
 $selectCentrosCusto = "SELECT nome FROM centros_custos WHERE id_orgao_publico='$idOrgaoPublicoLogado'";
 $execConnectionCentrosCusto = $conexao->query($selectCentrosCusto);
+
+$selectOrcamentosVeiculoEscolhido = "SELECT nome_oficina, valor_un_pecas, valor_orcado_servicos FROM orcamentos_oficinas WHERE id_orgao_publico='$idOrgaoPublicoLogado' 
+AND id_veiculo_gerenciado='$idVeiculoEscolhido' AND orcamento_aprovado_reprovado=' '";
+$execConnectionOrcamentos = $conexao->query($selectOrcamentosVeiculoEscolhido);
+
+$selectInfosCotacaoOP = "SELECT numero_orcamento, valor_total_final, dias_execucao FROM infos_cotacao_orgao WHERE id_orgao_publico='$idOrgaoPublicoLogado' AND id_veiculo_incluso_orgao_publico='$idVeiculoEscolhido'";
+$execConnectionInfosCotacaoOP = $conexao->query($selectInfosCotacaoOP);
+$user_data2 = mysqli_fetch_assoc($execConnectionInfosCotacaoOP);
+$numOrcamento = $user_data2["numero_orcamento"];
+$valTotalFinal = $user_data2["valor_total_final"];
+$diasExec = $user_data2["dias_execucao"];
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar</title>
     <link rel="stylesheet" href="gerenciar.css">
 </head>
+
 <body>
     <div class="container">
         <div class="section">
@@ -118,10 +131,62 @@ $execConnectionCentrosCusto = $conexao->query($selectCentrosCusto);
                 <label for="dataFinal">Data final</label>
                 <input type="date" name='dataFinal' value="<?= $valores['dataFinal'] ?>">
                 <br>
-                <button name='atualizaValoresBD'>Enviar</button>
-                <button><a href="../cotacoes_andamento/andamento.php">Voltar</a></button>
+                <br>
+                <h1>Orçamentos</h1>
+                <table>
+                    <table>
+                        <thead>
+                            <tr>
+                                <?php
+                                if ($execConnectionOrcamentos && mysqli_num_rows($execConnectionOrcamentos) > 0) {
+                                    echo "<th>Numero orcamento</th>
+                                    <th>Nome Oficina</th>
+                                    <th>Valor unitario pecas</th>
+                                    <th>Valor orcado servicos</th>
+                                    <th>Valor total final</th>
+                                    <th>Dias execucao</th>";
+                                }
+
+                                ?>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php
+                            if ($execConnectionOrcamentos && mysqli_num_rows($execConnectionOrcamentos) > 0) {
+                                while ($user_data = mysqli_fetch_assoc($execConnectionOrcamentos)) {
+                                    echo "<tr>";
+                                    echo "<td>" . $numOrcamento . "</td>";
+                                    echo "<td>" . $user_data['nome_oficina'] . "</td>";
+                                    echo "<td>" . $user_data['valor_un_pecas'] . "</td>";
+                                    echo "<td>" . $user_data['valor_orcado_servicos'] . "</td>";
+                                    echo "<td>" . $valTotalFinal . "</td>";
+                                    echo "<td>" . $diasExec . "</td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "Não existe cotações";
+                            }
+
+                            ?>
+                        </tbody>
+                    </table>
+
+                    <!-- Coloque o botão "Aprovar" aqui, fora do loop e da tabela -->
+                    <?php
+                    if ($execConnectionOrcamentos && mysqli_num_rows($execConnectionOrcamentos) > 0) {
+                        echo "<button name='aprovaOrcamentoOficina' value='$idVeiculoEscolhido'>Aprovar</button><button name='reprovaOrcamentoOficina' value='$idVeiculoEscolhido'>Reprovar</button>";
+                    }
+
+                    ?>
+
+                    <br>
+                    <br>
+                    <button name='atualizaValoresBD'>Enviar</button>
+                    <button><a href="../cotacoes_andamento/andamento.php">Voltar</a></button>
             </form>
         </div>
     </div>
 </body>
+
 </html>

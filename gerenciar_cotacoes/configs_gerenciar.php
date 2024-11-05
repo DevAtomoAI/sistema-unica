@@ -39,7 +39,7 @@ function acessaValoresBD($conexao, $idVeiculoEscolhido)
     }
 }
 
-function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
+function atualizaValoresBD($conexao, $idVeiculoEscolhido)
 {
     $responsavelAtual = mysqli_real_escape_string($conexao, $_POST['responsavelAtual']);
     $fornecedor = mysqli_real_escape_string($conexao, $_POST['fornecedor']);
@@ -70,25 +70,17 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado)
     }
 }
 
-function mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, $condicao, $idOrcamentoEscolhido)
-{
-    $idOrgaoPublicoLogado = mysqli_real_escape_string($conexao, $idOrgaoPublicoLogado);
-    $mudaEstadoCotacaoOficina = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
-    opcao_aprovada_reprovada_oficina = '$condicao'
-    WHERE id_orgao_publico = '$idOrgaoPublicoLogado' AND opcao_aprovada_reprovada_oficina='Respondida'");
+function aprovaReprovaOrcamento($conexao, $estado, $idOrgaoPublicoLogado, $idVeiculoEscolhido){
+    $updateOrcamentoOP = mysqli_query($conexao,  "UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina = '$estado' WHERE id_orgao_publico='$idOrgaoPublicoLogado' AND id_infos_veiculos_inclusos='$idVeiculoEscolhido'");
+    $updateOrcamentoOficina = mysqli_query($conexao,  "UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado = '$estado' WHERE id_orgao_publico='$idOrgaoPublicoLogado' AND id_veiculo_gerenciado='$idVeiculoEscolhido'");
 
-    $mudaEstadoCotacaoOficina2 = mysqli_query($conexao, "UPDATE infos_veiculos_aprovados_oficina 
-SET orcamento_aprovado_reprovado = '$condicao' 
-WHERE id_veiculo_aprovado_oficina = '$idOrcamentoEscolhido' 
-AND id_orgao_publico = '$idOrgaoPublicoLogado'");
-
-    if (!$mudaEstadoCotacaoOficina) {
-        echo "Erro ao mudar o estado da cotação: " . mysqli_error($conexao);
+    if(!$updateOrcamentoOP || !$updateOrcamentoOficina) {
+        echo "erro ao executar update aprovar ou reprovar orçamento";
     }
 }
 
 if (isset($_POST['atualizaValoresBD'])) {
-    atualizaValoresBD($conexao, $idVeiculoEscolhido, $usuarioLogado);
+    atualizaValoresBD($conexao, $idVeiculoEscolhido);
     header('Location:../cotacoes_andamento/andamento.php');
     exit();
 }
@@ -98,19 +90,14 @@ if (isset($_POST['naoAtualizaValoresBD'])) {
     exit();
 }
 
-if (isset($_POST["aprovaCotacaoOficina"])) {
-    $idOrcamentoEscolhido = $_POST["aprovaCotacaoOficina"];
-    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Aprovada', $idOrcamentoEscolhido);
-    header('Location: ../cotacoes_aprovado/aprovado.php');
-    exit();
+if (isset($_POST['aprovaOrcamentoOficina']) || isset($_POST['reprovaOrcamentoOficina'])) {
+    if (isset($_POST['aprovaOrcamentoOficina'])) {
+        aprovaReprovaOrcamento($conexao, 'Aprovado', $idOrgaoPublicoLogado, $idVeiculoEscolhido);
+    } elseif (isset($_POST['reprovaOrcamentoOficina'])) {
+        aprovaReprovaOrcamento($conexao, 'Reprovado', $idOrgaoPublicoLogado, $idVeiculoEscolhido);
+    }
 }
 
-if (isset($_POST["cancelaCotacaoOficina"])) {
-    $idOrcamentoEscolhido = $_POST["cancelaCotacaoOficina"];
-    mudaEstadoCotacaoOficina($conexao, $idOrgaoPublicoLogado, 'Cancelada', $idOrcamentoEscolhido);
-    header('Location: ../cotacoes_cancelado/cancelado.php');
-    exit();
-}
 
 // Acessa valores do banco de dados
 acessaValoresBD($conexao, $idVeiculoEscolhido);
