@@ -70,7 +70,7 @@ function atualizaEstadoCotacaoOficina($conexao, $estadoCotacao, $idVeiculo){
 if(isset($_POST['faturarOrcamentoCotacao'])){
     $idVeiculo = $_POST['faturarOrcamentoCotacao'];
     echo $idVeiculo;
-    atualizaEstadoCotacaoOficina($conexao, 'Aprovada Órgão Público', $idVeiculo);
+    atualizaEstadoCotacaoOficina($conexao, 'Faturada Órgão Público', $idVeiculo);
     header('Location: faturadas.php');
     exit();
 }
