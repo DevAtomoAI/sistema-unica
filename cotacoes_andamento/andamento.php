@@ -10,6 +10,7 @@ function checkUserLoggedIn() {
 }
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
+$idOficinaLogada = $_SESSION['idOficinaLogada'];
 
 function executeQuery($connectionDB, $query) {
     $stmt = $connectionDB->prepare($query);
@@ -28,10 +29,8 @@ FROM infos_veiculos_inclusos
 WHERE orcamento_aprovada_reprovada_oficina = '' 
   AND id_infos_veiculos_inclusos NOT IN (
     SELECT id_veiculo_gerenciado 
-    FROM orcamentos_oficinas 
-    WHERE orcamento_aprovado_reprovado = 'Rejeitado'
-)
-ORDER BY id_infos_veiculos_inclusos ASC;";
+    FROM orcamentos_oficinas WHERE id_oficina = '$idOficinaLogada')
+ORDER BY id_infos_veiculos_inclusos ASC";
 
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {

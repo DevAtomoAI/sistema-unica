@@ -5,12 +5,13 @@ session_start();
 //
 function botaoOrcarRejeitar($connectionDB){
     if (isset($_POST['botaoRejeitado'])) {
+        $idOficinaLogada = $_SESSION['idOficinaLogada'];
         $idButton = $_POST['botaoRejeitado'];
         $nomeOficina = $_SESSION['nomeOficina'];
         //insert em orcamentos_oficinas e colocar orcamento_aprovado_reprovado como Rejeitado
         $sqlInsert = "
-        INSERT INTO orcamentos_oficinas (id_veiculo_gerenciado, nome_oficina, orcamento_aprovado_reprovado
-        ) VALUES ('$idButton', '$nomeOficina', 'Rejeitado')";
+        INSERT INTO orcamentos_oficinas (id_veiculo_gerenciado, id_oficina, nome_oficina, orcamento_aprovado_reprovado
+        ) VALUES ('$idButton', '$idOficinaLogada', '$nomeOficina', 'Rejeitado')";
     
         // Executa a consulta
         $connectionDB->query($sqlInsert);

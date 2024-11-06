@@ -10,6 +10,7 @@ function checkUserLoggedIn() {
 }
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
+$idOficinaLogada = $_SESSION['idOficinaLogada'];
 
 function executeQuery($connectionDB, $query) {
     $stmt = $connectionDB->prepare($query);
@@ -17,7 +18,7 @@ function executeQuery($connectionDB, $query) {
     return $stmt->get_result();
 }
 
-$selectTableRejeitadas = "SELECT * FROM orcamentos_oficinas WHERE orcamento_aprovado_reprovado='Rejeitado'";
+$selectTableRejeitadas = "SELECT * FROM orcamentos_oficinas WHERE orcamento_aprovado_reprovado='Rejeitado' AND id_oficina='$idOficinaLogada'";
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTableRejeitadas = $_SESSION['filtrosPesquisa'];

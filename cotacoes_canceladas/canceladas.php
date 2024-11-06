@@ -19,7 +19,7 @@ function executeQuery($connectionDB, $query)
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Canceladas' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
 
 if (isset($_SESSION['filtrosPesquisaCanceladas']) || !empty($_SESSION['filtrosPesquisaCanceladas'])) {
     $selectTable = $_SESSION['filtrosPesquisaCanceladas'];

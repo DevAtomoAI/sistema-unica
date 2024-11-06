@@ -11,6 +11,7 @@ function checkUserLoggedIn()
 }
 checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
+$idOficinaLogada = $_SESSION['idOficinaLogada'];
 
 function executeQuery($connectionDB, $query)
 {
@@ -19,7 +20,7 @@ function executeQuery($connectionDB, $query)
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Faturada Órgão Público' ORDER BY id_infos_veiculos_inclusos ASC";
+$selectTable = "SELECT * FROM orcamentos_oficinas WHERE orcamento_aprovado_reprovado='Faturada Órgão Público' AND id_oficina='$idOficinaLogada' ORDER BY id_orcamentos_oficinas ASC";
 
 if (isset($_SESSION['filtrosPesquisaAprovadas']) || !empty($_SESSION['filtrosPesquisaAprovadas'])) {
     $selectTable = $_SESSION['filtrosPesquisaAprovadas'];
