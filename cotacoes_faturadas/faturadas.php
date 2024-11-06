@@ -16,7 +16,7 @@ $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 $nomeUsuario = $_SESSION["nameLoggedUser"];
 $idVeiculosInclusosOrgaoPublico = $_SESSION["idVeiculosInclusosOrgaoPublico"];
 
-$selectTableFaturadas = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Faturada Oficina'";
+$selectTableFaturadas = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Faturada Oficina' AND id_orgao_publico='$idOrgaoPublicoLogado'";
 
 if (isset($_SESSION['filtrosPesquisaFaturadas']) && !empty($_SESSION['filtrosPesquisaFaturadas'])) {
     $selectTableFaturadas = $_SESSION['filtrosPesquisaFaturadas'];
