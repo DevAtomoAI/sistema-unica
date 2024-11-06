@@ -57,7 +57,7 @@ $execConnectionFornecedores = $conexao->query($selectFornecedores);
 $selectCentrosCusto = "SELECT nome FROM centros_custos WHERE id_orgao_publico='$idOrgaoPublicoLogado'";
 $execConnectionCentrosCusto = $conexao->query($selectCentrosCusto);
 
-$selectOrcamentosVeiculoEscolhido = "SELECT nome_oficina, valor_un_pecas, valor_orcado_servicos FROM orcamentos_oficinas WHERE id_orgao_publico='$idOrgaoPublicoLogado' 
+$selectOrcamentosVeiculoEscolhido = "SELECT nome_oficina, valor_un_pecas, valor_orcado_servicos, dias_execucao, id_oficina FROM orcamentos_oficinas WHERE id_orgao_publico='$idOrgaoPublicoLogado' 
 AND id_veiculo_gerenciado='$idVeiculoEscolhido' AND orcamento_aprovado_reprovado=' '";
 $execConnectionOrcamentos = $conexao->query($selectOrcamentosVeiculoEscolhido);
 
@@ -65,11 +65,13 @@ $selectInfosCotacaoOP = "SELECT numero_orcamento, valor_total_final, dias_execuc
 $execConnectionInfosCotacaoOP = $conexao->query($selectInfosCotacaoOP);
 $user_data2 = mysqli_fetch_assoc($execConnectionInfosCotacaoOP);
 
-if($user_data2){
+if ($user_data2) {
     $numOrcamento = $user_data2["numero_orcamento"];
     $valTotalFinal = $user_data2["valor_total_final"];
     $diasExec = $user_data2["dias_execucao"];
+    echo $diasExec;
 }
+
 
 
 ?>
@@ -165,7 +167,7 @@ if($user_data2){
                                     echo "<td>" . $user_data['valor_un_pecas'] . "</td>";
                                     echo "<td>" . $user_data['valor_orcado_servicos'] . "</td>";
                                     echo "<td>" . $valTotalFinal . "</td>";
-                                    echo "<td>" . $diasExec . "</td>";
+                                    echo "<td>" . $user_data['dias_execucao'] . "</td>";
                                     echo "</tr>";
                                 }
                             } else {
@@ -178,9 +180,24 @@ if($user_data2){
 
                     <!-- Coloque o botão "Aprovar" aqui, fora do loop e da tabela -->
                     <?php
-                    if ($execConnectionOrcamentos && mysqli_num_rows($execConnectionOrcamentos) > 0) {
-                        echo "<button name='aprovaOrcamentoOficina' value='$idVeiculoEscolhido'>Aprovar</button><button name='reprovaOrcamentoOficina' value='$idVeiculoEscolhido'>Reprovar</button>";
+                    $executaConexaoParaButton = "SELECT DISTINCT id_oficina FROM orcamentos_oficinas WHERE orcamento_aprovado_reprovado = ''";
+
+                    // Executa a consulta
+                    $resultado = $conexao->query($executaConexaoParaButton);
+
+                    // Verifica se há resultados
+                    if ($resultado->num_rows > 0) {
+                        // Percorre todos os valores distintos de id_oficina
+                        while ($linha = $resultado->fetch_assoc()) {
+                            echo "<button name='aprovaOrcamentoOficina' value=".$linha['id_oficina'].">Aprovar</button><button name='reprovaOrcamentoOficina' value=".$linha['id_oficina'].">Reprovar</button>";
+                        }
+                    } else {
+                        echo "Não há oficinas registradas.";
                     }
+
+                    // Fecha a conexão
+                    $conexao->close();
+
 
                     ?>
 

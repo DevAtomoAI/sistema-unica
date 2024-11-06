@@ -70,9 +70,15 @@ function atualizaValoresBD($conexao, $idVeiculoEscolhido)
     }
 }
 
-function aprovaReprovaOrcamento($conexao, $estado, $idOrgaoPublicoLogado, $idVeiculoEscolhido){
-    $updateOrcamentoOP = mysqli_query($conexao,  "UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina = '$estado' WHERE id_orgao_publico='$idOrgaoPublicoLogado' AND id_infos_veiculos_inclusos='$idVeiculoEscolhido'");
-    $updateOrcamentoOficina = mysqli_query($conexao,  "UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado = '$estado' WHERE id_orgao_publico='$idOrgaoPublicoLogado' AND id_veiculo_gerenciado='$idVeiculoEscolhido'");
+function aprovaReprovaOrcamento($conexao, $estado, $idOrgaoPublicoLogado, $idVeiculoEscolhido, $idOficina){
+
+    if($estado == 'Aprovado'){
+        $updateOrcamentoOP = mysqli_query($conexao,  "UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina = '$estado' WHERE id_orgao_publico='$idOrgaoPublicoLogado' 
+        AND id_infos_veiculos_inclusos='$idVeiculoEscolhido'");    
+    }
+
+    $updateOrcamentoOficina = mysqli_query($conexao,  "UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado = '$estado' WHERE id_orgao_publico='$idOrgaoPublicoLogado' 
+    AND id_veiculo_gerenciado='$idVeiculoEscolhido' AND id_oficina='$idOficina'");
 
     if(!$updateOrcamentoOP || !$updateOrcamentoOficina) {
         echo "erro ao executar update aprovar ou reprovar orçamento";
@@ -92,9 +98,11 @@ if (isset($_POST['naoAtualizaValoresBD'])) {
 
 if (isset($_POST['aprovaOrcamentoOficina']) || isset($_POST['reprovaOrcamentoOficina'])) {
     if (isset($_POST['aprovaOrcamentoOficina'])) {
-        aprovaReprovaOrcamento($conexao, 'Aprovado', $idOrgaoPublicoLogado, $idVeiculoEscolhido);
+        $idOficina = $_POST['aprovaOrcamentoOficina'];
+        aprovaReprovaOrcamento($conexao, 'Aprovado', $idOrgaoPublicoLogado, $idVeiculoEscolhido, $idOficina);
     } elseif (isset($_POST['reprovaOrcamentoOficina'])) {
-        aprovaReprovaOrcamento($conexao, 'Reprovado', $idOrgaoPublicoLogado, $idVeiculoEscolhido);
+        $idOficina = $_POST['reprovaOrcamentoOficina'];
+        aprovaReprovaOrcamento($conexao, 'Reprovado', $idOrgaoPublicoLogado, $idVeiculoEscolhido, $idOficina);
     }
 }
 
