@@ -25,8 +25,7 @@ function executeQuery($connectionDB, $query) {
 
 $selectTable = "SELECT * 
 FROM infos_veiculos_inclusos 
-WHERE orcamento_aprovada_reprovada_oficina != 'Aprovado' 
-  AND orcamento_aprovada_reprovada_oficina != 'Rejeitado'
+WHERE orcamento_aprovada_reprovada_oficina = '' 
   AND id_infos_veiculos_inclusos NOT IN (
     SELECT id_veiculo_gerenciado 
     FROM orcamentos_oficinas 
