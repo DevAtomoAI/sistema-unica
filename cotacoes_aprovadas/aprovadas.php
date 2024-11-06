@@ -18,8 +18,26 @@ function executeQuery($connectionDB, $query)
     $stmt->execute();
     return $stmt->get_result();
 }
+$idOficinaLogada = $_SESSION['idOficinaLogada'];
+$selectTable2 = "SELECT id_orgao_publico, id_veiculo_gerenciado 
+                FROM orcamentos_oficinas 
+                WHERE orcamento_aprovado_reprovado = 'Aprovado' AND id_oficina='$idOficinaLogada' 
+                ORDER BY id_orcamentos_oficinas ASC";
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Aprovada' ORDER BY id_infos_veiculos_inclusos ASC";
+// Executa a consulta
+$resultado = $connectionDB->query($selectTable2);
+$idOrgaoPublico = null;
+$idVeiculoGerenciado = null;
+if ($resultado->num_rows > 0) {
+    $linha = $resultado->fetch_assoc();
+    $idOrgaoPublico = $linha['id_orgao_publico'];
+    $idVeiculoGerenciado = $linha['id_veiculo_gerenciado'];
+}
+
+$selectTable = "SELECT * FROM infos_veiculos_inclusos 
+                                WHERE id_orgao_publico = '$idOrgaoPublico' 
+                                  AND id_infos_veiculos_inclusos  = '$idVeiculoGerenciado'";
+
 
 if (isset($_SESSION['filtrosPesquisaAprovadas']) || !empty($_SESSION['filtrosPesquisaAprovadas'])) {
     $selectTable = $_SESSION['filtrosPesquisaAprovadas'];
@@ -27,9 +45,12 @@ if (isset($_SESSION['filtrosPesquisaAprovadas']) || !empty($_SESSION['filtrosPes
 
 $_SESSION['filtrosPesquisaAprovadas'] = null;
 
+
 $execConnection = executeQuery($connectionDB, $selectTable);
 $numLinhasTotal = $execConnection->num_rows;
 $execCentroCusto = executeQuery($connectionDB, $selectTable);
+
+
 
 ?>
 
@@ -105,7 +126,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-            <?= $_SESSION['numLinhasTotalNotificacao'] ?><img src="../assets/Doorbell.svg">
+                <?= $_SESSION['numLinhasTotalNotificacao'] ?><img src="../assets/Doorbell.svg">
             </div>
             <div id='userId' class="user-icon">
                 <a id="nameLoggedUser"><?= $nameUser ?></a>
@@ -181,6 +202,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                         </thead>
                         <tbody>
                             <?php
+
                             while ($user_data = mysqli_fetch_assoc($execConnection)) {
                                 echo "<tr>";
                                 echo "<td class='resultadosTabela'>" . $user_data['id_infos_veiculos_inclusos'] . "</td>";
@@ -198,7 +220,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                         </label>
                                         <input class='file-input' type='file' id='faturaPecas' name='faturaPecas' accept='.pdf' required></input>
                                         <br>
-                                        <button name='enviaFaturas' value=".$user_data['id_infos_veiculos_inclusos'].">Enviar faturas</button>
+                                        <button name='enviaFaturas' value=" . $user_data['id_infos_veiculos_inclusos'] . ">Enviar faturas</button>
                                     </td>";
                                 echo "</tr>";
                             }

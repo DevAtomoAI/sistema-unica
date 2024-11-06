@@ -39,29 +39,38 @@ function applyCotacaoFilters($connectionDB)
 function insereFaturasBD($connectionDB)
 {    
     $estadoVeiculo = 'Faturada Oficina';
+    $idOficinaLogada = $_SESSION['idOficinaLogada'];
+
     $idVeiculoInclusoOrgaoPublico = $_POST['enviaFaturas'];
     $faturaPecas = file_get_contents($_FILES['faturaPecas']['tmp_name']);
     $faturaServicos = file_get_contents($_FILES['faturaServicos']['tmp_name']);
 
+    // Prepare o statement para atualizar as faturas
     $stmtFatura = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET fatura_pecas=?, fatura_servicos=? WHERE id_infos_veiculos_inclusos=? ");
     $stmtFatura->bind_param("ssi", $faturaPecas, $faturaServicos, $idVeiculoInclusoOrgaoPublico);
 
+    // Prepare o statement para atualizar o estado do veículo
     $stmtEstadoVeiculo = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=?");
     $stmtEstadoVeiculo->bind_param("si", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico);
 
-    $stmtEstadoVeiculoOrcamentoOficina = $connectionDB->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado=? WHERE id_veiculo_gerenciado=?");
-    $stmtEstadoVeiculoOrcamentoOficina->bind_param("si", $estadoVeiculo, $stmtEstadoVeiculoOrcamentoOficina);
+    // Prepare o statement para atualizar o estado do orçamento na tabela orcamentos_oficinas
+    $stmtEstadoVeiculoOrcamentoOficina = $connectionDB->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado=? WHERE id_veiculo_gerenciado=? AND id_oficina='$idOficinaLogada'");
+    $stmtEstadoVeiculoOrcamentoOficina->bind_param("si", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico);
     
-    $stmtEstadoVeiculoOrcamentoOficina->execute();
-    $stmtEstadoVeiculo->execute();
-    $stmtFatura->execute();
+    // Execute as queries na ordem correta
+    $stmtEstadoVeiculoOrcamentoOficina->execute();  // Atualiza o estado na tabela orcamentos_oficinas
+    $stmtEstadoVeiculo->execute();  // Atualiza o estado do veículo
+    $stmtFatura->execute();  // Atualiza as faturas
 
+    // Fechar as declarações
     $stmtEstadoVeiculoOrcamentoOficina->close();
     $stmtFatura->close();
     $stmtEstadoVeiculo->close();
 
+    // Fechar a conexão com o banco de dados
     $connectionDB->close();
 }
+
 
 
 
