@@ -21,7 +21,7 @@ function executeQuery($conexao, $query) {
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina = ' ' AND id_orgao_publico='$idOrgaoPublicoLogado'";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina = '' AND id_orgao_publico='$idOrgaoPublicoLogado'";
 
 if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];

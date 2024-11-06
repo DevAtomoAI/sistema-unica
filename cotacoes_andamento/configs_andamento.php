@@ -12,9 +12,10 @@ function acaoBotoes($conexao)
 
     if(isset($_POST["button-option-rejected"])){
         $idVeiculoEscolhidoCancelado = $_POST["button-option-rejected"];
+        $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
         $atualizaInfosVeiculos = mysqli_query($conexao, "UPDATE infos_veiculos_inclusos SET 
-                                 opcao_aprovada_reprovada_oficina = 'Cancelada'
-                                 WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhidoCancelado'");
+                                 orcamento_aprovada_reprovada_oficina = 'Cancelada'
+                                 WHERE id_infos_veiculos_inclusos = '$idVeiculoEscolhidoCancelado' AND id_orgao_publico='$idOrgaoPublicoLogado'");
         header('Location: andamento.php');
     }
 }
