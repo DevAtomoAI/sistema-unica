@@ -5,6 +5,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+ini_set('upload_max_filesize', '64M');
+ini_set('post_max_size', '64M');
+ini_set('memory_limit', '50M');
+
 function applyCotacaoFilters($connectionDB)
 {
     $searchKeyWordInput = isset($_POST["searchKeyWordInput"]) ? $_POST["searchKeyWordInput"] : null;
