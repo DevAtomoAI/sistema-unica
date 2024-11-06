@@ -5,9 +5,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-ini_set('upload_max_filesize', '64M');
-ini_set('post_max_size', '64M');
-ini_set('memory_limit', '50M');
+ini_set('upload_max_filesize', '128M');
+ini_set('post_max_size', '128M');
+ini_set('memory_limit', '512M');
 
 function applyCotacaoFilters($connectionDB)
 {
@@ -65,14 +65,20 @@ function insereFaturasBD($connectionDB)
     $stmtEstadoVeiculoOrcamentoOficina->bind_param("sii", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico, $idOficinaLogada);
 
     // Execute as queries na ordem correta
-    $stmtEstadoVeiculoOrcamentoOficina->execute();  // Atualiza o estado na tabela orcamentos_oficinas
-    $stmtEstadoVeiculo->execute();  // Atualiza o estado do veículo
-    $stmtFatura->execute();  // Atualiza as faturas
+
+      // Atualiza as faturas
+    if($stmtFatura->execute()){
+        $stmtEstadoVeiculoOrcamentoOficina->execute();  // Atualiza o estado na tabela orcamentos_oficinas
+        $stmtEstadoVeiculo->execute();  // Atualiza o estado do veículo
+
+        $stmtEstadoVeiculoOrcamentoOficina->close();
+        $stmtFatura->close();
+        $stmtEstadoVeiculo->close();
+    }
+
 
     // Fechar as declarações
-    $stmtEstadoVeiculoOrcamentoOficina->close();
-    $stmtFatura->close();
-    $stmtEstadoVeiculo->close();
+
 
     // Fechar a conexão com o banco de dados
     $connectionDB->close();
