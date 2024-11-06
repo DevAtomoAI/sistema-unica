@@ -1,6 +1,9 @@
 <?php
 include_once('../database/config.php');
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 function applyCotacaoFilters($connectionDB)
 {
@@ -37,11 +40,11 @@ function applyCotacaoFilters($connectionDB)
 }
 
 function insereFaturasBD($connectionDB)
-{    
+{
     $estadoVeiculo = 'Faturada Oficina';
+    $idVeiculoInclusoOrgaoPublico = $_POST['enviaFaturas'];
     $idOficinaLogada = $_SESSION['idOficinaLogada'];
 
-    $idVeiculoInclusoOrgaoPublico = $_POST['enviaFaturas'];
     $faturaPecas = file_get_contents($_FILES['faturaPecas']['tmp_name']);
     $faturaServicos = file_get_contents($_FILES['faturaServicos']['tmp_name']);
 
@@ -54,9 +57,9 @@ function insereFaturasBD($connectionDB)
     $stmtEstadoVeiculo->bind_param("si", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico);
 
     // Prepare o statement para atualizar o estado do orçamento na tabela orcamentos_oficinas
-    $stmtEstadoVeiculoOrcamentoOficina = $connectionDB->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado=? WHERE id_veiculo_gerenciado=? AND id_oficina='$idOficinaLogada'");
-    $stmtEstadoVeiculoOrcamentoOficina->bind_param("si", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico);
-    
+    $stmtEstadoVeiculoOrcamentoOficina = $connectionDB->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado=? WHERE id_veiculo_gerenciado=? AND id_oficina = ?");
+    $stmtEstadoVeiculoOrcamentoOficina->bind_param("sii", $estadoVeiculo, $idVeiculoInclusoOrgaoPublico, $idOficinaLogada);
+
     // Execute as queries na ordem correta
     $stmtEstadoVeiculoOrcamentoOficina->execute();  // Atualiza o estado na tabela orcamentos_oficinas
     $stmtEstadoVeiculo->execute();  // Atualiza o estado do veículo
@@ -70,6 +73,7 @@ function insereFaturasBD($connectionDB)
     // Fechar a conexão com o banco de dados
     $connectionDB->close();
 }
+
 
 
 
