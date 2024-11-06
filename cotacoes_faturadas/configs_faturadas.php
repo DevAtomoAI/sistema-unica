@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once('../database/config.php');
+
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
 function filters($idOrgaoPublicoLogado)
@@ -59,13 +60,33 @@ function filters($idOrgaoPublicoLogado)
     return $selectTableAprovadas;
 }
 
-function atualizaEstadoCotacaoOficina($conexao, $estadoCotacao, $idVeiculo)
-{
-    $stmt = $conexao->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina='$estadoCotacao' WHERE id_infos_veiculos_inclusos='$idVeiculo' ");
-    $stmt2 = $conexao->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado='$estadoCotacao' WHERE id_veiculo_gerenciado='$idVeiculo'");
+function atualizaEstadoCotacaoOficina($conexao, $estadoCotacao, $idVeiculo, $idOrgaoPublicoLogado)
+{   
+    $orcamento_aprovado_reprovado = null;
 
+    // Prepare e execute o SELECT
+    $stmt = $conexao->prepare("SELECT orcamento_aprovado_reprovado FROM orcamentos_oficinas WHERE id_veiculo_gerenciado = ? AND id_orgao_publico = ?");
+    $stmt->bind_param("ii", $idVeiculo, $idOrgaoPublicoLogado);
     $stmt->execute();
+    
+    // Obter o resultado do SELECT
+    $stmt->bind_result($orcamento_aprovado_reprovado);
+    $stmt->fetch();
+
+    // Fechar o statement SELECT após uso
+    $stmt->close();
+
+    // Prepare e execute o primeiro UPDATE
+    $stmt2 = $conexao->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=? AND id_orgao_publico=?");
+    $stmt2->bind_param("sii", $estadoCotacao, $idVeiculo, $idOrgaoPublicoLogado);
     $stmt2->execute();
+    $stmt2->close(); // Fechar o statement após execução
+
+    // Prepare e execute o segundo UPDATE
+    $stmt3 = $conexao->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado=? WHERE id_veiculo_gerenciado=? AND orcamento_aprovado_reprovado=?");
+    $stmt3->bind_param("sii", $estadoCotacao, $idVeiculo, $orcamento_aprovado_reprovado);
+    $stmt3->execute();
+    $stmt3->close(); // Fechar o statement após execução
 }
 
 function atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, $idVeiculo)
@@ -75,18 +96,19 @@ function atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, $idVeiculo)
     $valorTotalFinalOrcamentoFaturado = null;
 
     // Primeiro SELECT: Pegar centro_custo na tabela infos_veiculos_inclusos onde id_orgao_publico = $idOrgaoPublicoLogado e id_infos_veiculos_inclusos = "$idVeiculo"
-    $selectNomeCentroCusto = "SELECT centro_custo FROM infos_veiculos_inclusos WHERE id_orgao_publico = ? AND id_infos_veiculos_inclusos = ?";
+    $selectNomeCentroCusto = "SELECT nome FROM centros_custos WHERE id_orgao_publico = ?";
     $stmt = $conexao->prepare($selectNomeCentroCusto);
-    $stmt->bind_param("ii", $idOrgaoPublicoLogado, $idVeiculo);
+    $stmt->bind_param("i", $idOrgaoPublicoLogado);
     $stmt->execute();
     $stmt->bind_result($centroCusto);
     $stmt->fetch();
     $stmt->close();
 
+
     // Segundo SELECT: Pegar valor_credito na tabela centros_custos onde id_orgao_publico = $idOrgaoPublicoLogado
-    $selectCreditoCentroCusto = "SELECT valor_credito FROM centros_custos WHERE id_orgao_publico = ?";
+    $selectCreditoCentroCusto = "SELECT valor_credito FROM centros_custos WHERE id_orgao_publico = ? AND nome=?";
     $stmt = $conexao->prepare($selectCreditoCentroCusto);
-    $stmt->bind_param("i", $idOrgaoPublicoLogado);
+    $stmt->bind_param("is", $idOrgaoPublicoLogado, $centroCusto);
     $stmt->execute();
     $stmt->bind_result($creditoCentroCusto);
     $stmt->fetch();
@@ -101,7 +123,8 @@ function atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, $idVeiculo)
     $stmt->fetch();
     $stmt->close();
 
-    // Calculando o novo crédito após a fatura
+
+    // // Calculando o novo crédito após a fatura
     $novoCreditoAposFatura = $creditoCentroCusto - $valorTotalFinalOrcamentoFaturado;
 
     // UPDATE: Atualizar a tabela centros_custos, com o valor_credito recebendo $novoCreditoAposFatura
@@ -120,8 +143,8 @@ function atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, $idVeiculo)
 
 if (isset($_POST['faturarOrcamentoCotacao'])) {
     $idVeiculo = $_POST['faturarOrcamentoCotacao'];
-    atualizaEstadoCotacaoOficina($conexao, 'Faturada Órgão Público', $idVeiculo);
-    atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, 1);
+    atualizaEstadoCotacaoOficina($conexao, 'Faturada Órgão Público', $idVeiculo, $idOrgaoPublicoLogado);
+    atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, $idVeiculo);
     header('Location: faturadas.php');
     exit();
 }
