@@ -48,9 +48,17 @@ function insereFaturasBD($connectionDB)
     $estadoVeiculo = 'Faturada Oficina';
     $idVeiculoInclusoOrgaoPublico = $_POST['enviaFaturas'];
     $idOficinaLogada = $_SESSION['idOficinaLogada'];
+    $maxSize = 5 * 1024 * 1024; // 5MB em bytes
 
     $faturaPecas = file_get_contents($_FILES['faturaPecas']['tmp_name']);
     $faturaServicos = file_get_contents($_FILES['faturaServicos']['tmp_name']);
+
+    if ($_FILES['faturaPecas']['size'] > $maxSize || $_FILES['faturaServicos']['size'] > $maxSize) {
+        echo '<script>alert("O arquivo excede o tamanho máximo permitido de 10MB.");</script>';
+        // Opcional: você pode adicionar uma mensagem de erro no formulário
+        header('Location: aprovadas.php'); // Retorna para a página anterior
+        exit;
+    }
 
     // Prepare o statement para atualizar as faturas
     $stmtFatura = $connectionDB->prepare("UPDATE infos_veiculos_inclusos SET fatura_pecas=?, fatura_servicos=? WHERE id_infos_veiculos_inclusos=? ");
