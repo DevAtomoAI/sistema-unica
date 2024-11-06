@@ -21,7 +21,7 @@ function executeQuery($conexao, $query) {
     return $stmt->get_result();
 }
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina = ' '";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina = ' ' AND id_orgao_publico='$idOrgaoPublicoLogado'";
 
 if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
     $selectTable = $_SESSION['filtrosPesquisa'];
@@ -83,9 +83,6 @@ while ($user_data = mysqli_fetch_assoc($execConnection)) {
     ];
 };
 
-
-
-
 echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
 
 ?>
@@ -129,19 +126,24 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
             <div class="menu-icon" id="menuBtn">
                 <a><img src="../imgs/menu.svg"> </a>
             </div>
+
             <div id="menu-options" class="menu-options">
                 <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
-                <div class="option"><a href="../incluir_fornecedores/fornecedores.php">Fornecedores</a></div>
-                <!-- <div class="option"><a href="#opcao3">Opção 3</a></div> -->
-                <!-- Adicione mais opções conforme necessário -->
+                <div class="option"><a href="#">Painel de Gestão</a></div>
+                <div class="option"><a href="../frota/frota.php">Frota</a></div>
+                <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
+                <div class="option"><a href="#opcao3">Relatório</a></div>
             </div>
+
+
+            
             <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
-            <?= $numLinhasTotal ?><div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>
+            <!-- <?= $numLinhasTotal ?><div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div> -->
 
             <div class="user-name">
-                <p><?= $nomeUsuario; ?></p>
+                <!-- <p><?= $nomeUsuario; ?></p> -->
             </div>
 
             <div class="user-icon"><img src="../imgs/user.svg"></div>
@@ -233,7 +235,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                 <div class="popup-details">
                     <div class="popup-column">
                         <p><strong>Veículo:</strong> <span id="veiculo"></span></p>
-                        <p><strong>Km Atual:</strong> <span id="kmAtual"></span></p>
+                        <!-- <p><strong>Km Atual:</strong> <span id="kmAtual"></span></p> -->
                         <p><strong>Plano de Manutenção:</strong> <span id="planoManutencao"></span></p>
                     </div>
                     <div class="popup-column">
@@ -245,7 +247,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         <p><strong>Tipo de Solicitação:</strong> <span id="tipoSolicitacao"></span></p>
                         <p><strong>Fornecedor:</strong> <span id="fornecedor"></span></p>
                         <p><strong>Responsável:</strong> <span id="responsavel"></span></p>
-                        <p><strong>Anexo:</strong> <span id="anexo"></span></p>
+                        <!-- <p><strong>Anexo:</strong> <span id="anexo"></span></p> -->
                     </div>
                 </div>
             </div>

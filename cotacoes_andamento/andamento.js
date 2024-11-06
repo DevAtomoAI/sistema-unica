@@ -6,13 +6,13 @@ function abrirPopUp(cotacaoId) {
 
 
     if (cotacao) {
+        
         // Preencher os detalhes no pop-up
         document.getElementById("veiculo").innerText = cotacao.veiculo;
-        document.getElementById("kmAtual").innerText = cotacao.kmAtual;
         document.getElementById("planoManutencao").innerText = cotacao.planoManutencao;
         document.getElementById("modeloContratacao").innerText = cotacao.modeloContratacao;
         document.getElementById("dataAbertura").innerText = cotacao.dataAbertura;
-        document.getElementById("dataRecebimento").innerText = cotacao.dataRecebimento;
+        // document.getElementById("dataRecebimento").innerText = cotacao.dataRecebimento;
         document.getElementById("centroCusto").innerText = cotacao.centroCusto;
         document.getElementById("tipoSolicitacao").innerText = cotacao.tipoSolicitacao;
         document.getElementById("fornecedor").innerText = cotacao.fornecedor;

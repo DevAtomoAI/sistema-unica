@@ -19,7 +19,7 @@ function filters()
         switch (true) {
             case !empty($searchKeyWordInput):
                 $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
-                opcao_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado' AND
+                orcamento_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado' AND
                 (veiculo LIKE '%$searchKeyWordInput%' OR  
                 modelo_contratacao LIKE '%$searchKeyWordInput%' OR 
                 tipo_solicitacao LIKE '%$searchKeyWordInput%' OR 
@@ -27,21 +27,21 @@ function filters()
                 break;
 
             case !empty($searchInstitutionInput):
-                $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$searchInstitutionInput' AND opcao_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado'";
+                $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$searchInstitutionInput' AND orcamento_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado'";
                 break;
 
             case !empty($orderByInput):
                 switch ($orderByInput) {
                     case "numero_veiculo_decrescente":
-                        $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos DESC";
+                        $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos DESC";
                         break;
 
                     case "numero_veiculo_crescente":
-                        $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC";
+                        $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado' ORDER BY id_infos_veiculos_inclusos ASC";
                         break;
 
                     default:
-                        $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado'ORDER BY $orderByInput ASC";
+                        $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Cancelada' AND id_orgao_publico='$idOrgaoPublicoLogado'ORDER BY $orderByInput ASC";
                         break;
                 }
                 break;

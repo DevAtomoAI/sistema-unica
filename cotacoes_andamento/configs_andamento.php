@@ -35,7 +35,7 @@ function filters() {
     switch (true) {
         case !empty($searchKeyWordInput):
             $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
-                (opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida') 
+                (orcamento_aprovada_reprovada_oficina='' OR orcamento_aprovada_reprovada_oficina='Respondida') 
                 AND id_orgao_publico = '$idOrgaoPublicoLogado' 
                 AND (veiculo LIKE '%$searchKeyWordInput%' OR
                 modelo_contratacao LIKE '%$searchKeyWordInput%' OR 
@@ -46,7 +46,7 @@ function filters() {
         case !empty($searchInstitutionInput):
             $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
                 id_infos_veiculos_inclusos='$searchInstitutionInput' 
-                AND (opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida') 
+                AND (orcamento_aprovada_reprovada_oficina='' OR orcamento_aprovada_reprovada_oficina='Respondida') 
                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
             break;
 
@@ -54,21 +54,21 @@ function filters() {
             switch ($orderByInput) {
                 case "numero_veiculo_decrescente":
                     $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
-                        (opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida') 
+                        (orcamento_aprovada_reprovada_oficina='' OR orcamento_aprovada_reprovada_oficina='Respondida') 
                         AND id_orgao_publico = '$idOrgaoPublicoLogado' 
                         ORDER BY id_infos_veiculos_inclusos DESC";
                     break;
 
                 case "numero_veiculo_crescente":
                     $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
-                        (opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida') 
+                        (orcamento_aprovada_reprovada_oficina='' OR orcamento_aprovada_reprovada_oficina='Respondida') 
                         AND id_orgao_publico = '$idOrgaoPublicoLogado' 
                         ORDER BY id_infos_veiculos_inclusos ASC";
                     break;
 
                 default:
                     $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
-                        (opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida') 
+                        (orcamento_aprovada_reprovada_oficina='' OR orcamento_aprovada_reprovada_oficina='Respondida') 
                         AND id_orgao_publico = '$idOrgaoPublicoLogado' 
                         ORDER BY $orderByInput ASC";
                     break;
@@ -77,7 +77,7 @@ function filters() {
 
         default:
             $selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE 
-                (opcao_aprovada_reprovada_oficina='' OR opcao_aprovada_reprovada_oficina='Respondida') 
+                (orcamento_aprovada_reprovada_oficina='' OR orcamento_aprovada_reprovada_oficina='Respondida') 
                 AND id_orgao_publico = '$idOrgaoPublicoLogado'";
             break;
     }

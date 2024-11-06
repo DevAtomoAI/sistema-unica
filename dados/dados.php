@@ -51,6 +51,14 @@ if ($resultCentros->num_rows > 0) {
             <div class="menu-icon" id="menuBtn">
                 <a> <img src="../imgs/menu.svg"> </a>
             </div>
+
+            <div id="menu-options" class="menu-options">
+                <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+                <div class="option"><a href="#">Painel de Gestão</a></div>
+                <div class="option"><a href="../frota/frota.php">Frota</a></div>
+                <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
+                <div class="option"><a href="#opcao3">Relatório</a></div>
+            </div>
             <div class="logo">
                 <img src="../imgs/minilogo.svg">
             </div>

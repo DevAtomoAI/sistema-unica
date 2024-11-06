@@ -1,0 +1,324 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 130vh;
+
+}
+
+
+
+.login-container {
+    display: flex;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    max-width: 910px;
+    width: 100%;
+    height: 800px; /* Adicionando essa linha */
+    padding-top: 0px;
+}
+
+
+
+h2 {
+    color: #141434;
+    font-size: 24px;
+    margin-bottom: 10px;
+    z-index: 2;
+}
+
+
+label {
+    color: black;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+
+
+button {
+    width: 25%;
+    padding: 10px;
+    background-color: #59CBE8;
+    color: #0d1b4c;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+    height: 20%;
+}
+
+
+button:hover {
+    background-color: #1b4f72;
+    transform: scale(1.1); 
+    color: #eef5f9;
+}
+
+a {
+    color: #0d1b4c;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.login-image {
+    background-size: cover; /* Ajusta a imagem para cobrir a área sem distorção */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Remove repetições da imagem */
+    height: 100vh; /* Faz com que a altura seja 100% da tela */
+    width: 50%; /* Ajusta a largura para ocupar 50% da tela */
+    padding-top: 0px; /* Adiciona espaço entre a imagem e a barra superior */
+    box-sizing: border-box; /* Inclui padding no cálculo da largura/altura */
+}
+
+h1{
+    color: #141434;
+    text-align: center;
+}
+.txt{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.txt2{
+    color: #141434;
+}
+.foto{
+    height: 200px;
+    width: 200px;
+}
+#email{
+    background-color: #F5F7FA;
+    border: none;
+}
+#password{
+    background-color: #F5F7FA;
+    border: none;
+}
+
+/* Quando a barra lateral for aberta */
+.sidebar.open {
+    left: 0; /* Mostra a barra lateral */
+}
+
+/* Quando o overlay estiver ativo */
+.overlay.active {
+    display: block;
+}
+.logo{
+    font-size: 30px;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    top: 1px;
+    left: 59px;
+    z-index: 15;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.logo:hover{
+    transform: scale(1.2);
+}
+
+.notification-icon{
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.notification-icon:hover{
+    transform: scale(1.2); 
+}
+.user-icon{
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.user-icon:hover{
+    transform: scale(1.2); 
+}
+
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background-color: #141434;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.logo img {
+    width: 60px;
+    margin-bottom: 40px;
+}
+
+.nav-options {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.nav-options li {
+    margin: 20px 0;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.nav-options li a {
+    text-decoration: none;
+    color: #5bc0de;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-options li a:hover {
+    color: #fff;
+}
+
+.nav-options li a i {
+    margin-right: 10px;
+}
+
+/* Icons - adjust depending on the library you use */
+.icon-plus::before {
+    content: "\f067"; /* FontAwesome plus icon */
+}
+
+.icon-progress::before {
+    content: "\f0ae"; /* Adjust based on icon */
+}
+
+.icon-check::before {
+    content: "\f00c"; /* Checkmark icon */
+}
+
+.icon-bill::before {
+    content: "\f555"; /* Example for "Faturado" */
+}
+
+.icon-cancel::before {
+    content: "\f00d"; /* Close/cancel icon */
+}
+.sidebar-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Quando o oveay estiver ativo */
+.overlay.active {
+    display: block;
+}
+
+/* Conteúdo principal do site */
+
+/* Conteúdo principal */
+.main-content {
+    padding: 20px;
+  
+}
+
+.voltar{
+    width: 15%;
+    padding: 10px;
+    background-color: #0d1b4c;
+    color: #5bc0de;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+    height: 20%;
+    text-align: center;
+}
+.voltar:hover{
+    background-color: #1b4f72;
+    transform: scale(1.1); 
+    color: #eef5f9;
+}
+
+/* Formulário */
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #eef5f9;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #d1d9df;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 1000px; /* Largura máxima do formulário */
+    margin: auto; /* Centralizar */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Reduzir a largura para dar espaçamento */
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: black;
+}
+
+.form-group select, .form-group input, .form-group textarea, .btn-confirmar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #59CBE8;
+    color: black;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.btn-confirmar {
+    background-color: #1b4f72;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 5px;
+    cursor: pointer;
+    width: 100px;
+    text-align: center;
+    align-self: flex-end;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.btn-confirmar:hover {
+    background-color: #e63946;
+}
+

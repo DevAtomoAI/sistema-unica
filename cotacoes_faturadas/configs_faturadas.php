@@ -1,8 +1,9 @@
 <?php
 session_start();
 include_once('../database/config.php');
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
-function filters()
+function filters($idOrgaoPublicoLogado)
 {
     $selectTableAprovadas = "";
 
@@ -13,7 +14,7 @@ function filters()
         $searchKeyWordInput = isset($_POST["palavra-chave"]) ? $_POST["palavra-chave"] : null;
         $searchInstitutionInput = isset($_POST["centro-custo"]) ? $_POST["centro-custo"] : null;
         $orderByInput = isset($_POST["ordenar-por"]) ? $_POST["ordenar-por"] : null;
-        $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+        // $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
         // Usar switch para decidir qual consulta executar
         switch (true) {
@@ -58,27 +59,75 @@ function filters()
     return $selectTableAprovadas;
 }
 
-function atualizaEstadoCotacaoOficina($conexao, $estadoCotacao, $idVeiculo){
+function atualizaEstadoCotacaoOficina($conexao, $estadoCotacao, $idVeiculo)
+{
     $stmt = $conexao->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina='$estadoCotacao' WHERE id_infos_veiculos_inclusos='$idVeiculo' ");
     $stmt2 = $conexao->prepare("UPDATE orcamentos_oficinas SET orcamento_aprovado_reprovado='$estadoCotacao' WHERE id_veiculo_gerenciado='$idVeiculo'");
 
     $stmt->execute();
     $stmt2->execute();
-
 }
 
-if(isset($_POST['faturarOrcamentoCotacao'])){
+function atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, $idVeiculo)
+{
+    $centroCusto = null;
+    $creditoCentroCusto = null;
+    $valorTotalFinalOrcamentoFaturado = null;
+
+    // Primeiro SELECT: Pegar centro_custo na tabela infos_veiculos_inclusos onde id_orgao_publico = $idOrgaoPublicoLogado e id_infos_veiculos_inclusos = "$idVeiculo"
+    $selectNomeCentroCusto = "SELECT centro_custo FROM infos_veiculos_inclusos WHERE id_orgao_publico = ? AND id_infos_veiculos_inclusos = ?";
+    $stmt = $conexao->prepare($selectNomeCentroCusto);
+    $stmt->bind_param("ii", $idOrgaoPublicoLogado, $idVeiculo);
+    $stmt->execute();
+    $stmt->bind_result($centroCusto);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Segundo SELECT: Pegar valor_credito na tabela centros_custos onde id_orgao_publico = $idOrgaoPublicoLogado
+    $selectCreditoCentroCusto = "SELECT valor_credito FROM centros_custos WHERE id_orgao_publico = ?";
+    $stmt = $conexao->prepare($selectCreditoCentroCusto);
+    $stmt->bind_param("i", $idOrgaoPublicoLogado);
+    $stmt->execute();
+    $stmt->bind_result($creditoCentroCusto);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Terceiro SELECT: Pegar valor_total_final na tabela infos_cotacao_orgao onde id_orgao_publico = $idOrgaoPublicoLogado e id_veiculo_incluso_orgao_publico = $idVeiculo
+    $selectValorTotalFinal = "SELECT valor_total_final FROM infos_cotacao_orgao WHERE id_orgao_publico = ? AND id_veiculo_incluso_orgao_publico = ?";
+    $stmt = $conexao->prepare($selectValorTotalFinal);
+    $stmt->bind_param("ii", $idOrgaoPublicoLogado, $idVeiculo);
+    $stmt->execute();
+    $stmt->bind_result($valorTotalFinalOrcamentoFaturado);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Calculando o novo crédito após a fatura
+    $novoCreditoAposFatura = $creditoCentroCusto - $valorTotalFinalOrcamentoFaturado;
+
+    // UPDATE: Atualizar a tabela centros_custos, com o valor_credito recebendo $novoCreditoAposFatura
+    $updateCreditoCentroCusto = "UPDATE centros_custos SET valor_credito = ? WHERE id_orgao_publico = ?";
+    $stmt = $conexao->prepare($updateCreditoCentroCusto);
+    $stmt->bind_param("di", $novoCreditoAposFatura, $idOrgaoPublicoLogado);
+
+    if ($stmt->execute()) {
+        echo "Crédito atualizado com sucesso!";
+    } else {
+        echo "Erro ao atualizar o crédito: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+
+if (isset($_POST['faturarOrcamentoCotacao'])) {
     $idVeiculo = $_POST['faturarOrcamentoCotacao'];
-    echo $idVeiculo;
     atualizaEstadoCotacaoOficina($conexao, 'Faturada Órgão Público', $idVeiculo);
+    atualizaCreditoCentroCusto($conexao, $idOrgaoPublicoLogado, 1);
     header('Location: faturadas.php');
     exit();
 }
 
 
-filters();
+filters($idOrgaoPublicoLogado);
 
 header('Location: faturadas.php');
 exit();
-
-?>

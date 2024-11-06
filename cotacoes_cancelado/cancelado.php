@@ -17,7 +17,7 @@ $idVeiculosInclusosOrgaoPublico = $_SESSION["idVeiculosInclusosOrgaoPublico"];
 // $execConnectionAprovadas = $conexao->query($selectTableAprovadas);
 // $numLinhasAprovadas = $execConnectionAprovadas->num_rows;
 
-$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ";
+$selectTable = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ";
 
 if(isset($_SESSION['filtrosPesquisaAprovada']) && !empty($_SESSION['filtrosPesquisaAprovada'])) {
     $selectTable = $_SESSION['filtrosPesquisaCancelado'];
@@ -31,7 +31,7 @@ $numLinhasTotal = $execConnection->num_rows;
 
 if ($idVeiculosInclusosOrgaoPublico) {
     $selectTable2 = "SELECT * FROM infos_veiculos_aprovados_oficina 
-                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovado_reprovado!='Aprovada'
+                WHERE id_veiculo_incluso_orgao_publico = $idVeiculosInclusosOrgaoPublico AND id_orgao_publico='$idOrgaoPublicoLogado' AND orcamento_aprovada_reprovada_oficina!='Aprovada'
                 AND orcamento_aprovado_reprovado!='Cancelada'";
     $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
 
@@ -117,11 +117,12 @@ if ($idVeiculosInclusosOrgaoPublico) {
                 <a> <img src="../imgs/menu.svg"> </a>
             </div>
             <div id="menu-options" class="menu-options">
-<div class="option"><a href="../dados/dados.php">Meus dados</a></div>
-<div class="option"><a href="#opcao2">Opção 2</a></div>
-<div class="option"><a href="#opcao3">Opção 3</a></div>
-<!-- Adicione mais opções conforme necessário -->
-        </div>
+                <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+                <div class="option"><a href="#">Painel de Gestão</a></div>
+                <div class="option"><a href="../frota/frota.php">Frota</a></div>
+                <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
+                <div class="option"><a href="#opcao3">Relatório</a></div>
+            </div>
             <div class="logo">
                 <img src="../imgs/minilogo.svg">
             </div>
@@ -154,7 +155,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
                 <select name="centro-custo">
                     <option value="">Centro de Custo</option>
                     <?php
-                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE opcao_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
+                    $selectTableOrgaosSolicitantes = "SELECT * FROM infos_veiculos_inclusos WHERE orcamento_aprovada_reprovada_oficina='Cancelada' ORDER BY id_infos_veiculos_inclusos ASC";
                     $execConnectionOrgaoSolicitante = $conexao->query($selectTableOrgaosSolicitantes);
 
                     while ($orgaoSolicitantes = mysqli_fetch_assoc($execConnectionOrgaoSolicitante)) {
