@@ -58,3 +58,12 @@ function imprimirTabela() {
 
 // Adiciona o evento de clique ao botão imprimir
 document.querySelector('.btn-print').addEventListener('click', imprimirTabela);
+
+
+const menuBtn = document.getElementById('menuBtn');
+const menuOptions = document.getElementById('menu-options');
+
+// Adiciona o evento de clique para alternar a classe active
+menuBtn.addEventListener('click', () => {
+    menuOptions.classList.toggle('active');
+});

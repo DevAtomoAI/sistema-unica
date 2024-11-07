@@ -39,12 +39,6 @@ function atualizaValoresOrgao($conexao, $idOrgaoPublicoLogado)
 }
 function salvaValoresCentroCustos($conexao, $idOrgaoPublicoLogado)
 {
-    $count = 0;
-    // Debug: Verificando os dados recebidos
-    echo '<pre>';
-    var_dump($_POST);
-    echo '</pre>';
-
     $nomes = $_POST['nomeCentro'] ?? [];
     $valoresContratos = $_POST['valorContrato'] ?? [];
     $fontesRecurso = $_POST['fonteRecurso'] ?? [];
@@ -55,28 +49,47 @@ function salvaValoresCentroCustos($conexao, $idOrgaoPublicoLogado)
     // Checando se todos os arrays têm o mesmo tamanho
     if (count($nomes) > 0 && count($nomes) == count($valoresContratos) && count($nomes) == count($fontesRecurso) && count($nomes) == count($datasCredito) && count($nomes) == count($ordensBancarias) && count($nomes) == count($valoresCredito)) {
         for ($i = 0; $i < count($nomes); $i++) {
-            // Verifique se o centro de custo já existe
-            $stmtVerificacao = $conexao->prepare("SELECT COUNT(*) FROM centros_custos WHERE nome = ? AND id_orgao_publico = ?");
+            // Converter para float
+            $valoresContratos[$i] = (float) $valoresContratos[$i];
+            $valoresCredito[$i] = (float) $valoresCredito[$i];
+
+            // Verifique se o centro de custo já existe e obtenha os dados atuais
+            $stmtVerificacao = $conexao->prepare("SELECT valor_contrato, fonte_recurso, data_credito, num_ordem_bancaria, valor_credito FROM centros_custos WHERE nome = ? AND id_orgao_publico = ?");
             $stmtVerificacao->bind_param("si", $nomes[$i], $idOrgaoPublicoLogado);
             $stmtVerificacao->execute();
-            $stmtVerificacao->bind_result($count);
-            $stmtVerificacao->fetch();
-            $stmtVerificacao->close();
+            $stmtVerificacao->store_result();
 
-            if ($count > 0) {
-                echo "Centro de custo '{$nomes[$i]}' já existe e não será inserido.<br>";
-                continue; // Pula para a próxima iteração se já existir
-            }
+            $valorContratoExistente = $fonteRecursoExistente = $dataCreditoExistente = $ordemBancariaExistente = $valorCreditoExistente = null;
 
-            // Se não existe, insira o novo centro de custo
-            $stmt = $conexao->prepare("INSERT INTO centros_custos (nome, id_orgao_publico, valor_contrato, fonte_recurso, data_credito, num_ordem_bancaria, valor_credito) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sissssi", $nomes[$i], $idOrgaoPublicoLogado, $valoresContratos[$i], $fontesRecurso[$i], $datasCredito[$i], $ordensBancarias[$i], $valoresCredito[$i]);
+            if ($stmtVerificacao->num_rows > 0) {
+                $stmtVerificacao->bind_result($valorContratoExistente, $fonteRecursoExistente, $dataCreditoExistente, $ordemBancariaExistente, $valorCreditoExistente);
+                $stmtVerificacao->fetch();
 
-            if (!$stmt->execute()) {
-                echo "Erro ao inserir dados para '{$nomes[$i]}': " . $stmt->error . "<br>";
+                if ($valoresContratos[$i] != $valorContratoExistente || $fontesRecurso[$i] != $fonteRecursoExistente || $datasCredito[$i] != $dataCreditoExistente || $ordensBancarias[$i] != $ordemBancariaExistente || $valoresCredito[$i] != $valorCreditoExistente) {
+                    $stmtAtualizacao = $conexao->prepare("UPDATE centros_custos SET valor_contrato = ?, fonte_recurso = ?, data_credito = ?, num_ordem_bancaria = ?, valor_credito = ? WHERE nome = ? AND id_orgao_publico = ?");
+                    $stmtAtualizacao->bind_param("dssidsi", $valoresContratos[$i], $fontesRecurso[$i], $datasCredito[$i], $ordensBancarias[$i], $valoresCredito[$i], $nomes[$i], $idOrgaoPublicoLogado);
+
+                    if (!$stmtAtualizacao->execute()) {
+                        echo "Erro ao atualizar dados para '{$nomes[$i]}': " . $stmtAtualizacao->error . "<br>";
+                    } else {
+                        echo "Dados atualizados com sucesso para: '{$nomes[$i]}'<br>";
+                    }
+                    $stmtAtualizacao->close();
+                } else {
+                    echo "Nenhuma alteração necessária para: '{$nomes[$i]}'<br>";
+                }
             } else {
-                echo "Dados inseridos com sucesso para: '{$nomes[$i]}'<br>";
+                $stmt = $conexao->prepare("INSERT INTO centros_custos (nome, id_orgao_publico, valor_contrato, fonte_recurso, data_credito, num_ordem_bancaria, valor_credito) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("sisssds", $nomes[$i], $idOrgaoPublicoLogado, $valoresContratos[$i], $fontesRecurso[$i], $datasCredito[$i], $ordensBancarias[$i], $valoresCredito[$i]);
+
+                if (!$stmt->execute()) {
+                    echo "Erro ao inserir dados para '{$nomes[$i]}': " . $stmt->error . "<br>";
+                } else {
+                    echo "Dados inseridos com sucesso para: '{$nomes[$i]}'<br>";
+                }
+                $stmt->close();
             }
+            $stmtVerificacao->close();
         }
     } else {
         echo "Dados inconsistentes ou vazios.";

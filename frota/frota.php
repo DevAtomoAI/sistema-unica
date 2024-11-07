@@ -43,10 +43,7 @@
                 <div class="option"><a href="../frota/frota.php">Frota</a></div>
                 <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a>
             </div>
-    <div class="option"><a href="#opcao3">Relatório</a></div>
-    <!-- Adicione mais opções conforme necessário -->
-</div>
-            <div class="logo"><img src="../imgs/minilogo.svg"></div>
+            </div>
         </div>
         <div class="right-icons">
             <div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>

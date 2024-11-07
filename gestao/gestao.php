@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráfico Atualizado em Tempo Real</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         .chart-container {
             width: 80%;
@@ -65,15 +66,15 @@
             <div class="menu-icon" id="menuBtn">
                 <a><img src="../imgs/menu.svg"> </a>
             </div>
+
             <div id="menu-options" class="menu-options">
                 <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
                 <div class="option"><a href="#">Painel de Gestão</a></div>
                 <div class="option"><a href="../frota/frota.php">Frota</a></div>
-                <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a>
+                <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
+                <div class="option"><a href="#opcao3">Relatório</a></div>
             </div>
-    <div class="option"><a href="#opcao3">Relatório</a></div>
-</div>
-            <div class="logo"><img src="../imgs/minilogo.svg"></div>
+            
         </div>
         <div class="right-icons">
             <div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>
@@ -141,15 +142,7 @@
             type: 'bar',
             data: {
                 labels: [
-                    'SECRETARIA DE DESENVOLVIMENTO',
-                    'SECRETARIA DE EDUCAÇÃO',
-                    'SECRETARIA DE OBRAS',
-                    'SECRETARIA DE ASSISTÊNCIA SOCIAL',
-                    'SECRETARIA DE MEIO AMBIENTE',
-                    'GABINETE DO PREFEITO',
-                    'SECRETARIA DE ADMINISTRAÇÃO',
-                    'SECRETARIA DE ESPORTES',
-                    'SECRETARIA DE FINANÇAS'
+                    // centros vindos do banco
                 ],
                 datasets: [
                     {
@@ -240,5 +233,5 @@
     </div>
 
 </body>
-
+<script src="gestao.js"></script>
 </html>

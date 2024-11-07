@@ -66,26 +66,11 @@ document.querySelector('.btn-print').addEventListener('click', imprimirTabela);
 
 
 
-// Alternar o menu ao clicar no botão
-document.getElementById("menuBtn").addEventListener("click", function(event) {
-    event.stopPropagation();  // Impede que o clique no botão feche o menu
-    toggleMenu();
-});
+    // Seleciona o botão do menu e o menu em si
+    const menuBtn = document.getElementById('menuBtn');
+    const menuOptions = document.getElementById('menu-options');
 
-function toggleMenu() {
-    const menuOptions = document.getElementById("menu-options");
-    menuOptions.style.display = (menuOptions.style.display === "" || menuOptions.style.display === "")
-        ? "block"
-        : "";
-}
-
-// Ocultar o menu ao clicar fora dele
-document.addEventListener("click", function(event) {
-    const menuBtn = document.getElementById("menuBtn");
-    const menuOptions = document.getElementById("menu-options");
-
-    if (!menuBtn.contains(event.target) && !menuOptions.contains(event.target)) {
-        menuOptions.style.display = "none";
-    }
-});
-
+    // Adiciona o evento de clique para alternar a classe active
+    menuBtn.addEventListener('click', () => {
+        menuOptions.classList.toggle('active');
+    });X

@@ -122,15 +122,13 @@ $_SESSION['idVeiculosInclusosOrgaoPublico'] = $idVeiculosInclusosOrgaoPublico;
 
             <div id="menu-options" class="menu-options">
                 <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
-                <div class="option"><a href="#">Painel de Gestão</a></div>
+                <div class="option"><a href="../gestao/gestao.php">Painel de Gestão</a></div>
                 <div class="option"><a href="../frota/frota.php">Frota</a></div>
                 <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
-                <div class="option"><a href="#opcao3">Relatório</a></div>
+                <div class="option"><a href="../relatorio/relatorio.php">Relatório</a></div>
             </div>
 
-            <div class="logo">
-                <img src="../imgs/minilogo.svg">
-            </div>
+          
         </div>
         <div class="right-icons">
             <div class="notification-icon">

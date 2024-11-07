@@ -60,8 +60,8 @@ if ($idVeiculosInclusosOrgaoPublico) {
 while ($user_data = mysqli_fetch_assoc($execConnection)) {
     $idVeiculosInclusosOrgaoPublico = $user_data['id_infos_veiculos_inclusos'];
 
-    $selectTable2 = "SELECT * FROM infos_veiculos_inclusos
-    WHERE id_infos_veiculos_inclusos = $idVeiculosInclusosOrgaoPublico
+    $selectTable2 = "SELECT * FROM orcamentos_oficinas
+    WHERE id_veiculo_gerenciado = $idVeiculosInclusosOrgaoPublico
     AND id_orgao_publico = '$idOrgaoPublicoLogado'";
     $numLinhasTotal2 = $conexao->query($selectTable2)->num_rows;
 
@@ -132,18 +132,16 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                 <div class="option"><a href="../gestao/gestao.php">Painel de Gestão</a></div>
                 <div class="option"><a href="../frota/frota.php">Frota</a></div>
                 <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
-                <div class="option"><a href="#opcao3">Relatório</a></div>
+                <div class="option"><a href="../relatorio/relatorio.php">Relatório</a></div>
             </div>
-
-
             
-            <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
-            <!-- <?= $numLinhasTotal ?><div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div> -->
+            <?= $numLinhasTotal ?><div class="notification-icon"> <img src="../imgs/Doorbell.svg">
+        </div>
 
             <div class="user-name">
-                <!-- <p><?= $nomeUsuario; ?></p> -->
+                <p><?= $nomeUsuario; ?></p>
             </div>
 
             <div class="user-icon"><img src="../imgs/user.svg"></div>
@@ -213,7 +211,7 @@ echo "<script>var cotacoes = " . json_encode($cotacoes) . ";</script>";
                         echo "<td class='resultadosTabela'>
                                   <form method='POST' action='configs_andamento.php'>
                                     <button name='button-option-aproved' class='btn-action btn-green' value='" . $cotacao['id'] . "'>
-                                        Gerenciar<i class='fas fa-check'></i>
+                                        Gerenciar
                                     </button>
                                     <button name='button-option-rejected' class='btn-action btn-red' value='" . $cotacao['id'] . "'>
                                         <i class='fas fa-times'></i>

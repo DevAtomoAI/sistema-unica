@@ -5,8 +5,13 @@ session_start();
 $idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
 
 $selectFornecedores = "SELECT * FROM dados_fornecedores WHERE id_orgao_publico='$idOrgaoPublicoLogado'";
+
+if (isset($_SESSION['filtrosPesquisa']) && !empty($_SESSION['filtrosPesquisa'])) {
+    $selectFornecedores = $_SESSION['filtrosPesquisa'];
+}else{
+    $_SESSION['filtrosPesquisa'] = null;
+}
 $queryFornecedores = mysqli_query($conexao, $selectFornecedores);
-// $valoresFornecedores = mysqli_fetch_assoc($queryFornecedores);
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +62,6 @@ $queryFornecedores = mysqli_query($conexao, $selectFornecedores);
             </div>
     <!-- Adicione mais opções conforme necessário -->
 </div>
-            <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
             <div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>
@@ -76,19 +80,14 @@ $queryFornecedores = mysqli_query($conexao, $selectFornecedores);
 
         <!-- Barra de busca -->
         <div class="search-bar">
-            <form action="configs_andamento.php" method="POST">
+            <form action="config_fornecedores.php" method="POST">
                 <input name='palavra-chave' type="text" placeholder="Busca">
-                <select name="centro-custo">
-                    <option value="">Centro de Custo</option>
-                </select>
-                <input type="text" placeholder="Placa">
                 <select name="ordenar-por">
                     <option value="">Ordenar</option>
-                    <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
-                    <option name="numero_veiculo_crescente" id="numero_veiculo_crescente" value="numero_veiculo_crescente">Por número (crescente)</option>
-                    <option name="placa_veiculo" id="placa_veiculo" value="placa">Por placa </option>
+                    <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Decrescente</option>
+                    <option name="numero_veiculo_crescente" id="numero_veiculo_crescente" value="numero_veiculo_crescente">Crescente</option>
                 </select>
-                <button class="btn-search"><i class="fas fa-search"></i> Pesquisar</button>
+                <button name='pesquisaFornecedores'class="btn-search"><i class="fas fa-search"></i> Pesquisar</button>
                 <button class="btn-print"><i class="fas fa-print"></i> Imprimir</button>
                 <a href="incluir_fornecedores.php">Incluir</a>
             </form>

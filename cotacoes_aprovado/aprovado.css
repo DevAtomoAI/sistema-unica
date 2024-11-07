@@ -13,6 +13,45 @@ body {
     height: 100vh;
 }
 
+.menu-options {
+    position: fixed;
+    top: 0px;
+    left: 50px;
+    width: 100vw; /* Largura completa para modo expandido */
+    height: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    transform: translateX(-100%); /* Oculto no início */
+    transition: transform 0.3s ease; /* Animação de 0.3s */
+    overflow-x: auto;
+    color: #003150;
+    font-weight: bold;
+
+}
+
+/* Estado do menu quando aberto */
+.menu-options.active {
+    transform: translateX(0); /* Visível ao ser ativado */
+}
+
+/* Estilo dos itens do menu */
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+}
+
+.menu-item span {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
 .top-bar {
     position: absolute;
     top: 0;
@@ -53,23 +92,6 @@ a:hover {
     margin-left: 30px;
 }
 
-.menu-options {
-    position: absolute;
-    top: 2px; /* Ajuste conforme necessário */
-    left: 50px;
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
-    display: flex;
-    font-weight: bold;
-    gap: 50PX;
-}
-
-.menu-options .option {
-    margin: 5px 0;
-    padding: 5px;
-    cursor: pointer;
-}
 
 /* Barra lateral */
 .sidebar {

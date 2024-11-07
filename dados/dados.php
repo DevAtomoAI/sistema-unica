@@ -42,10 +42,28 @@ if ($resultCentros->num_rows > 0) {
     <title>Meus dados</title>
     <link rel="stylesheet" href="dados.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="dados.js"></script>
 </head>
 
 <body>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- Barra lateral -->
+<div class="sidebar" id="sidebar">
+
+    <ul class="nav-options">
+        <!-- <li><a href="../dados/dados.php"><img src="../imgs/dados.svg"> Meus dados</a></li> -->
+        <li><a href="../incluir_cotacao/incluir.php"><img src="../imgs/time.svg"> Incluir</a></li>
+        <li><a href="../cotacoes_andamento/andamento.php"><img src="../imgs/clock.svg"> Em andamento</a></li>
+        <li><a href="../cotacoes_aprovado/aprovado.php"><img src="../imgs/check.svg"> Aprovado</a></li>
+        <li><a href="../cotacoes_faturadas/faturadas.php"><img src="../imgs/paper.svg"> Faturado</a></li>
+        <li><a href="../cotacoes_cancelado/cancelado.php"><img src="../imgs/cancel.svg"> Cancelado</a></li>
+        <div class="logotype">
+            <img src="../imgs/biglogo.svg">
+        </div>
+    </ul>
+</div>
+
     <header class="top-bar">
         <div class="left-icons">
             <div class="menu-icon" id="menuBtn">
@@ -54,13 +72,10 @@ if ($resultCentros->num_rows > 0) {
 
             <div id="menu-options" class="menu-options">
                 <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
-                <div class="option"><a href="#">Painel de Gestão</a></div>
+                <div class="option"><a href="../gestao/gestao.php">Painel de Gestão</a></div>
                 <div class="option"><a href="../frota/frota.php">Frota</a></div>
                 <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
                 <div class="option"><a href="#opcao3">Relatório</a></div>
-            </div>
-            <div class="logo">
-                <img src="../imgs/minilogo.svg">
             </div>
         </div>
         <div class="right-icons">
@@ -124,15 +139,18 @@ if ($resultCentros->num_rows > 0) {
                         </tr>
                     <?php endforeach; ?>
                 </table>
+                <br>
             </div>
+            <br>
 
-            <button type="button" onclick="novosCentros(event)">Adicionar novo centro</button>
-
+            <button type="button" class="button" onclick="novosCentros(event)">Adicionar novo centro</button>
+<br>
             <button class="button" name="salvaValoresCentroCustos">Enviar Dados do Centro de Custo</button>
         </form>
     </div>
 
     <a href="../cotacoes_andamento/andamento.php">Voltar</a>
 
+    <script src="dados.js"></script>
 </body>
 </html>

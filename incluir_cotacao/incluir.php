@@ -70,13 +70,13 @@ if ($idVeiculosInclusosOrgaoPublico) {
             </div>
 
             <div id="menu-options" class="menu-options">
-                <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
-                <div class="option"><a href="#opcao2">Opção 2</a></div>
-                <div class="option"><a href="#opcao3">Opção 3</a></div>
-                <!-- Adicione mais opções conforme necessário -->
-            </div>
+        <div class="option"><a href="../dados/dados.php">Meus dados</a></div>
+        <div class="option"><a href="../gestao/gestao.php">Painel de Gestão</a></div>
+        <div class="option"><a href="../frota/frota.php">Frota</a></div>
+        <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
+        <div class="option"><a href="#opcao3">Relatório</a></div>
+    </div>
 
-            <div class="logo"><img src="../imgs/minilogo.svg"></div>
         </div>
         <div class="right-icons">
             <div class="notification-icon"><?= $_SESSION['notificacao'] ?><img src="../imgs/Doorbell.svg"></div>
@@ -141,19 +141,7 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     </select>
                 </div>
 
-                <div>
-                    <select name="fornecedor" id="fornecedor">
-                        <?php
-                        $selectTableFornecedor = "SELECT nome FROM dados_fornecedores
-                                                    WHERE id_orgao_publico = '$idOrgaoPublicoLogado'";
-                        $result = $conexao->query($selectTableFornecedor);
-
-                        while ($valores = $result->fetch_assoc()) {
-                            echo "<option name='fornecedor' value=" . $valores['nome'] . ">" . $valores['nome'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
+          
 
                 <div class="form-group">
                     <label for="plano-manutencao">Plano de Manutenção</label>
@@ -196,6 +184,19 @@ if ($idVeiculosInclusosOrgaoPublico) {
                     <label for="data-fim">Data Final de Recebimento</label>
                     <input name="data-fim" type="date" id="data-fim">
 
+            <label for="Fornecedor">Fornecedor</label>  
+                    <select name="fornecedor" id="fornecedor">
+                        <?php
+                        $selectTableFornecedor = "SELECT nome FROM dados_fornecedores
+                                                    WHERE id_orgao_publico = '$idOrgaoPublicoLogado'";
+                        $result = $conexao->query($selectTableFornecedor);
+
+                        while ($valores = $result->fetch_assoc()) {
+                            echo "<option name='fornecedor' value=" . $valores['nome'] . ">" . $valores['nome'] . "</option>";
+                        }
+                        ?>
+                    </select>
+
                 </div>
 
 
@@ -203,7 +204,6 @@ if ($idVeiculosInclusosOrgaoPublico) {
             </div>
         </div>
     </form>
-
     <script src="incluir.js"> </script>
 
 </body>

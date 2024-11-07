@@ -1,29 +1,3 @@
-const menuBtn = document.getElementById('menuBtn');
-const closeBtn = document.getElementById('closeBtn');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-
-// Função para abrir a barra lateral
-menuBtn.addEventListener('click', () => {
-    sidebar.classList.add('open');
-    overlay.classList.add('active');
-});
-
-// Função para fechar a barra lateral
-closeBtn.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('active');
-});
-
-// Fechar a barra lateral ao clicar fora dela (overlay)
-overlay.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('active');
-});
-
-
-
-
 // Carregar as cotações aprovadas
 window.onload = function () {
     carregarCotacoesAprovadas();
@@ -81,3 +55,11 @@ function imprimirTabela() {
 
 // Adiciona o evento de clique ao botão imprimir
 document.querySelector('.btn-print').addEventListener('click', imprimirTabela);
+
+const menuBtn = document.getElementById('menuBtn');
+const menuOptions = document.getElementById('menu-options');
+
+// Adiciona o evento de clique para alternar a classe active
+menuBtn.addEventListener('click', () => {
+    menuOptions.classList.toggle('active');
+});

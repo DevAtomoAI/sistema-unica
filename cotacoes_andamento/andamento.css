@@ -40,26 +40,56 @@ body {
 }
 
 a {
-    color: #0d1b4c;
     text-decoration: none;
+    color: #003150;
 }
 
 a:hover {
     text-decoration: underline;
 }
 
+
+
+
+/* Menu retrátil - configuração inicial */
 .menu-options {
-    position: absolute;
-    top: 2px; /* Ajuste conforme necessário */
+    position: fixed;
+    top: 0px;
     left: 50px;
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
+    width: 100vw; /* Largura completa para modo expandido */
+    height: auto;
+    padding: 15px;
     display: flex;
+    flex-direction: row;
+    gap: 20px;
+    transform: translateX(-100%); /* Oculto no início */
+    transition: transform 0.3s ease; /* Animação de 0.3s */
+    overflow-x: auto;
+    color: #003150;
     font-weight: bold;
-    gap: 50PX;
+
 }
 
+/* Estado do menu quando aberto */
+.menu-options.active {
+    transform: translateX(0); /* Visível ao ser ativado */
+}
+
+/* Estilo dos itens do menu */
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+}
+
+.menu-item span {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
 .logotype{
     margin-top: 350px;
     margin-left: 30px;
@@ -93,6 +123,7 @@ a:hover {
     height: 100vh;
     background-color: #141434;
     display: flex;
+    color: #59CBE8;
     flex-direction: column;
     align-items: center;
     padding-top: 50px;
@@ -259,49 +290,7 @@ a:hover {
     display: block;
 }
 
-/* Estilos para mobile */
-@media (max-width: 768px) {
-    .main-content {
-        margin-left: 0;
-        width: 100%;
-        padding: 15px;
-    }
 
-    .form-container {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .form-group {
-        width: 100%;
-    }
-
-    .form-group select, .form-group input, .form-group textarea, .btn-confirmar {
-        width: 100%; /* Ajustar largura dos campos e botão */
-        margin-bottom: 15px; /* Espaçamento entre os campos no mobile */
-    }
-
-    .mobile-header {
-        display: flex;
-    }
-
-    .sidebar {
-        display: none; /* Esconder no mobile */
-        
-    }
-
-    .sidebar.active {
-        display: block; /* Mostrar quando ativo */
-        position: absolute;
-        z-index: 999;
-        width: 250px;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: #003150;
-        padding: 20px;
-    }
-}
 .text-menu {
     margin-top: 30px;
 }
@@ -340,7 +329,7 @@ body {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
-    background-color: #ffffff;
+    background-color: #f4f4f4;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -419,40 +408,6 @@ table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Mobile Responsivo da Tabela */
-@media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-
-    table {
-        width: 100%;
-    }
-
-    table thead {
-        display: none;
-    }
-
-    table tr {
-        margin-bottom: 15px;
-    }
-
-    table td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-    }
-
-    table td:before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 15px;
-        font-weight: bold;
-        text-align: left;
-    }
-}
 
 /* Botões de ações */
 .btn-action {
