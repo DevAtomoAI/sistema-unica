@@ -4,16 +4,18 @@ session_start();
 
 function applyCotacaoFilters($connectionDB) {
     $searchKeyWordInput = isset($_POST["searchKeyWordInput"]) ? $_POST["searchKeyWordInput"] : null;
-    $searchInstitutionInput = isset($_POST["searchInstitutionInput"]) ? $_POST["searchInstitutionInput"] : null;
+    $searchInstitutionInput = $_POST["searchInstitutionInput"] ;
     $orderByInput = isset($_POST["orderByInput"]) ? $_POST["orderByInput"] : null;
 
-    $whereClause = "opcao_aprovada_reprovada_oficina='Respondida' ";
+    // echo 'vazio?', $searchInstitutionInput;
+
+    $whereClause = "orcamento_aprovada_reprovada_oficina != '' ";
     if (!empty($searchKeyWordInput)) {
-        $whereClause .= " AND (id_infos_veiculos_inclusos LIKE '%$searchKeyWordInput%' OR placa LIKE '%$searchKeyWordInput%' OR veiculo LIKE '%$searchKeyWordInput%' 
-        OR modelo_veiculo LIKE '%$searchKeyWordInput%' OR tipo_solicitacao LIKE '%$searchKeyWordInput%')";
+        $whereClause .= " AND (id_infos_veiculos_inclusos LIKE '%$searchKeyWordInput%' OR veiculo LIKE '%$searchKeyWordInput%' 
+        OR tipo_solicitacao LIKE '%$searchKeyWordInput%')";
     }
     if (!empty($searchInstitutionInput)) {
-        $whereClause .= " AND id_infos_veiculos_inclusos='$searchInstitutionInput'";
+        $whereClause .= " AND centro_custo='$searchInstitutionInput'";
     }
 
     $orderByClause = "";

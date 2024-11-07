@@ -140,7 +140,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
         <h1 class='actualPageTitle'><img src="../assets/dark-clock.svg">Cotações aprovadas</h3>
 
             <div class="searchItens">
-                <form action="configs_andamento.php" method="POST">
+                <form action="configs_aprovadas.php" method="POST">
                     <div class="search-container">
                         <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchKeyWord" for="searchKeyWordInput">Busca</label>

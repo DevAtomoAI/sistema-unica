@@ -48,7 +48,7 @@ function applyCotacaoFilters($connectionDB) {
 
     $whereClause = "opcao_aprovada_reprovada_oficina='' ";
     if (!empty($searchKeyWordInput)) {
-        $whereClause .= " AND (id_infos_veiculos_inclusos LIKE '%$searchKeyWordInput%' OR placa LIKE '%$searchKeyWordInput%' OR veiculo LIKE '%$searchKeyWordInput%' 
+        $whereClause .= " AND (id_infos_veiculos_inclusos LIKE '%$searchKeyWordInput%' OR veiculo LIKE '%$searchKeyWordInput%' 
         OR modelo_veiculo LIKE '%$searchKeyWordInput%' OR tipo_solicitacao LIKE '%$searchKeyWordInput%')";
     }
     if (!empty($searchInstitutionInput)) {

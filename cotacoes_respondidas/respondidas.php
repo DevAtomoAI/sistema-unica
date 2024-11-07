@@ -31,6 +31,8 @@ if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa']))
     $selectTable = $_SESSION['filtrosPesquisa'];
 } 
 
+echo $selectTable;
+
 $_SESSION['filtrosPesquisa'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTable);
@@ -136,7 +138,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                             <input type="text" name="searchKeyWordInput" id="searchKeyWordInput" placeholder="Palavra-chave">
                         </div>
 
-                        <div class="groupsSearchItens">
+                        <!-- <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchOpen" for="searchOpenInput">Abertura</label>
                             <input type="date" name="searchOpenInput" id="searchOpenInput">
                         </div>
@@ -144,7 +146,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                         <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchClose" for="searchCloseInput">Fechamento</label>
                             <input type="date" name='searchCloseInput' id='searchCloseInput'>
-                        </div>
+                        </div> -->
 
                         <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchInstitution" for="searchInstitutionInput">Órgão</label>
@@ -152,7 +154,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 <option value="">Todos</option>
                                 <?php
                                 while ($centroCusto = mysqli_fetch_assoc($execCentroCusto)) {
-                                    echo "<option value='" . $centroCusto['id_infos_veiculos_inclusos'] . "'>" . $centroCusto['centro_custo'] . "</option>";
+                                    echo "<option name='searchInstitutionInput' value='" . $centroCusto['centro_custo'] . "'>" . $centroCusto['centro_custo'] . "</option>";
                                 }
                                 ?>
 
@@ -165,8 +167,8 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 <select name="orderByInput" id="orderByInput">
                                     <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
                                     <option name="numero_veiculo_crescente" id="numero_veiculo_crescente" value="numero_veiculo_crescente">Por número (crescente)</option>
-                                    <option name="marca_veiculo" id="marca_veiculo" value="marca_veiculo">Por marca </option>
-                                    <option name="modelo_veiculo" id="modelo_veiculo" value="modelo_veiculo">Por modelo </option>
+                                    <!-- <option name="marca_veiculo" id="marca_veiculo" value="marca_veiculo">Por marca </option> -->
+                                    <!-- <option name="modelo_veiculo" id="modelo_veiculo" value="modelo_veiculo">Por modelo </option> -->
                                 </select>
                             </form>
                         </div>
@@ -187,7 +189,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 <th class='titulosTabela'>Marca</th>
                                 <th class='titulosTabela'>Centro custo</th>
                                 <th class='titulosTabela'>Tipo Solicitação</th>
-                                <th class='titulosTabela'>Opções</th>
+                                <!-- <th class='titulosTabela'>Opções</th> -->
 
                             </tr>
                         </thead>
@@ -199,9 +201,6 @@ $execCentroCusto = executeQuery($connectionDB, $selectTable);
                                 echo "<td class='resultadosTabela' >" . $user_data['veiculo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['centro_custo'] . "</td>";
                                 echo "<td class='resultadosTabela' >" . $user_data['tipo_solicitacao'] . "</td>";
-                                echo "<td class='resultadosTabela' >
-                                <button value='" . $user_data['id_infos_veiculos_inclusos'] . "' id='botaoGerenciar' name='botaoGerenciar' class='botaoGerenciar'>Visualizar</button>
-                            </td>";
                                 echo "</tr>";
                             }
                             ?>

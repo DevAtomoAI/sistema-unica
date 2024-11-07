@@ -1,8 +1,9 @@
 <?php
 session_start();
-include_once('../database/config.php') ;
+include_once('../database/config.php');
 
-function checkUserLoggedIn() {
+function checkUserLoggedIn()
+{
     if (!isset($_SESSION['emailLoggedUser']) || $_SESSION['emailLoggedUser'] == null) {
         header('Location: ../index.php');
         exit;
@@ -12,7 +13,8 @@ checkUserLoggedIn();
 $nameUser = $_SESSION['nameLoggedUser'];
 $idOficinaLogada = $_SESSION['idOficinaLogada'];
 
-function executeQuery($connectionDB, $query) {
+function executeQuery($connectionDB, $query)
+{
     $stmt = $connectionDB->prepare($query);
     $stmt->execute();
     return $stmt->get_result();
@@ -22,10 +24,12 @@ $selectTableRejeitadas = "SELECT * FROM orcamentos_oficinas WHERE orcamento_apro
 
 if (isset($_SESSION['filtrosPesquisa']) || !empty($_SESSION['filtrosPesquisa'])) {
     $selectTableRejeitadas = $_SESSION['filtrosPesquisa'];
-} 
+}
 $_SESSION['filtrosPesquisa'] = null;
 
 $execConnection = executeQuery($connectionDB, $selectTableRejeitadas);
+$execConnection2 = executeQuery($connectionDB, $selectTableRejeitadas);
+
 
 $numLinhasTotal = $execConnection->num_rows;
 $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
@@ -54,7 +58,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
         <ul class="nav-options">
             <h1 class="side-bar-title">COTAÇÕES</h1>
             <li>
-                <a id='opcaoEmAndamento' href="../cotacoes_andamento/andamento.php" >
+                <a id='opcaoEmAndamento' href="../cotacoes_andamento/andamento.php">
                     <img src="../assets/clock.svg"> Em andamento
                 </a>
             </li>
@@ -91,7 +95,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                 </a>
             </li>
 
-            <div class="logotype"> 
+            <div class="logotype">
                 <img src="../assets/biglogo.svg">
             </div>
 
@@ -108,7 +112,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
         </div>
         <div class="right-icons">
             <div class="notification-icon">
-            <?= $_SESSION['numLinhasTotalNotificacao'] ?> <img src="../assets/Doorbell.svg">
+                <?= $_SESSION['numLinhasTotalNotificacao'] ?> <img src="../assets/Doorbell.svg">
             </div>
             <div id='userId' class="user-icon">
                 <a id="nameLoggedUser"><?= $nameUser ?></a>
@@ -129,24 +133,33 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                             <input type="text" name="searchKeyWordInput" id="searchKeyWordInput" placeholder="Palavra-chave">
                         </div>
 
-                        <div class="groupsSearchItens">
+                        <!-- <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchOpen" for="searchOpenInput">Abertura</label>
                             <input type="date" name="searchOpenInput" id="searchOpenInput">
-                        </div>
+                        </div> -->
 
-                        <div class="groupsSearchItens">
+                        <!-- <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchClose" for="searchCloseInput">Fechamento</label>
                             <input type="date" name='searchCloseInput' id='searchCloseInput'>
-                        </div>
+                        </div> -->
 
                         <div class="groupsSearchItens">
                             <label class='filtrosPesquisa' id="searchInstitution" for="searchInstitutionInput">Órgão</label>
                             <select name="searchInstitutionInput" id="searchInstitutionInput">
                                 <option value="">Todos</option>
                                 <?php
-                                while ($centroCusto = mysqli_fetch_assoc($execCentroCusto)) {
-                                    echo "<option value='" . $centroCusto['id_infos_veiculos_inclusos'] . "'>" . $centroCusto['centro_custo'] . "</option>";
-                                }
+
+                                while($row2 = $execConnection2->fetch_assoc()){
+                                    $idVeiculoGerenciado = $row2['id_veiculo_gerenciado'];
+                                    $selectInfosVeiculoRejeitado = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciado'";
+                                    $execConnectionInfosVeiculosRejeitados = executeQuery($connectionDB, $selectInfosVeiculoRejeitado);
+                                    while ($centroCusto = mysqli_fetch_assoc($execConnectionInfosVeiculosRejeitados)) {
+                                        echo "<option value='" . $centroCusto['id_infos_veiculos_inclusos'] . "'>" . $centroCusto['centro_custo'] . "</option>";
+                                    }
+                                };
+
+
+   
                                 ?>
 
                             </select>
@@ -158,12 +171,12 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                                 <select name="orderByInput" id="orderByInput">
                                     <option name="numero_veiculo_decrescente" id="numero_veiculo_decrescente" value="numero_veiculo_decrescente">Por número (decrescente)</option>
                                     <option name="numero_veiculo_crescente" id="numero_veiculo_crescente" value="numero_veiculo_crescente">Por número (crescente)</option>
-                                    <option name="marca_veiculo" id="marca_veiculo" value="marca_veiculo">Por marca </option>
+                                    <!-- <option name="marca_veiculo" id="marca_veiculo" value="marca_veiculo">Por marca </option> -->
                                 </select>
                             </form>
                         </div>
 
-                        <button class='filtrosPesquisa' id="btn"idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
+                        <button class='filtrosPesquisa' id="btn" idtype="submit" name="searchValuesOnGoing" id="searchValuesOnGoing"><img src="assets/lupa.svg" alt=""> Pesquisar</button>
                     </div>
                 </form>
             </div>
@@ -184,7 +197,7 @@ $execCentroCusto = executeQuery($connectionDB, $selectTableRejeitadas);
                         <tbody>
                             <?php
 
-                            while($row = $execConnection->fetch_assoc()){
+                            while ($row = $execConnection->fetch_assoc()) {
                                 $idVeiculoGerenciado = $row['id_veiculo_gerenciado'];
                                 $selectInfosVeiculoRejeitado = "SELECT * FROM infos_veiculos_inclusos WHERE id_infos_veiculos_inclusos='$idVeiculoGerenciado'";
                                 $execConnectionInfosVeiculosRejeitados = executeQuery($connectionDB, $selectInfosVeiculoRejeitado);
