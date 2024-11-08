@@ -1,3 +1,50 @@
+<?php
+include_once('../database/config.php');
+session_start();
+
+$idOrgaoPublicoLogado = $_SESSION['idOrgaoPublico'];
+$nomeCentrosCustoGeral = []; //pega todos os centros, geral
+$valorCreditoCentroCustos = [];
+$centroCustoGastou = []; //é 'proporcional' ao array de valores gastos totais por centro, para poder fazer comparacao caso seja necessário
+$valorTotalGasto = [];
+
+
+
+$selectCentrosCustos = "SELECT nome, valor_credito FROM centros_custos WHERE id_orgao_publico = '$idOrgaoPublicoLogado'";
+$resultCentrosCustos = $conexao->query($selectCentrosCustos);
+while ($valoresCentrosCusto = $resultCentrosCustos->fetch_assoc()) {
+    array_push($nomeCentrosCustoGeral, $valoresCentrosCusto['nome']);
+    array_push($valorCreditoCentroCustos, $valoresCentrosCusto['valor_credito']);
+}
+
+$selectIdVeiculoInclusoFaturadoOP = "SELECT id_infos_veiculos_inclusos, centro_custo FROM infos_veiculos_inclusos 
+WHERE id_orgao_publico = '$idOrgaoPublicoLogado' AND orcamento_aprovada_reprovada_oficina = 'Faturado Órgão Público'";
+$resultIdVeiculoInclusoFaturadoOP = $conexao->query($selectIdVeiculoInclusoFaturadoOP);
+
+while ($valoresIdVeiculoInclusoFaturadoOP = $resultIdVeiculoInclusoFaturadoOP->fetch_assoc()) {
+    $idVeiculoInclusoOrgao = $valoresIdVeiculoInclusoFaturadoOP['id_infos_veiculos_inclusos'];
+    array_push($centroCustoGastou, $valoresIdVeiculoInclusoFaturadoOP['centro_custo']);
+    $selectSumValorGastoCentroCusto = "SELECT SUM(valor_total_final) AS total_gasto_centro_custo FROM infos_cotacao_orgao 
+    WHERE id_veiculo_incluso_orgao_publico='$idVeiculoInclusoOrgao' AND id_orgao_publico='$idOrgaoPublicoLogado'";
+    $resultSumValorGastoCentroCusto = $conexao->query($selectSumValorGastoCentroCusto);
+
+    while ($valoresSumValorGastoCentroCusto = $resultSumValorGastoCentroCusto->fetch_assoc()) {
+        array_push($valorTotalGasto, $valoresSumValorGastoCentroCusto['total_gasto_centro_custo']);
+    }
+}
+
+print_r($nomeCentrosCustoGeral);
+echo "<br>";
+print_r($valorCreditoCentroCustos);
+echo "<br>";
+print_r($valorTotalGasto);
+echo "<br>";
+print_r($centroCustoGastou);
+echo "<br>";
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,12 +53,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráfico Atualizado em Tempo Real</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         .chart-container {
             width: 80%;
             margin: 20px auto;
         }
+
         .form-container {
             width: 80%;
             margin: 20px auto;
@@ -19,9 +67,11 @@
             flex-direction: column;
             gap: 10px;
         }
+
         .form-container label {
             font-weight: bold;
         }
+
         .form-container input {
             width: 100%;
             padding: 8px;
@@ -29,6 +79,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .form-container button {
             padding: 10px;
             background-color: #28a745;
@@ -37,6 +88,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .form-container button:hover {
             background-color: #218838;
         }
@@ -74,7 +126,7 @@
                 <div class="option"><a href="../fornecedores/fornecedores.php">Fornecedores</a></div>
                 <div class="option"><a href="#opcao3">Relatório</a></div>
             </div>
-            
+
         </div>
         <div class="right-icons">
             <div class="notification-icon"> <img src="../imgs/Doorbell.svg"></div>
@@ -94,127 +146,69 @@
         <div class="chart-container">
             <canvas id="myChart"></canvas>
         </div>
-    
-        <div class="form-container">
-            <h3>Insira os valores para cada secretaria:</h3>
-            <label>SECRETARIA DE DESENVOLVIMENTO</label>
-            <input type="number" id="devTotal" placeholder="Valor Total">
-            <input type="number" id="devGasto" placeholder="Valor Gasto">
-    
-            <label>SECRETARIA DE EDUCAÇÃO</label>
-            <input type="number" id="eduTotal" placeholder="Valor Total">
-            <input type="number" id="eduGasto" placeholder="Valor Gasto">
-    
-            <label>SECRETARIA DE OBRAS</label>
-            <input type="number" id="obrasTotal" placeholder="Valor Total">
-            <input type="number" id="obrasGasto" placeholder="Valor Gasto">
-    
-            <label>SECRETARIA DE ASSISTÊNCIA SOCIAL</label>
-            <input type="number" id="assistenciaTotal" placeholder="Valor Total">
-            <input type="number" id="assistenciaGasto" placeholder="Valor Gasto">
-    
-            <label>SECRETARIA DE MEIO AMBIENTE</label>
-            <input type="number" id="meioAmbienteTotal" placeholder="Valor Total">
-            <input type="number" id="meioAmbienteGasto" placeholder="Valor Gasto">
-    
-            <label>GABINETE DO PREFEITO</label>
-            <input type="number" id="gabineteTotal" placeholder="Valor Total">
-            <input type="number" id="gabineteGasto" placeholder="Valor Gasto">
-    
-            <label>SECRETARIA DE ADMINISTRAÇÃO</label>
-            <input type="number" id="admTotal" placeholder="Valor Total">
-            <input type="number" id="admGasto" placeholder="Valor Gasto">
-    
-            <label>SECRETARIA DE ESPORTES</label>
-            <input type="number" id="esportesTotal" placeholder="Valor Total">
-            <input type="number" id="esportesGasto" placeholder="Valor Gasto">
-    
-            <label>SECRETARIA DE FINANÇAS</label>
-            <input type="number" id="financasTotal" placeholder="Valor Total">
-            <input type="number" id="financasGasto" placeholder="Valor Gasto">
-    
-            <button onclick="atualizarDados()">Atualizar Gráfico</button>
-        </div>
-        
-         <script>
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: [
-                    // centros vindos do banco
-                ],
-                datasets: [
-                    {
-                        label: 'Valor Total',
-                        data: [400000, 145000, 80000, 21000, 20000, 14000, 10000, 5000, 5000],
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Valor Gasto',
-                        data: [350000, 95000, 75000, 19105.5, 20000, 8000, 9000, 5000, 3100],
-                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
+
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const nomeCentrosCustoGeral = <?php echo json_encode($nomeCentrosCustoGeral); ?>;
+            const valorCreditoCentroCustos = <?php echo json_encode($valorCreditoCentroCustos); ?>;
+            const valorTotalGasto = <?php echo json_encode($valorTotalGasto); ?>;
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: nomeCentrosCustoGeral,
+                    datasets: [{
+                            label: 'Valor Total',
+                            data: valorCreditoCentroCustos,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Valor Gasto',
+                            data: valorTotalGasto,
+                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: { stacked: true },
-                    y: { beginAtZero: true }
                 }
+            });
+
+            // Função para atualizar os dados
+            function atualizarDados() {
+                const total = valorCreditoCentroCustos;
+                const gasto = valorTotalGasto;
+
+                myChart.data.datasets[0].data = total;
+                myChart.data.datasets[1].data = gasto;
+                myChart.update();
             }
-        });
 
-        // Função para atualizar os dados
-        function atualizarDados() {
-            const total = [
-                parseFloat(document.getElementById('devTotal').value) || 0,
-                parseFloat(document.getElementById('eduTotal').value) || 0,
-                parseFloat(document.getElementById('obrasTotal').value) || 0,
-                parseFloat(document.getElementById('assistenciaTotal').value) || 0,
-                parseFloat(document.getElementById('meioAmbienteTotal').value) || 0,
-                parseFloat(document.getElementById('gabineteTotal').value) || 0,
-                parseFloat(document.getElementById('admTotal').value) || 0,
-                parseFloat(document.getElementById('esportesTotal').value) || 0,
-                parseFloat(document.getElementById('financasTotal').value) || 0
-            ];
-
-            const gasto = [
-                parseFloat(document.getElementById('devGasto').value) || 0,
-                parseFloat(document.getElementById('eduGasto').value) || 0,
-                parseFloat(document.getElementById('obrasGasto').value) || 0,
-                parseFloat(document.getElementById('assistenciaGasto').value) || 0,
-                parseFloat(document.getElementById('meioAmbienteGasto').value) || 0,
-                parseFloat(document.getElementById('gabineteGasto').value) || 0,
-                parseFloat(document.getElementById('admGasto').value) || 0,
-                parseFloat(document.getElementById('esportesGasto').value) || 0,
-                parseFloat(document.getElementById('financasGasto').value) || 0
-            ];
-
-            myChart.data.datasets[0].data = total;
-            myChart.data.datasets[1].data = gasto;
-            myChart.update();
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".card");
-    setTimeout(() => {
-        cards.forEach(card => {
-            card.classList.add("fade-in");
-        });
-    }, 300);
-});
-    </script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const cards = document.querySelectorAll(".card");
+                setTimeout(() => {
+                    cards.forEach(card => {
+                        card.classList.add("fade-in");
+                    });
+                }, 300);
+            });
+        </script>
 
         <!-- Estrutura do Pop-up -->
-     
-    </div>
 
+    </div>
+    <!-- 
     <div class="card-container">
         <div class="card fade-in">
             <h3>Gastos Totais</h3>
@@ -230,8 +224,9 @@
             <p>R$ 31.736</p>
             <span>8,9%</span>
         </div>
-    </div>
+    </div> -->
 
 </body>
 <script src="gestao.js"></script>
+
 </html>

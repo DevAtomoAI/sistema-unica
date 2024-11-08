@@ -77,8 +77,9 @@ function atualizaEstadoCotacaoOficina($conexao, $estadoCotacao, $idVeiculo, $idO
     $stmt->close();
 
     // Prepare e execute o primeiro UPDATE
-    $stmt2 = $conexao->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina=? WHERE id_infos_veiculos_inclusos=? AND id_orgao_publico=?");
-    $stmt2->bind_param("sii", $estadoCotacao, $idVeiculo, $idOrgaoPublicoLogado);
+    $dataFaturaOrgao = date('Y-m-d');
+    $stmt2 = $conexao->prepare("UPDATE infos_veiculos_inclusos SET orcamento_aprovada_reprovada_oficina=?, data_faturado_orgao=? WHERE id_infos_veiculos_inclusos=? AND id_orgao_publico=?");
+    $stmt2->bind_param("ssii", $estadoCotacao, $dataFaturaOrgao, $idVeiculo, $idOrgaoPublicoLogado);
     $stmt2->execute();
     $stmt2->close(); // Fechar o statement após execução
 
