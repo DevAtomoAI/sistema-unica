@@ -1,4 +1,3 @@
-
 document.getElementById('incluir-btn').addEventListener('click', function() {
     const veiculo = document.getElementById('veiculo').value;
     const kmAtual = document.getElementById('km-atual').value;
@@ -46,5 +45,14 @@ document.getElementById('incluir-btn').addEventListener('click', function() {
      menuOptions.classList.toggle('active');
  });
 
+ document.getElementById('plano-manutencao').addEventListener('change', function() {
+    var planoManutencao = this.value; // Captura o valor selecionado
+    var fornecedor = document.getElementById('fornecedor'); // Campo Fornecedor
 
-
+    // Verifica se o valor selecionado é "Garantia" ou "Emergencial"
+    if (planoManutencao === 'Garantia' || planoManutencao === 'Emergencial') {
+        fornecedor.style.display = 'block'; // Exibe o campo Fornecedor
+    } else {
+        fornecedor.style.display = 'none'; // Oculta o campo Fornecedor
+    }
+});

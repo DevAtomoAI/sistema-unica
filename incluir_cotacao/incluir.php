@@ -43,6 +43,17 @@ if ($idVeiculosInclusosOrgaoPublico) {
     <link rel="stylesheet" href="incluir.css">
 </head>
 
+<style>
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        /* Oculta o campo "Fornecedor" inicialmente */
+        #fornecedor {
+            display: none;
+        }
+</style>
+
 <body>
 
     <div class="overlay" id="overlay"></div>
@@ -204,7 +215,21 @@ if ($idVeiculosInclusosOrgaoPublico) {
             </div>
         </div>
     </form>
-    <script src="incluir.js"> </script>
+    <script src="incluir.js"> 
+
+document.getElementById('plano-manutencao').addEventListener('change', function() {
+            var planoManutencao = this.value; // Captura o valor selecionado
+            var fornecedor = document.getElementById('fornecedor'); // Campo Fornecedor
+
+            // Verifica se o valor selecionado é "Garantia" ou "Emergencial"
+            if (planoManutencao === 'Garantia' || planoManutencao === 'Emergencial') {
+                fornecedor.style.display = 'block'; // Exibe o campo Fornecedor
+            } else {
+                fornecedor.style.display = 'none'; // Oculta o campo Fornecedor
+            }
+        });
+
+    </script>
 
 </body>
 
