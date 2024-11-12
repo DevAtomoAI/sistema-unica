@@ -1,1 +1,0 @@
-Sisatema unica gestão inteligente
